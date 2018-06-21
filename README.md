@@ -16,13 +16,26 @@ The main objective of the Ocean Engineering practice is:
 * Use some common good principles & patterns. Some of those can be useful.
 
 
-The engineering documentation is divided in 5 different sections:
+The engineering practice is based in a list of key [principles](doc/principles.md) based in the **CAMS** acronym (Culture, Automation, Measurement and Sharing).
+
+The documentation is divided in 5 different sections:
 
 - [Development](doc/development.md)
 - [DevOps](doc/devops.md)
 - [QA](doc/qa.md)
 - [Security](doc/security.md)
 - [Architecture](doc/architecture.md)
+
+
+## Key Concepts
+
+- **Simplicity** - All what we define should be thin and simple.
+- **Open Source** - We are building FLOSS, so Open Source and Open Standards.
+- **Openness** - Community first, open discussions, open documentation, open requirements.
+- **Quality** - New practices should be oriented to promote a high quality product.
+- **Security** - Same than previous point. Security is a first class citizen.
+- **Automation** - We should automate as much as we can, it will make our life’s easier.
+- **Team** - All of us are part of the team. All the good practices will be defined by all us.
 
 
 ## Additional Information
