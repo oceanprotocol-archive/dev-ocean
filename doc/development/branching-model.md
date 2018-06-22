@@ -14,7 +14,6 @@ Table of Contents
 
 ---
 
-<a href="#gitflow-branching-model"></a>
 # Gitflow Branching Model
 
 Gitflow was first published and made popular by [Vincent Driessen at nvie](http://nvie.com/posts/a-successful-git-branching-model/).
@@ -28,18 +27,18 @@ Of course, you also get to leverage all the benefits of the Feature Branch Workf
 
 ![Gitflow branching model](../img/git-branching-model@2x.png)
 
-<a href="#benefits"></a>
+
 ## Benefits
 
 * Well known branching model by the community
 * Works pretty well in small and big projects
 * Tools adapted/integrated to this model
 
-<a href="#how-it-works"></a>
+
 ## How it works
 
 
-<a href="#develop-and-master-branches"></a>
+
 ### Develop and Master Branches
 
 Instead of a single master branch, this Gitflow uses two branches to record the history of the project.
@@ -47,7 +46,7 @@ The **master** branch stores the official release history, and the **develop** b
 It's also convenient to tag all commits in the master branch with a version number.
 
 
-<a href="#feature-branches"></a>
+
 ### Feature Branches
 
 Each new feature should reside in its own branch, which can be pushed to the central repository for backup/collaboration.
@@ -55,7 +54,7 @@ But, instead of branching off of master, feature branches use develop as their p
 When a feature is complete, it gets merged back into develop. Features should never interact directly with master.
 
 
-<a href="#hotfix-branches"></a>
+
 ### Hotfix Branches
 
 Maintenance or “hotfix” branches are used to quickly patch production releases.
@@ -65,7 +64,7 @@ This is the only branch that should fork directly off of master. As soon as the 
 Having a dedicated line of development for bug fixes lets your team address issues without interrupting the rest of the workflow or waiting for the next release cycle. You can think of maintenance branches as ad hoc release branches that work directly with master.
 
 
-<a href="#recommendations"></a>
+
 ### Recommendations
 
 It's recommended to add the ID of the issue on Github to the branch name.
@@ -75,7 +74,7 @@ Each issue has an unique ID, so if we had this information to the branch name, w
 For example, the branch created to document the branching model is **feature/5-branching_model**, the number **5** relates with [the issue 5 on github](https://github.com/oceanprotocol/engineering/issues/5).
 
 
-<a href="#overall-flow"></a>
+
 ## Overall flow
 
 The overall flow of Gitflow is:
@@ -89,7 +88,7 @@ The overall flow of Gitflow is:
 * Once the hotfix is complete it is merged to both develop and master
 
 
-<a href="#links"></a>
+
 ## Links
 
 * https://nvie.com/posts/a-successful-git-branching-model/
