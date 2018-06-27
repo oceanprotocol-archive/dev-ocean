@@ -24,7 +24,10 @@ This page is a central point for documenting the Ocean Development Practice
 
 List of coding style guides per language (Javascript, Python, Solidity)
 
+## Boards
 
+During the development or delivery process, the main board to use is the [Development Board](alm/boards.md#development-board).
+Other existing boards are available, including Business - Roadmap information and Engineering next steps. More information about the [Ocean Boards](alm/boards.md).
 
 # Source Control Management
 
