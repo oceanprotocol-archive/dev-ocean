@@ -6,7 +6,6 @@ Table of Contents
       * [Style Guides](#style-guides)
    * [Source Control Management](#source-control-management)
       * [Branching Model](#branching-model)
-      * [Github repos configuration](#github-repos-configuration)
    * [Testing](#testing)
       * [Test Driven Development](#test-driven-development)
       * [Unit Testing](#unit-testing)
@@ -33,11 +32,6 @@ List of coding style guides per language (Javascript, Python, Solidity)
 ## Branching Model
 
 The common branching model in place is **Gitflow**. You can find more information about this in the [Gitflow branching page](development/branching-model.md).
-
-
-## Github repos configuration
-
-
 
 
 # Testing
