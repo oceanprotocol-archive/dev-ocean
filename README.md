@@ -29,13 +29,14 @@ The engineering practice is based in a list of key [principles](doc/principles.m
 
 ## Areas
 
-The documentation is divided in 5 different areas:
+The documentation is divided in different areas:
 
 - [Development](doc/development.md)
 - [DevOps](doc/devops.md)
 - [QA](doc/qa.md)
 - [Security](doc/security.md)
 - [Architecture](doc/architecture.md)
+- [Lifecycle](doc/alm.md)
 
 
 ## Additional Information
