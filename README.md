@@ -40,6 +40,7 @@ The documentation is divided in 5 different areas:
 
 ## Additional Information
 
+- [Ocean Github Boards](doc/alm/boards.md)
 - [GitHub Engineering Board](https://github.com/oceanprotocol/engineering/projects/1)
 - [GitHub Issues](https://github.com/oceanprotocol/engineering/issues)
 - [Milestones](https://github.com/oceanprotocol/engineering/milestones?direction=asc&sort=due_date&state=open)
