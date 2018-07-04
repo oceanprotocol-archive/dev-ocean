@@ -5,6 +5,7 @@ Table of Contents
    * [Github Ocean Boards](#github-ocean-boards)
       * [Business Board](#business-board)
       * [Development Board](#development-board)
+      * [Research Board](#research-board)
       * [Engineering Board](#engineering-board)
 
 ---
@@ -73,6 +74,18 @@ Related with the **Development** board, some relevant information included is:
 
 
 This board should work as public interface with the Open Source community, including developers and early adopters. It should help to show in any moment, the implementation details of any Ocean requirement or bug.
+
+
+## Research Board
+
+The [Research Board](https://github.com/oceanprotocol/ocean/projects/3) details the technical investigation tasks we are doing to analyze the open questions we have.
+It can be used to get a better understanding about the state research process and Proofs of Concepts (PoC) we have in progress.
+
+The main users of this board are:
+
+* The Research team, using this in a daily basis during the research process. It should help to track the state of the investigations and PoC's.
+* The Ocean development team,  helping them to track the state of the PoC's.
+* Any community member, needing to understand some low level technical details about the Ocean implementation.
 
 
 ## Engineering Board
