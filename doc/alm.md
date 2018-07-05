@@ -16,6 +16,12 @@ This page describes the overall Ocean Application Lifecycle Management (ALM)
 
 ![banner](img/lifecycle.png)
 
+A more detailed view of the [Delivery pipeline](alm/delivery-pipeline.md) includes:
+
+* Business definition
+* Research
+* Development
+
 
 ## Ocean Boards
 
@@ -23,9 +29,10 @@ In Ocean we use different Github boards to track different parts of the delivery
 
 The main [Ocean Boards](alm/boards.md) in use are:
 
-* [Business Board](#business-board)
-* [Development Board](#development-board)
-* [Engineering Board](#engineering-board)
+* [Business Board](alm/boards.md#business-board)
+* [Development Board](alm/boards.md#development-board)
+* [Research Board](alm/boards.md#research-board)
+* [Engineering Board](alm/boards.md#engineering-board)
 
 ## Definition of Done (DoD)
 
