@@ -1,6 +1,6 @@
-# How to create Pypi Python libraries
+# How to create PyPI Python libraries
 
-The purpose of this page is provide a guide to follow when you want to configure a Python project and deployed in Pypi.  
+The purpose of this page is provide a guide to follow when you want to configure a Python project and deployed to [PyPI](https://pypi.org/).  
 To get a better sense of how your files should be organized, here's a simplified structure of a Python project:  
 
 ```
