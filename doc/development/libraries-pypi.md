@@ -28,7 +28,7 @@ name-of-your-project
 ## Setup.py
 Is the file that tells a distribution tool, such as Distutils or Setuptools, how to install and configure the package.  
 Here you have an example of how an Ocean setup.py file looks like:
-```
+```python
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
