@@ -16,17 +16,18 @@ Table of Contents
 
 This page is a central point for documenting the Ocean Development Practice
 
-
 # Development
-
 
 ## Style Guides
 
-List of coding style guides per language (Javascript, Python, Solidity)
+We use consistent code styles at Ocean Protocol and enforce them through various linting tools. Have a look at the [style guides document](development/style-guides.md) for a list of all styles in use.
+
+* [Style Guides](development/style-guides.md)
 
 ## Boards
 
 During the development or delivery process, the main board to use is the [Development Board](alm/boards.md#development-board).
+
 Other existing boards are available, including Business - Roadmap information and Engineering next steps. More information about the [Ocean Boards](alm/boards.md).
 
 # Source Control Management
