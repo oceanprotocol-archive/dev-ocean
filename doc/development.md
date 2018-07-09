@@ -4,6 +4,11 @@ Table of Contents
 
    * [Development](#development)
       * [Style Guides](#style-guides)
+      * [Languages](#languages)
+         * [Python](#python)
+         * [Javascript](#javascript)
+         * [Solidity](#solidity)
+      * [Boards](#boards)
    * [Source Control Management](#source-control-management)
       * [Branching Model](#branching-model)
    * [Testing](#testing)
@@ -11,6 +16,7 @@ Table of Contents
       * [Unit Testing](#unit-testing)
       * [Integration Tests](#integration-tests)
    * [Links](#links)
+
 
 ---
 
@@ -23,6 +29,16 @@ This page is a central point for documenting the Ocean Development Practice
 ## Style Guides
 
 List of coding style guides per language (Javascript, Python, Solidity)
+
+## Languages
+
+### Python
+
+* [How to package Python libraries in PyPi format](development/libraries-pypi.md)
+
+### Javascript
+
+### Solidity
 
 ## Boards
 
@@ -40,11 +56,9 @@ The common branching model in place is **Gitflow**. You can find more informatio
 # Testing
 
 
-
-
 ## Test Driven Development
 
-
+Using a [Test Driven Development (TDD)](development/tdd.md) approach is more than recommended. [Here](development/tdd.md) you can find some guidelines and recommendations about it.
 
 
 ## Unit Testing
