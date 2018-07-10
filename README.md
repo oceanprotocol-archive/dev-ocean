@@ -3,7 +3,9 @@
 <h1 align="center">Ocean Engineering</h1>
 
 > 💧 Ocean Engineering Pages
-> [oceanprotocol.com](https://oceanprotocold.com)
+> [oceanprotocol.com](https://oceanprotocol.com)
+
+See [Ocean project map](https://github.com/oceanprotocol/engineering/blob/master/PROJECT_MAP.md) for current development status and handy links.
 
 
 
