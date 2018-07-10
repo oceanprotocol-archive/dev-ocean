@@ -30,3 +30,10 @@ Solidity code is linted with [Solium](https://www.getsolium.com) and its recomme
   }
 }
 ```
+
+Solidity security checks are done with [Mythril](https://github.com/ConsenSys/mythril). It is a static code analyzer to check for the most common vulnerabilities and bad practices.
+
+```bash
+pip3 install mythril
+myth --truffle
+```
