@@ -35,5 +35,6 @@ Solidity security checks are done with [Mythril](https://github.com/ConsenSys/my
 
 ```bash
 pip3 install mythril
+truffle compile
 myth --truffle
 ```
