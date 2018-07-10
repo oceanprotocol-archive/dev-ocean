@@ -2,18 +2,19 @@
 
 This page serves as a map to the current project boards, milestones, and related resources.
 
-Project boards:
+Main Project boards:
 1. [Business board](https://github.com/oceanprotocol/ocean/projects/1)
 1. [Research board](https://github.com/oceanprotocol/ocean/projects/3)
 1. [Development board](https://github.com/oceanprotocol/ocean/projects/2)
 
+A complete description of the Ocean boards can be found in the [Boards section](doc/alm/boards.md).
 
-Milestones are here: https://github.com/oceanprotocol/ocean/milestones
+Next versions can be found in the [Milestones section](https://github.com/oceanprotocol/ocean/milestones).
 
 ## Current development
-The current milestone is Plankton - Tethys Alpha (v0.1): https://github.com/oceanprotocol/ocean/milestone/1
+The current milestone is [Plankton - Tethys Alpha (v0.1)](https://github.com/oceanprotocol/ocean/milestone/1).
 
-This milestone is based on the user story in #39 Plankton mvp-2
+This milestone is based mainly on the user story in  Plankton [MVP-2](https://github.com/oceanprotocol/ocean/issues/39) and the [On-Chain Access Control](https://github.com/oceanprotocol/ocean/issues/9). 
 
 Main ocean development repos:
 * [keeper-contracts](https://github.com/oceanprotocol/keeper-contracts)
