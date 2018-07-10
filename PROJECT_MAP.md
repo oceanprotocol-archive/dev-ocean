@@ -1,4 +1,4 @@
-# ocean project map
+# Ocean project map
 
 This page serves as a map to the current project boards, milestones, and related resources.
 
