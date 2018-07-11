@@ -38,3 +38,12 @@ pip3 install mythril
 truffle compile
 myth --truffle
 ```
+
+Solidity documentation could be created with [Solgraph](https://github.com/raineorshine/solgraph).
+
+```bash
+npm install -g solgraph
+solgraph Market.sol > Market.dot
+brew install graphviz
+dot -Tpng Market.dot -o Market.png
+```
