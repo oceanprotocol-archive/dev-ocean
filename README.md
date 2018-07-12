@@ -1,6 +1,10 @@
 [![banner](doc/img/repo-banner@2x.png)](https://oceanprotocol.com)
 
-<h1 align="center">Ocean Engineering</h1>
+<p align="center">
+  <img src="https://media.giphy.com/media/Xbaqg3KwpxHjO/giphy.gif">
+</p>
+
+<h1 align="center">Dev-Ocean: Ocean Engineering</h1>
 
 > 💧 Ocean Engineering Pages
 > [oceanprotocol.com](https://oceanprotocol.com)
