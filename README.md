@@ -1,6 +1,8 @@
 [![banner](doc/img/repo-banner@2x.png)](https://oceanprotocol.com)
 
-<span style="display:block;text-align:center">![Dev-Ocean](https://media.giphy.com/media/Xbaqg3KwpxHjO/giphy.gif)</span>
+<p align="center">
+  <img src="https://media.giphy.com/media/Xbaqg3KwpxHjO/giphy.gif">
+</p>
 
 <h1 align="center">Dev-Ocean: Ocean Engineering</h1>
 
