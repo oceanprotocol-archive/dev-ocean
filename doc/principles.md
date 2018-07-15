@@ -23,15 +23,15 @@ Key elements of this are:
 
 | Belief                    | Description |
 |:--------------------------|:------------|
-| Learn to trust            | It is necessary to have a unified  unified agreement and understanding that we are all on the same team.
-| Understand motivations    | Conflict often occurs when people don’t understand each other and their motivation. Having common objectives and an understanding about the motivations others helps achieve common goals.
+| Learn to trust            | It is necessary to have a unified agreement and understanding that we are all on the same team.
+| Understand motivations    | Conflict often occurs when people don’t understand each other and their motivation. Having common objectives and an understanding about the motivations of others helps achieve common goals.
 | Eliminate blame           | Blame is pointless. In problematic situations it’s necessary to understand what went wrong and how to make sure it doesn’t happen again
 | Anticipate the failure    | Constant learning from mistakes and previous failures. Previous problems should be used to learn and provide the mechanisms to anticipate the failure
 | Focus on bottlenecks and flow | Rethinking the process and refactor constantly. Simple is better.
 | Eliminate unplanned work  | Unplanned work is common but is important to understand that priorities should be taken into consideration. It means some lower priority issues may need to go on hold.
 | Be continuous             | Iterating in releases cycles at a constant pace. It provides a continuous flow of deliverables adding business value.
-| Form dedicated, cross-functional teams | Arranging people around projects rather than grouping then depending of their skill sets
-| Transparency              | Transparency improves efficiency and productivity, reduces time and boost employees engagement
+| Form dedicated, cross-functional teams | Arranging people around projects, rather than grouping them based off their skill sets
+| Transparency              | Transparency improves efficiency and productivity, reduces time and boosts employees' engagement
 | Build autonomy, mastery and purpose | It’s necessary to create a working environment where people feel they have autonomy, mastery and purpose. Rewarding people and review the goals, ensuring the there is a clear single goal everyone can focus on.
 
 
