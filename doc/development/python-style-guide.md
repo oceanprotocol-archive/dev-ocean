@@ -1,5 +1,4 @@
 # Python Style Guide
-*DRAFT FOR CONSIDERATION! - MJ*
 
 Generally, follow the [Google Python Style Guide](https://github.com/google/styleguide/blob/gh-pages/pyguide.md).
 
@@ -32,9 +31,3 @@ Prefer `''` for dictionary keys. `my_dict['key1']`
 
 Prefer `""` for all other cases. `fname = "data.csv"`
 
-## Directory structure
-
-##
-
-
-##
