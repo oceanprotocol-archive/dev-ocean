@@ -1,8 +1,8 @@
 # Python Developer Guide
-*DRAFT FOR CONSIDERATION! - MJ*
 
 The purpose of this guide is to document best practices, tips, and tricks for
-Python hackers.
+Python development. It is not meant to be a prescriptive requirement, you are 
+free to use what 
 
 ## Package management and virtual environments
 ### Anaconda
@@ -23,7 +23,8 @@ The new kid on the block. [Pipenv](https://github.com/pypa/pipenv) on GitHub.
 
 ### Atom
 
-### Spyder
-Install Spyder in each venv?
 
-### Eclipse
+### Spyder
+Install Spyder in each venv to ensure the kernel is used. 
+
+### Eclipse + PyDev
