@@ -2,6 +2,24 @@
 
 The purpose of this guide is to document best practices, tips, and tricks for Python development. 
 
+- [Publishing libraries to PyPI](#publishing-libraries-to-pypi)
+  * [PyPI](#pypi)
+  * [Project organization](#project-organization)
+  * [Setup.py](#setuppy)
+- [Testing](#testing)
+  * [Tox](#tox)
+- [Continuous Integration](#continuous-integration)
+  * [Travis CI](#travis-ci)
+- [Local package management and virtual environments](#local-package-management-and-virtual-environments)
+  * [Anaconda](#anaconda)
+  * [pyenv](#pyenv)
+  * [pipenv](#pipenv)
+- [IDE's and editors](#ide-s-and-editors)
+  * [Jupyter Lab](#jupyter-lab)
+  * [Atom](#atom)
+  * [Spyder](#spyder)
+  * [Eclipse + PyDev](#eclipse---pydev)
+
 ## Publishing libraries to PyPI
 
 The purpose of this section is provide a guide to follow when you want to configure a Python project and deployed to [PyPI](https://pypi.org/).  
