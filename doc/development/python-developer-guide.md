@@ -20,6 +20,12 @@ The purpose of this guide is to document best practices, tips, and tricks for Py
   * [Spyder](#spyder)
   * [Eclipse + PyDev](#eclipse---pydev)
 
+## Templates
+
+For scripts and packages ... 
+
+TBD
+
 ## Publishing libraries to PyPI
 
 The purpose of this section is provide a guide to follow when you want to configure a Python project and deployed to [PyPI](https://pypi.org/).  
