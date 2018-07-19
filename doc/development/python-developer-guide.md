@@ -157,6 +157,13 @@ In order to generate the secure password, you have to run the following command 
 echo -n LEUCOTHIA_PASSWORD | travis encrypt --add deploy.password -r oceanprotocol/REPO_NAME
 ```
 
+###Bumpversion
+
+Related with the travis CI we are going to integrate Bumpversion to allow as 
+to automatically point to the new version when we create a new realese.
+[bumpversion](https://github.com/peritus/bumpversion)
+
+
 ## Local package management and virtual environments
 ### Anaconda
 Prefer for handling packages and environments. More capable than pip + virtualenv.
@@ -176,8 +183,9 @@ The new kid on the block. [Pipenv](https://github.com/pypa/pipenv) on GitHub.
 
 ### Atom
 
-
 ### Spyder
 Install Spyder in each venv to ensure the kernel is used. 
 
 ### Eclipse + PyDev
+
+### PyCharm
