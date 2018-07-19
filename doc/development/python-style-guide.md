@@ -4,6 +4,14 @@ Generally, follow the [Google Python Style Guide](https://github.com/google/styl
 
 Here are some updates and personal preferences from my side;
 
+## Linter
+
+[yapf](https://github.com/google/yapf)
+Others...
+
+To be discussed
+
+
 ## Global imports
 Prefer to import the full context of modules.
 
