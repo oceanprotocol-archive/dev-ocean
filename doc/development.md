@@ -38,6 +38,8 @@ We use consistent code styles at Ocean Protocol and enforce them through various
 
 ### Javascript
 
+* [How to package Javascript libraries in NPM format](development/libraries-npm.md)
+
 ### Solidity
 
 ## Boards
