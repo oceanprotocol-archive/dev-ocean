@@ -15,6 +15,7 @@ The purpose of this guide is to document best practices, tips, and tricks for Py
   * [pyenv](#pyenv)
   * [pipenv](#pipenv)
 - [IDE's and editors](#ide-s-and-editors)
+  * [Pycharm](#pycharm)
   * [Jupyter Lab](#jupyter-lab)
   * [Atom](#atom)
   * [Spyder](#spyder)
