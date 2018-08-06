@@ -72,10 +72,10 @@ For a complete attributes reference you can review the [package.json official do
 
 # Publishing the library
 
-After to have everything defined in the package.json only it's pending to publish the package:
+After you have everything defined in the package.json, you can publish the package:
 
 ```bash
-npm publish --scope=@oceanprotocol
+npm publish --access public
 ```
 
 After a few seconds, the new version of the package should be publicly available as part of the [@oceanprotcol npm organization](https://www.npmjs.com/settings/oceanprotocol/packages).
@@ -89,6 +89,6 @@ If you want to update a previously published package, you have to update the ver
 ```
 
 ```bash
-npm publish --scope=@oceanprotocol --otp xxxxx
+npm publish --access public
 ```bash
 
