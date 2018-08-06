@@ -64,6 +64,7 @@ Here you have a fragment of the [keeper-contracts/package.json](https://github.c
     "doc/*",
     "README.md"
   ],
+}
 ```
 
 For a complete attributes reference you can review the [package.json official documentation](https://docs.npmjs.com/getting-started/using-a-package.json).
