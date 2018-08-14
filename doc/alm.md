@@ -36,6 +36,6 @@ The main [Ocean Boards](alm/boards.md) in use are:
 
 ## Definition of Done (DoD)
 
-A **Definition of Done (DoD)** is a common agreement of the team, defining what should happen to asses an issue has been completed.
+A **Definition of Done (DoD)** is a common agreement amongst the team, defining what should happen to assess that an issue has been completed.
 
 The [Ocean Definition of Done](alm/definition-of-done.md) includes a common understanding about what we consider as Done or Completed from a development perspective.
