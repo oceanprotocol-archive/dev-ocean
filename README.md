@@ -15,7 +15,7 @@ See [Ocean project map](https://github.com/oceanprotocol/engineering/blob/master
 
 The main objective of the Ocean Engineering practice is:
 
-* Simplify what we do, we should avoid reinventing the wheel.
+* Simplify what we do to avoid reinventing the wheel.
 * Promote the quality and security.
 * Communicate better what we do and why we are doing it. Our community needs information.
 * Be more effective, make a better use of our time.
