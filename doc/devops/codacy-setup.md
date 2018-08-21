@@ -1,5 +1,17 @@
 # Codacy code analysis tool
 
+Table of Contents
+=================
+
+   * [Codacy code analysis tool](#codacy-code-analysis-tool)
+      * [Dashboard](#dashboard)
+      * [Codacy Setup](#codacy-setup)
+         * [Collaborators &amp; teams](#collaborators--teams)
+         * [Branches](#branches)
+         * [Quality Settings](#quality-settings)
+         * [Code coverage](#code-coverage)
+
+
 Codacy automates code reviews and monitors code quality over time. Static analysis, code coverage and metrics for
 Ruby, JavaScript, PHP, Scala, Java, Python.
 
