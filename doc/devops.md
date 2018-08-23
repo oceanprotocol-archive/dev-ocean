@@ -31,7 +31,8 @@ Here you can find a list of the tools & urls used:
 | Docker                | https://hub.docker.com/u/oceanprotocol/dashboard/ | Oraganization including main Docker Images|
 | NPM                   | https://www.npmjs.com/org/oceanprotocol | Ocean Protocol NPM packages |
 | PyPi                  | https://pypi.org/search/?q=oceanprotocol | Ocean Protocol Pypi packages ||
-
+| AWS                   | https://console.aws.amazon.com/iam/home#/home | Amazon Web Services ||
+| Azure                 | https://portal.azure.com/  |  ||
 
 ### Github (SCM)
 
