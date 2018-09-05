@@ -180,7 +180,7 @@ Can use `conda` with `pip` if a package is not on the main channel, but check
 migrated by the community.
 
 #### Create environment file
-Conda uses a YAML file to specify the requirements.
+Conda uses a YAML file to specify environment dependencies, similar to pip `requirements.txt`.
 
 ```
 name: test23
@@ -214,6 +214,11 @@ Generally, you can install from the yaml file as follows;
 
 `conda env create --name ocean-web3 --file environment.yml`
 
+To integrate this environment in PyCharm;
+1. Create the environment on the command line (no proper support in PyCharm yet)
+1. In PyCharm; Settings / Project: Name / Project Interpreter
+1. Add / Conda
+1. Existing Environment, select from the auto-generated drop down list
 
 ### pyenv
 
