@@ -13,13 +13,13 @@ This page is a central point for documenting the Ocean Github repositories in us
 
 ## Provider
 
-* [Ocean Provider](https://github.com/oceanprotocol/ocean-provider)
+* [Ocean Provider](https://github.com/oceanprotocol/provider)
 * [Ocean Agent](https://github.com/oceanprotocol/ocean-agent/)
 
 ## Libraries
 
 * [Ocean Squid JavaScript Library](https://github.com/oceanprotocol/squid-js)
-* [Ocean Pleuston Python Library](https://github.com/oceanprotocol/squid-py)
+* [Ocean Squid Python Library](https://github.com/oceanprotocol/squid-py)
 
 ### OceanDB
 
