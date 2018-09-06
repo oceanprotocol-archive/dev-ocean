@@ -43,6 +43,7 @@ Of course, you also get to leverage all the benefits of the Feature Branch Workf
 
 Instead of a single master branch, this Gitflow uses two branches to record the history of the project.
 The **master** branch stores the official release history, and the **develop** branch serves as an integration branch for features.
+We use the **develop** branch with the latest changes as the default one, while the **master** branch holds the latest stable release.
 It's also convenient to tag all commits in the master branch with a version number.
 
 
