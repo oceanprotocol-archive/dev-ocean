@@ -173,11 +173,52 @@ to automatically point to the new version when we create a new realese.
 
 ## Local package management and virtual environments
 ### Anaconda
-Prefer for handling packages and environments. More capable than pip + virtualenv.
+For handling packages and environments. Includes the python version in the environemt.
 
 Can use `conda` with `pip` if a package is not on the main channel, but check
 [conda-forge](https://anaconda.org/conda-forge) as well, many packages have been
 migrated by the community.
+
+#### Create environment file
+Conda uses a YAML file to specify environment dependencies, similar to pip `requirements.txt`.
+
+```
+name: test23
+dependencies:
+  - python=3.6
+  - pip:
+    - pip
+    - bumpversion
+    - wheel
+    - watchdog
+    - flake8
+    - tox
+    - coverage
+    - keeper-contracts
+    - singletonify
+    - twine
+    - setuptools
+    - py-solc
+    - web3
+    - PyJWT
+    - pyopenssl
+    - eciespy
+    - codacy-coverage
+    - pytest
+    - pytest-runner
+```
+
+TODO: Add and describe the channels: section
+
+Generally, you can install from the yaml file as follows; 
+
+`conda env create --name ocean-web3 --file environment.yml`
+
+To integrate this environment in PyCharm;
+1. Create the environment on the command line (no proper support in PyCharm yet)
+1. In PyCharm; Settings / Project: Name / Project Interpreter
+1. Add / Conda
+1. Existing Environment, select from the auto-generated drop down list
 
 ### pyenv
 
