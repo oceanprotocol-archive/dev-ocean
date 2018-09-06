@@ -4,8 +4,7 @@ This page is a central point for documenting the Ocean Github repositories in us
 
 ## Frontend
 
-* [Ocean Frontend](https://github.com/oceanprotocol/plankton-frontend)
-* [Ocean Client](https://github.com/oceanprotocol/ocean-client-js)
+* [Ocean Pleuston Frontend](https://github.com/oceanprotocol/pleuston/)
 
 
 ## Keeper
@@ -16,6 +15,11 @@ This page is a central point for documenting the Ocean Github repositories in us
 
 * [Ocean Provider](https://github.com/oceanprotocol/ocean-provider)
 * [Ocean Agent](https://github.com/oceanprotocol/ocean-agent/)
+
+## Libraries
+
+* [Ocean Squid JavaScript Library](https://github.com/oceanprotocol/squid-js)
+* [Ocean Pleuston Python Library](https://github.com/oceanprotocol/squid-py)
 
 ### OceanDB
 
