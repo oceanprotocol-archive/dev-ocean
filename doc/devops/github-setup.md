@@ -1,5 +1,15 @@
 
+Table of Contents
+=================
 
+   * [Github default configuration](#github-default-configuration)
+        * [Collaborators & teams](#collaborators--teams)
+   * [Branches](#branches)
+      * [Default Branch](#default-branch)
+      * [Branch Protection](#branch-protection)
+   * [Visibility](#visibility)
+
+---
 
 # Github default configuration
 
