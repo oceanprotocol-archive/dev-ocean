@@ -4,6 +4,7 @@ Table of Contents
 
    * [Github default configuration](#github-default-configuration)
         * [Collaborators & teams](#collaborators--teams)
+        * [CODEOWNERS](#codeowners)
    * [Branches](#branches)
       * [Default Branch](#default-branch)
       * [Branch Protection](#branch-protection)
@@ -29,6 +30,23 @@ The **Longshoremen** team is composed by Ocean commentators. They can have read 
 
 Additional permissions can be required in different situations. For example, the [Token Backend](https://github.com/oceanprotocol/token-backend) project is being implemented by an external company (Fractal). So, in addition to the previous permissions, the Fractal development team is included in the [Fractal](https://github.com/orgs/oceanprotocol/teams/fractal) team with Write grants.
 
+## CODEOWNERS
+
+We use the [CODEOWNERS](https://help.github.com/articles/about-codeowners/) feature of GitHub.
+
+> About CODEOWNERS
+>
+> You can use a CODEOWNERS file to define individuals or teams that are responsible for code in a repository.
+>
+> People with admin or owner permissions can set up a CODEOWNERS file in a repository. The people you choose as code owners must have write permissions for the repository.
+>
+> Code owners are automatically requested for review when someone opens a pull request that modifies code that they own. When someone with admin or owner permissions has enabled required reviews, they also can optionally require approval from a code owner before the author can merge a pull request in the repository.
+
+The basic ocean CODEOWNERS file looks like this:
+
+```
+*       @oceanprotocol/maintainers @oceanprotocol/core-dev
+```
 
 ## Branches
 
@@ -55,6 +73,3 @@ Some small projects could not require **develop** branch. In those cases, this c
 
 The Github repositories just created must be configured as **Private**.
 This configuration must be applied until an initial stable version be released and the project includes the [required Open Source configuration](https://github.com/oceanprotocol/art/tree/master/github).
-
-
-
