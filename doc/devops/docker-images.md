@@ -3,7 +3,7 @@
 ## Table of Contents
 
   - [Docker Hub vs. Docker Cloud](#docker-hub-vs-docker-cloud)
-  - [When and what images are built](#when-and-what-images-are-built)
+  - [Docker images generated](#docker-images-generated)
   - [Docker Hub Setup](#docker-hub-setup)
      - [Creating or configuring a new Automated Image](#creating-or-configuring-a-new-automated-image)
      - [Collaborators &amp; teams](#collaborators-teams)
@@ -30,7 +30,7 @@ There are also some other downsides when comparing with Docker Hub:
 
 Having in consideration these issues we decided to keep using Docker hub for now.
 
-## When and what images are built
+## Docker images generated
 
 Docker Hub current setup will build images when:
    * A new commit is committed in master. This will create a new version in `<image>:stable` tag.
