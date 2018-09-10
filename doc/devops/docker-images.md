@@ -1,14 +1,14 @@
 # Docker images generated with CI
 
-Table of Contents
-=================
+## Table of Contents
 
-   * [Docker Hub](#dockerhub)
-      * [Docker Hub vs. Docker Cloud](#dockercloud)
-      * [When and what images are built](#images)
-      * [Docker Hub setup](#dockerhub-setup)
-         * [Creating/Configuring a new Automated Image](#new-image)
-         * [Collaborators &amp; teams](#collaborators-teams)
+  - [Docker Hub vs. Docker Cloud](#docker-hub-vs-docker-cloud)
+  - [When and what images are built](#when-and-what-images-are-built)
+  - [Docker Hub Setup](#docker-hub-setup)
+     - [Creating or configuring a new Automated Image](#creating-or-configuring-a-new-automated-image)
+     - [Collaborators &amp; teams](#collaborators-teams)
+
+---
 
 [Docker Hub](https://hub.docker.com/) is the default Docker image repository managed and maintained by Docker Inc. In addition to the repository features, it also offers the possibility of automate the building of the Docker images using GitHub or Bitbucket triggers.
 
