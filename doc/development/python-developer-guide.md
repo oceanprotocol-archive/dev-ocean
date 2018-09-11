@@ -128,6 +128,102 @@ setup(
 
 ```
 
+## Logging
+
+Python `logging` should be employed generously. In the root calling
+script, import the logging module and configure to the desired syntax and
+handling;
+```
+from package_dir.log import setup_logging
+import logging
+setup_logging()
+```
+
+Where `setup_logging()` imports and applies the logging configuration from
+a YAML configuration if specified, otherwise it defaults to `logging.basicConfig`.
+
+Logging uses the `coloredlogs` package.
+
+An example configuration file is presented below as a starting point;
+
+Example 1) Simple logging to console;
+```
+version: 1
+
+disable_existing_loggers: False
+formatters:
+    simple:
+        format: "%(name)-5s - %(levelno)-3s - %(module)-20s  %(funcName)-30s: %(message)s"
+
+handlers:
+    console:
+        class: logging.StreamHandler
+        level: DEBUG
+        formatter: simple
+        stream: ext://sys.stdout
+
+loggers:
+    my_module:
+        level: ERROR
+        handlers: [console]
+        propagate: no
+
+root:
+    level: DEBUG
+    handlers: [console]
+```
+
+Note that the Python logging module organizes loggers in a hierarchy, all
+loggers are descendants of root.
+
+
+Example 2) A more complex example, with files and file size limits;
+
+TODO: Update this section with the actual config used throughout Ocean
+
+```yaml
+version: 1
+disable_existing_loggers: False
+formatters:
+    simple:
+        format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+handlers:
+    console:
+        class: logging.StreamHandler
+        level: DEBUG
+        formatter: simple
+        stream: ext://sys.stdout
+
+    info_file_handler:
+        class: logging.handlers.RotatingFileHandler
+        level: INFO
+        formatter: simple
+        filename: info.log
+        maxBytes: 10485760 # 10MB
+        backupCount: 20
+        encoding: utf8
+
+    error_file_handler:
+        class: logging.handlers.RotatingFileHandler
+        level: ERROR
+        formatter: simple
+        filename: errors.log
+        maxBytes: 10485760 # 10MB
+        backupCount: 20
+        encoding: utf8
+
+loggers:
+    my_module:
+        level: ERROR
+        handlers: [console] # Ignore the file handlers until deployment
+        propagate: no
+
+root:
+    level: INFO
+    handlers: [console, info_file_handler, error_file_handler]
+```
+
 ## Testing
 
 ### Tox
