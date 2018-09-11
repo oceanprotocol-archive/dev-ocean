@@ -164,12 +164,18 @@ In order to generate the secure password, you have to run the following command 
 echo -n LEUCOTHIA_PASSWORD | travis encrypt --add deploy.password -r oceanprotocol/REPO_NAME
 ```
 
-###Bumpversion
+### Bumpversion
 
 Related with the travis CI we are going to integrate Bumpversion to allow as 
 to automatically point to the new version when we create a new realese.
 [bumpversion](https://github.com/peritus/bumpversion)
 
+### Testing within PyCharm
+Create a testing run configuation using PyTest
+
+Ensure correct target script and interpreter
+
+Add the `--log-cli-level info` (or other logging level) argument to the run configuration, to post logging messages into the console.
 
 ## Local package management and virtual environments
 ### Anaconda
