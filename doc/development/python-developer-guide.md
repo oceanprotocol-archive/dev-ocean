@@ -8,6 +8,7 @@ The purpose of this guide is to document best practices, tips, and tricks for Py
     + [PyPI](#pypi)
     + [Project organization](#project-organization)
     + [Setup.py](#setuppy)
+  * [Logging](#logging)
   * [Testing](#testing)
     + [Tox](#tox)
   * [Continuous Integration](#continuous-integration)
