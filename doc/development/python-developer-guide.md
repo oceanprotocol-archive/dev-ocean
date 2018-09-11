@@ -2,24 +2,30 @@
 
 The purpose of this guide is to document best practices, tips, and tricks for Python development. 
 
-- [Publishing libraries to PyPI](#publishing-libraries-to-pypi)
-  * [PyPI](#pypi)
-  * [Project organization](#project-organization)
-  * [Setup.py](#setuppy)
-- [Testing](#testing)
-  * [Tox](#tox)
-- [Continuous Integration](#continuous-integration)
-  * [Travis CI](#travis-ci)
-- [Local package management and virtual environments](#local-package-management-and-virtual-environments)
-  * [Anaconda](#anaconda)
-  * [pyenv](#pyenv)
-  * [pipenv](#pipenv)
-- [IDE's and editors](#ide-s-and-editors)
-  * [Pycharm](#pycharm)
-  * [Jupyter Lab](#jupyter-lab)
-  * [Atom](#atom)
-  * [Spyder](#spyder)
-  * [Eclipse + PyDev](#eclipse---pydev)
+
+  * [Templates](#templates)
+  * [Publishing libraries to PyPI](#publishing-libraries-to-pypi)
+    + [PyPI](#pypi)
+    + [Project organization](#project-organization)
+    + [Setup.py](#setuppy)
+  * [Logging](#logging)
+  * [Testing](#testing)
+    + [Tox](#tox)
+  * [Continuous Integration](#continuous-integration)
+    + [Travis CI](#travis-ci)
+    + [Bumpversion](#bumpversion)
+    + [Testing within PyCharm](#testing-within-pycharm)
+  * [Local package management and virtual environments](#local-package-management-and-virtual-environments)
+    + [Anaconda](#anaconda)
+      - [Create environment file](#create-environment-file)
+    + [pyenv](#pyenv)
+    + [pipenv](#pipenv)
+  * [IDE's and editors](#ide-s-and-editors)
+    + [Jupyter Lab](#jupyter-lab)
+    + [Atom](#atom)
+    + [Spyder](#spyder)
+    + [Eclipse + PyDev](#eclipse---pydev)
+    + [PyCharm](#pycharm)
 
 ## Templates
 
@@ -123,6 +129,102 @@ setup(
 
 ```
 
+## Logging
+
+Python `logging` should be employed generously. In the root calling
+script, import the logging module and configure to the desired syntax and
+handling;
+```
+from package_dir.log import setup_logging
+import logging
+setup_logging()
+```
+
+Where `setup_logging()` imports and applies the logging configuration from
+a YAML configuration if specified, otherwise it defaults to `logging.basicConfig`.
+
+Logging uses the `coloredlogs` package.
+
+An example configuration file is presented below as a starting point;
+
+Example 1) Simple logging to console;
+```
+version: 1
+
+disable_existing_loggers: False
+formatters:
+    simple:
+        format: "%(name)-5s - %(levelno)-3s - %(module)-20s  %(funcName)-30s: %(message)s"
+
+handlers:
+    console:
+        class: logging.StreamHandler
+        level: DEBUG
+        formatter: simple
+        stream: ext://sys.stdout
+
+loggers:
+    my_module:
+        level: ERROR
+        handlers: [console]
+        propagate: no
+
+root:
+    level: DEBUG
+    handlers: [console]
+```
+
+Note that the Python logging module organizes loggers in a hierarchy, all
+loggers are descendants of root.
+
+
+Example 2) A more complex example, with files and file size limits;
+
+TODO: Update this section with the actual config used throughout Ocean
+
+```yaml
+version: 1
+disable_existing_loggers: False
+formatters:
+    simple:
+        format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+handlers:
+    console:
+        class: logging.StreamHandler
+        level: DEBUG
+        formatter: simple
+        stream: ext://sys.stdout
+
+    info_file_handler:
+        class: logging.handlers.RotatingFileHandler
+        level: INFO
+        formatter: simple
+        filename: info.log
+        maxBytes: 10485760 # 10MB
+        backupCount: 20
+        encoding: utf8
+
+    error_file_handler:
+        class: logging.handlers.RotatingFileHandler
+        level: ERROR
+        formatter: simple
+        filename: errors.log
+        maxBytes: 10485760 # 10MB
+        backupCount: 20
+        encoding: utf8
+
+loggers:
+    my_module:
+        level: ERROR
+        handlers: [console] # Ignore the file handlers until deployment
+        propagate: no
+
+root:
+    level: INFO
+    handlers: [console, info_file_handler, error_file_handler]
+```
+
 ## Testing
 
 ### Tox
@@ -164,20 +266,34 @@ In order to generate the secure password, you have to run the following command 
 echo -n LEUCOTHIA_PASSWORD | travis encrypt --add deploy.password -r oceanprotocol/REPO_NAME
 ```
 
-###Bumpversion
+### Bumpversion
 
 Related with the travis CI we are going to integrate Bumpversion to allow as 
 to automatically point to the new version when we create a new realese.
 [bumpversion](https://github.com/peritus/bumpversion)
 
+### Testing within PyCharm
+
+Create a testing run configuation using PyTest
+
+Ensure correct target script and interpreter
+
+Add the `--log-cli-level info` (or other logging level) argument to the run configuration, to post logging messages into the console.
 
 ## Local package management and virtual environments
+
 ### Anaconda
-For handling packages and environments. Includes the python version in the environemt.
+For handling packages and environments. Includes the python version in the environment.
 
 Can use `conda` with `pip` if a package is not on the main channel, but check
 [conda-forge](https://anaconda.org/conda-forge) as well, many packages have been
 migrated by the community.
+
+To work with conda environments, use the `conda env` command i.e.;
+`conda env list` to list all environments on the machine
+`conda env create --name myname --file environment.yml` to create a new env from .yml
+`conda env update --file environment.yml` to update an existing env from .yml
+
 
 #### Create environment file
 Conda uses a YAML file to specify environment dependencies, similar to pip `requirements.txt`.
