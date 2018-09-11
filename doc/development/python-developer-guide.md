@@ -2,24 +2,29 @@
 
 The purpose of this guide is to document best practices, tips, and tricks for Python development. 
 
-- [Publishing libraries to PyPI](#publishing-libraries-to-pypi)
-  * [PyPI](#pypi)
-  * [Project organization](#project-organization)
-  * [Setup.py](#setuppy)
-- [Testing](#testing)
-  * [Tox](#tox)
-- [Continuous Integration](#continuous-integration)
-  * [Travis CI](#travis-ci)
-- [Local package management and virtual environments](#local-package-management-and-virtual-environments)
-  * [Anaconda](#anaconda)
-  * [pyenv](#pyenv)
-  * [pipenv](#pipenv)
-- [IDE's and editors](#ide-s-and-editors)
-  * [Pycharm](#pycharm)
-  * [Jupyter Lab](#jupyter-lab)
-  * [Atom](#atom)
-  * [Spyder](#spyder)
-  * [Eclipse + PyDev](#eclipse---pydev)
+
+  * [Templates](#templates)
+  * [Publishing libraries to PyPI](#publishing-libraries-to-pypi)
+    + [PyPI](#pypi)
+    + [Project organization](#project-organization)
+    + [Setup.py](#setuppy)
+  * [Testing](#testing)
+    + [Tox](#tox)
+  * [Continuous Integration](#continuous-integration)
+    + [Travis CI](#travis-ci)
+    + [Bumpversion](#bumpversion)
+    + [Testing within PyCharm](#testing-within-pycharm)
+  * [Local package management and virtual environments](#local-package-management-and-virtual-environments)
+    + [Anaconda](#anaconda)
+      - [Create environment file](#create-environment-file)
+    + [pyenv](#pyenv)
+    + [pipenv](#pipenv)
+  * [IDE's and editors](#ide-s-and-editors)
+    + [Jupyter Lab](#jupyter-lab)
+    + [Atom](#atom)
+    + [Spyder](#spyder)
+    + [Eclipse + PyDev](#eclipse---pydev)
+    + [PyCharm](#pycharm)
 
 ## Templates
 
@@ -171,6 +176,7 @@ to automatically point to the new version when we create a new realese.
 [bumpversion](https://github.com/peritus/bumpversion)
 
 ### Testing within PyCharm
+
 Create a testing run configuation using PyTest
 
 Ensure correct target script and interpreter
@@ -178,8 +184,9 @@ Ensure correct target script and interpreter
 Add the `--log-cli-level info` (or other logging level) argument to the run configuration, to post logging messages into the console.
 
 ## Local package management and virtual environments
+
 ### Anaconda
-For handling packages and environments. Includes the python version in the environemt.
+For handling packages and environments. Includes the python version in the environment.
 
 Can use `conda` with `pip` if a package is not on the main channel, but check
 [conda-forge](https://anaconda.org/conda-forge) as well, many packages have been
