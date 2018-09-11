@@ -73,3 +73,7 @@ Some small projects could not require **develop** branch. In those cases, this c
 
 The Github repositories just created must be configured as **Private**.
 This configuration must be applied until an initial stable version be released and the project includes the [required Open Source configuration](https://github.com/oceanprotocol/art/tree/master/github).
+
+## PR and issues templates
+
+A .github folder should be added in the repos with an issue_template.md and a pull_request_template.md. 
