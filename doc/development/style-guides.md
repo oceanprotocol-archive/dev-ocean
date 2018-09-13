@@ -23,10 +23,13 @@ Solidity code is linted with [Solium](https://www.getsolium.com) and its recomme
 ```json
 {
   "extends": "solium:recommended",
-  "plugins": ["security"],
+  "plugins": [
+    "security"
+  ],
   "rules": {
     "quotes": ["error", "single"],
-    "indentation": ["error", 4]
+    "indentation": ["error", 4],
+    "security/no-tx-origin": ["warning"]
   }
 }
 ```
