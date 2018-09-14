@@ -289,6 +289,8 @@ Can use `conda` with `pip` if a package is not on the main channel, but check
 [conda-forge](https://anaconda.org/conda-forge) as well, many packages have been
 migrated by the community.
 
+**BEWARE** of pip installation in Conda! pip may report `Successfully installed`, but if there are any errors, the packages are not installed in the conda environment. Resolve all errors until `pip install -r requirements.txt` succeeds. 
+
 To work with conda environments, use the `conda env` command i.e.;
 `conda env list` to list all environments on the machine
 `conda env create --name myname --file environment.yml` to create a new env from .yml
