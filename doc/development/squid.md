@@ -31,9 +31,9 @@
 ### `py` Acl `js` Auth
 - `py` getOrderStatus(orderId)
 - `js` getOrderStatus(orderId) 
-- initiateAccessRequest(resourceID, providerAddress, pubKey, timeout)
-- commitAccessRequest(id, isAvailable,  expirationDate,  discovery,  permissions,  accessAgreementRef,   accessAgreementType)
-- deliverAccess Token(id, encryptedAccessToken)
+- `py` initiateAccessRequest(resourceID, providerAddress, pubKey, timeout)
+- `py` commitAccessRequest(id, isAvailable,  expirationDate,  discovery,  permissions,  accessAgreementRef,   accessAgreementType)
+- `py` deliverAccess Token(id, encryptedAccessToken)
 - `py` getEncryptedAccessToken(orderId, senderAddress)
 - `js` getEncryptedAccessToken(orderId, senderAddress)
 - `py` cancelAccessRequest(orderId, senderAddress)
