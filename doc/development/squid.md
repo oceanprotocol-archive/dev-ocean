@@ -1,34 +1,53 @@
 # Squid API
-## Token
-- approve(address, resource_price)
-- getBalance(account)
 
-## Market
-- generateID(content)
-- verifyOrderPayment(orderId)
-- register(name, description, price, publisherAddress)
-- requestTokens(amount, address)
-- sendPayment(assetId, order, publisherAddress, senderAddress)
-- checkAsset(assetId)
-- getAssetPrice(assetId)
+## Ocean
+- `js` Ocean(config(web3Provider, uri, gas, network))
+- `js` getAccounts()
+- `js` getOrdersByConsumer(consumerAddress)
+- `js` purchaseAsset(assetId, publisherId, price, privateKey, publicKey, timeout, senderAddress, initialRequestEventHandler, accessCommittedEventHandler, tokenPublishedEventHandler)
+               
+### Token
+- `py` approve(address, resource_price)
+- `py` getBalance(account)
+- `js` getTokenBalance(accountAddress)
+- `js` getEthBalance(account)
 
-## Acl
-- getOrderStatus(orderId)
+### Market
+- `py` generateID(content)
+- `py` verifyOrderPayment(orderId)
+- `js` verifyOrderPayment(orderId) 
+- `py` register(name, description, price, publisherAddress)
+- `js` registerAsset(name, description, price, publisherAddress)
+- `py` requestTokens(amount, address)
+- `js` requestTokens(senderAddress, numTokens)
+- `py` sendPayment(assetId, order, publisherAddress, senderAddress)
+- `js` payAsset(assetId, order, publisherAddress, senderAddress)
+- `py` checkAsset(assetId)
+- `js` checkAsset(assetId)
+- `py` getAssetPrice(assetId)
+- `js` getAssetPrice(assetId)
+
+### `py` Acl `js` Auth
+- `py` getOrderStatus(orderId)
+- `js` getOrderStatus(orderId) 
 - initiateAccessRequest(resourceID, providerAddress, pubKey, timeout)
-- commitAccessRequest(id,  isAvailable,  expirationDate,  discovery,  permissions,  accessAgreementRef,   accessAgreementType)
-- deliverAccessToken(id, encryptedAccessToken)
-- getEncryptedAccessToken(orderId, senderAddress)
-- cancelAccessRequest(orderId, senderAddress)
+- commitAccessRequest(id, isAvailable,  expirationDate,  discovery,  permissions,  accessAgreementRef,   accessAgreementType)
+- deliverAccess Token(id, encryptedAccessToken)
+- `py` getEncryptedAccessToken(orderId, senderAddress)
+- `js` getEncryptedAccessToken(orderId, senderAddress)
+- `py` cancelAccessRequest(orderId, senderAddress)
+- `js` cancelAccessRequest(orderId, senderAddress)
 
-## Web3
-- sign(accountAddress, message)
-- getMessageHash(message)
-- toChecksumAddress(address)
-- toHex()
-- toBytes()
+### `py` Web3 `js` helper
+- `py` sign(accountAddress, message)
+- `js` sign(accountAddress, message)
+- `py` getMessageHash(message)
+- `py` toChecksumAddress(address)
+- `py` toHex()
+- `py` toBytes()
+- `js` getAccounts()
 
-## Metadata
-
+### `py` Metadata
 - getAssetMetadata(assetId)
 - getAssets()
 - getAsstesMetadata()
@@ -36,8 +55,7 @@
 - updateAsset(providerId, assetId, publisherId, name, size, author, license, contentType, contentUrls, price, *)
 - retireAsset(providerId, assetId)
 
-## Providers
-
-- registerProvider(url, provider_address)
-- getProviders()
-- getAssetProvider(assetId)
+### Providers
+- `py` registerProvider(url, provider_address)
+- `py` getProviders()
+- `py` getAssetProvider(assetId)
