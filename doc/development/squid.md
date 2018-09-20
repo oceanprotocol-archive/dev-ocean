@@ -2,10 +2,11 @@
 
 ## Ocean
 - `js` Ocean(config(web3Provider, uri, gas, network))
+- `js` getInstance()
 - `js` getAccounts()
 - `js` getOrdersByConsumer(consumerAddress)
 - `js` purchaseAsset(assetId, publisherId, price, privateKey, publicKey, timeout, senderAddress, initialRequestEventHandler, accessCommittedEventHandler, tokenPublishedEventHandler)
-               
+
 ### Token
 - `py` approve(address, resource_price)
 - `py` getBalance(account)
@@ -59,3 +60,16 @@
 - `py` registerProvider(url, provider_address)
 - `py` getProviders()
 - `py` getAssetProvider(assetId)
+
+# Examples
+
+List orders in JavaScript
+
+```javascript
+import { Ocean } from '@oceanprotocol/squid'
+
+const ocean = await new Ocean({network: 'kovan'}).getInstance();
+const orders = await ocean.getOrdersByConsumer('0x970e8f18ebfEa0B08810f33a5A40438b9530FBCF')
+
+console.log(orders)
+```
