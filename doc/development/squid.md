@@ -20,7 +20,7 @@
 - `py` register(name, description, price, publisherAddress)
 - `js` registerAsset(name, description, price, publisherAddress)
 - `py` requestTokens(amount, address)
-- `js` requestTokens(senderAddress, numTokens)
+- `js` requestTokens(amount, address)
 - `py` sendPayment(assetId, order, publisherAddress, senderAddress)
 - `js` payAsset(assetId, order, publisherAddress, senderAddress)
 - `py` checkAsset(assetId)
@@ -68,7 +68,7 @@ List orders in JavaScript
 ```javascript
 import { Ocean } from '@oceanprotocol/squid'
 
-const ocean = await new Ocean({network: 'kovan'}).getInstance();
+const ocean = await new Ocean({network: 'kovan'})
 const orders = await ocean.getOrdersByConsumer('0x970e8f18ebfEa0B08810f33a5A40438b9530FBCF')
 
 console.log(orders)
