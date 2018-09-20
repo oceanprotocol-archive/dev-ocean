@@ -1,7 +1,7 @@
 # Squid API
 
 ## Ocean
-- `js` Ocean(config(web3Provider, uri, gas, network))
+- `js` Ocean(config(web3Provider, nodeUri, gas, network, providerUri))
 - `js` getInstance()
 - `js` getAccounts()
 - `js` getOrdersByConsumer(consumerAddress)
@@ -48,7 +48,7 @@
 - `py` toBytes()
 - `js` getAccounts()
 
-### `py` Metadata `js` OceanAgent (sideclass, needs refactoring)
+### Metadata
 - `py `getAssetMetadata(assetId)
 - `py` getAssets()
 - `py` getAsstesMetadata()
@@ -71,7 +71,18 @@ List orders in JavaScript
 import { Ocean } from '@oceanprotocol/squid'
 
 const ocean = await new Ocean({network: 'kovan'})
-const orders = await ocean.getOrdersByConsumer('0x970e8f18ebfEa0B08810f33a5A40438b9530FBCF')
+const orders = ocean.getOrdersByConsumer('0x970e8f18ebfEa0B08810f33a5A40438b9530FBCF')
 
 console.log(orders)
+```
+
+Access market functionality in JavaScript
+
+```javascript
+import { Ocean } from '@oceanprotocol/squid'
+
+const ocean = await new Ocean({network: 'kovan'})
+const { market } = ocean
+
+await market.verifyOrderPayment('0x970e8f18ebfEa0B08810f33a5A40438b9530FBCF')
 ```
