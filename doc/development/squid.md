@@ -48,13 +48,15 @@
 - `py` toBytes()
 - `js` getAccounts()
 
-### `py` Metadata
-- getAssetMetadata(assetId)
-- getAssets()
-- getAsstesMetadata()
-- publishAsset(providerId, assetId, publisherId, name, size, author, license, contentType, contentUrls, price, *)
-- updateAsset(providerId, assetId, publisherId, name, size, author, license, contentType, contentUrls, price, *)
-- retireAsset(providerId, assetId)
+### `py` Metadata `js` OceanAgent (sideclass, needs refactoring)
+- `py `getAssetMetadata(assetId)
+- `py` getAssets()
+- `py` getAsstesMetadata()
+- `js` getAssetsMetadata()
+- `py` publishAsset(providerId, assetId, publisherId, name, size, author, license, contentType, contentUrls, price, *)
+- `js` publishDataAsset(asset)
+- `py` updateAsset(providerId, assetId, publisherId, name, size, author, license, contentType, contentUrls, price, *)
+- `py `retireAsset(providerId, assetId)
 
 ### Providers
 - `py` registerProvider(url, provider_address)
