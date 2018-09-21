@@ -1,4 +1,40 @@
 # Squid API
+## This is the New API, the old ones are listed at the bottom
+
+## Ocean
+- Ocean(config(web3Provider, nodeURI, gas, network, providerURI))
+- getInstance()
+- getAccounts() => list of accounts along with token and eth balances
+- getTokenBalance()
+- getEthBalance()
+- requestTokens(amount) => bool
+- getMessageHash(message) => hash of the given message
+- generateDID(content) => ocean specific DID with a random id based on the given string message
+- resolveDID(did) => DDO of the given DID
+
+## Order
+- purchaseAsset(assetDID, publisherId, price, timeout)
+- getOrderStatus(orderId) => integer representing the order status as defined in the keeper 
+- getOrders() => list of orders
+- verifyOrderPayment(orderId) => true / false
+
+## Asset / Metadata
+- publishDataAsset(assetDID, assetDDO, price)
+- updateAsset(assetDDO)
+- retireAsset(assetDID)
+- getAssets() => asset ids from keeper
+- checkAsset(assetDID) => true / false
+- getAssetPrice(assetDID)
+- getAssetMetadata(assetDID) => asset DDO
+- getAssetsMetadata(<search-params>) => list of assets DDOs
+
+## Provider
+- registerProvider(url, provider_address)
+- getProviders()
+- getAssetProvider(assetDID)
+
+
+# Old squid API
 
 ## Ocean
 - `js` Ocean(config(web3Provider, nodeUri, gas, network, providerUri))
