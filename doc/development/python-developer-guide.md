@@ -285,6 +285,8 @@ Add the `--log-cli-level info` (or other logging level) argument to the run conf
 ### Anaconda
 For handling packages and environments. Includes the python version in the environment.
 
+Pip packages can be installed with `pip install`, but to ensure compatibility, first install the pip package itself with `conda install pip`
+
 Can use `conda` with `pip` if a package is not on the main channel, but check
 [conda-forge](https://anaconda.org/conda-forge) as well, many packages have been
 migrated by the community.
