@@ -1,8 +1,17 @@
 # Code Style Guides
 
+Table of Contents
+=================
+
+  * [Python](#python)
+  * [JavaScript](#javascript)
+  * [CSS](#css)
+  * [Solidity](#solidity)
+  * [TypeScript](#typescript)
+
 ## Python
 
-...
+See here: [Python Style Guide](python-style-guide.md) and [Python Developer Guide](python-developer-guide.md)
 
 ## JavaScript
 
@@ -49,4 +58,49 @@ npm install -g solgraph
 solgraph Market.sol > Market.dot
 brew install graphviz
 dot -Tpng Market.dot -o Market.png
+```
+
+## TypeScript
+
+TypeScript code is linted with [tslint](https://palantir.github.io/tslint/) and its recommended rules. A sample `tslint.json` file would be:
+
+```json
+{
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:recommended"
+  ],
+  "jsRules": {},
+  "rules": {
+    "object-literal-sort-keys": false
+  },
+  "rulesDirectory": []
+}
+```
+
+TypeScript compilation is done with the TypeScript Compiler `tsc`. A sample `tsconfig.json` file would be:
+
+```json
+{
+  "compilerOptions": {
+    "lib": [
+      "es6",
+      "es7"
+    ],
+    "module": "commonjs",
+    "noImplicitAny": false,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "outDir": "./dist/",
+    "rootDir": "./src/",
+    "sourceMap": true
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
+}
 ```
