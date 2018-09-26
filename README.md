@@ -12,7 +12,6 @@
 See [Ocean project map](https://github.com/oceanprotocol/engineering/blob/master/PROJECT_MAP.md) for current development status and handy links.
 
 
-
 The main objective of the Ocean Engineering practice is:
 
 
