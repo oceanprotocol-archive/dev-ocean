@@ -72,7 +72,11 @@ TypeScript code is linted with [tslint](https://palantir.github.io/tslint/) and 
   ],
   "jsRules": {},
   "rules": {
-    "object-literal-sort-keys": false
+    "object-literal-sort-keys": false,
+    "semicolon": [
+      true,
+      "never"
+    ]
   },
   "rulesDirectory": []
 }
