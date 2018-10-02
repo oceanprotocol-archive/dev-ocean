@@ -2,8 +2,7 @@
 ## This is the New API, the old ones are listed at the bottom
 
 ## Ocean
-- Ocean(config(web3Provider, nodeURI, gas, network, providerURI))
-- getInstance()
+- getInstance(config(web3Provider, nodeURI, gas, network, providerURI))
 - getAccounts() => list of accounts along with token and eth balances
 - getTokenBalance()
 - getEthBalance()
@@ -23,7 +22,7 @@
 - updateAsset(assetDDO)
 - retireAsset(assetDID)
 - getAssets() => asset ids from keeper
-- checkAsset(assetDID) => true / false
+- isAssetActive(assetDID) => true / false
 - getAssetPrice(assetDID)
 - getAssetMetadata(assetDID) => asset DDO
 - getAssetsMetadata(<search-params>) => list of assets DDOs
@@ -37,8 +36,7 @@
 # Old squid API
 
 ## Ocean
-- `js` Ocean(config(web3Provider, nodeUri, gas, network, providerUri))
-- `js` getInstance()
+- `js` getInstance(config(web3Provider, nodeUri, gas, network, providerUri))
 - `js` getAccounts()
 - `js` getOrdersByConsumer(consumerAddress)
 - `js` purchaseAsset(assetId, publisherId, price, privateKey, publicKey, timeout, senderAddress, initialRequestEventHandler, accessCommittedEventHandler, tokenPublishedEventHandler)
