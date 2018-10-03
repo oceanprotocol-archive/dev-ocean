@@ -3,22 +3,25 @@
 
 ## Ocean
 - getInstance(config(web3Provider, nodeURI, gas, network, providerURI))
+- getMessageHash(message) => hash of the given message
+- createDIDRecord(content) => ocean specific DID with an id based on hash of the given string message
+- registerProvider(url, provider_address)
+- getProviders()
+
+## Account 
 - getAccounts() => list of accounts along with token and eth balances
 - getTokenBalance()
 - getEthBalance()
 - requestTokens(amount) => bool
-- getMessageHash(message) => hash of the given message
-- generateDID(content) => ocean specific DID with a random id based on the given string message
-- resolveDID(did) => DDO of the given DID
 
 ## Order
-- purchaseAsset(assetDID, publisherId, price, timeout)
+- purchaseAsset(assetDID, publisherId, price, timeout, conditions)
 - getOrderStatus(orderId) => integer representing the order status as defined in the keeper 
 - getOrders() => list of orders
 - verifyOrderPayment(orderId) => true / false
 
 ## Asset / Metadata
-- publishDataAsset(assetDID, assetDDO, price)
+- publishAsset(assetDID, assetDDO, price)
 - updateAsset(assetDDO)
 - retireAsset(assetDID)
 - getAssets() => asset ids from keeper
@@ -26,11 +29,11 @@
 - getAssetPrice(assetDID)
 - getAssetMetadata(assetDID) => asset DDO
 - getAssetsMetadata(<search-params>) => list of assets DDOs
+- resolveAssetDID(did) => DDO of the given DID
+- getAssets() => asset ids from keeper
+- checkAsset(assetDID) => true / false
+- getAssetConditions
 
-## Provider
-- registerProvider(url, provider_address)
-- getProviders()
-- getAssetProvider(assetDID)
 
 
 # Old squid API
