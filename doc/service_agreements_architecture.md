@@ -35,6 +35,8 @@ in order to avoid any circular dependency and satisfy the `termination` and `cor
 
 ## Components
 
+![Servie level agreement components](img/SLA_Components.png)
+
 ### - Conditions
 
 In Ocean Protocol, Condition has two representations. The first representation defines 
