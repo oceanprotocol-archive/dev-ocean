@@ -244,8 +244,18 @@ code show the required functions in `service level agreement` in ocean:
 ## Flow
 What are the steps involved in setting up and executing a service agreement. 
 
-## Storage
-How is the SLA stored and where
+## Storing and Upgrading SLA
+
+As mentioned before, the service agreement has two representation, this [event-action](#event-action-representation) representation stored in OceanBD/Provider-py and 
+the [on-chain agreement](#on-chain-representation) representation is stored in the service agreement storage contract.
+
+The service agreements could be upgraded by the service provider at anytime but once the smart contracts are deployed 
+on the network, there is no way to delete them. As a result, the smart contract should maintained by 
+the governance model and upgraded by pointing to a newly defined smart contracts. The upgrading mechanism
+ uses a directory service contract which acts as Key/value store that allows the logic/control to 
+ call other contracts i.e storage contract also service contract maintains the versioning status in 
+ interfaces and logic.
+
 
 
 ## Marketplace Reference Architecture
