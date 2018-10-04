@@ -184,9 +184,10 @@ contract Treaty{
 }
 ``` 
 
-## Roles of Ocean Software components
+## Implementation Requirements in Ocean components
 
-This section describes the roles of software components of Ocean protocol in service level agreement requirements
+This section describes the implementation requirements for the software components of Ocean protocol in order to 
+integrate the service level agreement model
 
 ### Squid-lib
 Squid library ([js](https://github.com/oceanprotocol/squid-js), [python](https://github.com/oceanprotocol/squid-py))
@@ -219,13 +220,21 @@ def setup_agreement(control_contracts, dependencies, fingerprints, signature):
 ### Provider node
 
 Provider node uses bigchainDB in order to store the metadata. The required update in this repository includes
-the ability to attach and detach a predefined service level agreement into existing asset metadata.
+the ability to attach and detach a predefined service level agreement into an existing asset metadata.
 
 ![provider - service level agreement](img/SLA_ProviderMetadata.png)
 
-Finally implement the APIs which provide the CRUD operations for Squid.
+Finally the implementation of CRUD APIs of service level agreement [schema](#event-action-representation) for Squid.
   
 ### Keeper contracts
+
+The keeper contracts needs to be refactored in which follow the [storage-control](#storage-control-pattern). The below source 
+code show the required functions in `service level agreement` in ocean:
+
+```javascript
+
+
+```
   
 ### Relay/Event handler
   
@@ -238,20 +247,8 @@ What are the steps involved in setting up and executing a service agreement.
 ## Storage
 How is the SLA stored and where
 
-## Implementation requirements in supporting the SLA flow
-* Squid-lib
-  *
-* Provider node
-  *
-* Keeper contracts
-  *
-* Relay/event handler
-  *
-* UI/frontend interface/CLI
-  *
 
-
-## Market Reference Architecture
+## Marketplace Reference Architecture
 
 TBC
 
