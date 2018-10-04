@@ -173,22 +173,50 @@ is defined as follows:
 pragma solidity ^0.4.24;
 
 contract Treaty{
-    function fulfillCondition(bytes32 service, bytes32 condition, bytes32 function) private returns (bool);
-    function unfulfillCondition(bytes32 service, bytes32 condition, bytes32 function) private returns(bool);
+    function fulfillCondition(bytes32 service, 
+                              bytes32 condition, 
+                              bytes32 functionHash) public returns (bool);
+    function unfulfillCondition(bytes32 service, 
+                                bytes32 condition, 
+                                bytes32 functionHash) public returns(bool);
 }
 ``` 
 
 ## Roles of Ocean Software components
-* Squid-lib
-  *
-* Provider node
-  *
-* Keeper contracts
-  *
-* Relay/event handler
-  *
-* UI/frontend interface/CLI
-  *
+
+This section describes the roles of software components of Ocean protocol in service level agreement requirements
+
+### Squid-lib
+Squid library ([js](https://github.com/oceanprotocol/squid-js), [python](https://github.com/oceanprotocol/squid-py))
+is meant to be an interface which includes the methods to make easy the connection with contracts deployed in different 
+networks. This repository include also the methods to encrypt and decrypt information. The role of Squid is to:
+
+- CRUD operation for service level agreement in OceanDB or [Provider-py](https://hub.docker.com/r/oceanprotocol/provider/)
+- Setup a service level agreement on-chain which is signed by the consumer
+- Trigger condition calls in control contracts (send transactions)
+
+Triggering conditions by invoking transactions on-chain, this interface should be designed to 
+handle the defined condition in off-chain service agreement in a generic way.
+
+```python
+
+def trigger_condition(conditionInvokeFunction, parameters, serviceId, conditionId):
+    # TODO: generic Interface to invoke condition Transaction in a service agreement
+    return reciept
+    
+# setup a service agreement on-chain
+def setup_agreement(conditoins, dependencies, fingerprints, signature):
+    return status
+```
+
+### Provider node
+  
+### Keeper contracts
+  
+### Relay/Event handler
+  
+### UI/frontend interface/CLI
+  
 
 ## Flow
 What are the steps involved in setting up and executing a service agreement. 
@@ -209,6 +237,9 @@ How is the SLA stored and where
   *
 
 
+## Market Reference Architecture
+
+TBC
 
 ## Appendix
 
