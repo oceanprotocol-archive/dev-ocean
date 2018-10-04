@@ -4,16 +4,16 @@ This document provides technical details and describes the design of service agr
 in ocean protocol.
 
 
-### Definition
+## Definition
 
-**Service**
+### Service
 
 Service agreement is a commitment between provider/s and consumer of a service. In this commitment, the provider and 
 consumer agree on quality, availability, and responsibilities involved in the service.
 
 ![](img/SLA_ServiceDefinition.png)
 
-**Condition**
+### Condition
 
 A service provider defines one or more SLAs that apply to their services. Any defined  service 
 between parties may/not be associated with a set of conditions
@@ -33,8 +33,22 @@ in order to avoid any circular dependency and satisfy the `termination` and `cor
 
 ![SLA Dependency Model](img/SLA_DependencyModelDefinition.png)
 
-### Components
-Conditions
+## Components
+
+### Conditions
+
+In Ocean Protocol, Condition has two representations. The first representation defines 
+the event and the associated action where stakeholders (Consumers, tribes, marketplaces, data scientist) store it ( in terms of json object) `off-chain`. 
+This will enable parties to track the progress of the service agreement. This model is defined as 
+[event-action model](#event-action-representation). The second representation is a compressed version of 
+the json object and stored `on-chain`. This compressed version holds only the minimal required information 
+in order to fulfill the service agreement.
+
+#### Event-Action Representation
+
+The below figure shows how the service parties interact based on [Trigger-Event-Action]() pattern which 
+represents the core orchestration pattern in Ocean Service Agreement. 
+
 * Definition
 * Examples
 
