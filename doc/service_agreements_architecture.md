@@ -1,6 +1,6 @@
 # Smart Service Level Agreement
 
-This document provides technical details and describes the design of service agreements 
+This document provides technical details and describes the design of `merkelized service level agreements` 
 in ocean protocol.
 
 
@@ -107,7 +107,8 @@ defined in a `solidity code`:
 
 struct Condition {
     bool status;
-    bytes32 [] dependency;
+    address control; // control contract address
+    bytes32 [] dependency; // list of dependency conditions (if exist)
 }
 struct ServiceAgreement{
     bool status;
@@ -121,7 +122,31 @@ mapping (bytes32 => ServiceAgreement) agreements;
 
 ```
 
-### Roles of Ocean Software components
+
+
+### Access Control
+
+Access control in the service agreement is defined by control contract address. If the caller (smart contract address) 
+has the right to maintain the state of the condition in the storage contract (service agreement contract), the storage contract will grant the control access using 
+the following modifier:
+
+```javascript
+
+modifier isValidControlContract(bytes32 serviceId, bytes32 functionFingerprint){
+    bytes32 contractHash = keccak256(abi.encodePacked(msg.sender, functionFingerprint));
+    // check if the caller is the control contract
+    require(conditions[agreements[serviceId][contractHash].control == msg.sender);
+    // check if all dependency conditions are fulfilled
+    if(conditions[contractHash].dependency.length > 0){
+        for(uint256 i = 0; i < conditions[contractHash].dependency.length; i++){
+            require(condition[contractHash].dependency[i]);
+        }
+    }
+    _;
+}
+```
+
+## Roles of Ocean Software components
 * Squid-lib
   *
 * Provider node
