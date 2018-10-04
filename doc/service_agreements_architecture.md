@@ -40,6 +40,7 @@ in order to avoid any circular dependency and satisfy the `termination` and `cor
 The service level agreement contract is meant to be a storage contract in which stores the status of conditions for each service. This 
 is used to be minimize the interaction between control contracts and decouple the business logic by splitting it into smaller logic or control contracts. In this way, 
 we can reuse the control contracts (pre-defined conditions) to define any kind of service agreements.
+For more information about implementation details check out the [Keeper Contracts](#) section.
 
 ### 2. Control Contracts
 
@@ -184,6 +185,18 @@ contract Treaty{
 }
 ``` 
 
+## Storing and Upgrading SLA
+
+As mentioned before, the service agreement has two representation, this [event-action](#event-action-representation) representation stored in OceanBD/Provider-py and 
+the [on-chain agreement](#on-chain-representation) representation is stored in the service agreement storage contract.
+
+The service agreements could be upgraded by the service provider at anytime but once the smart contracts are deployed 
+on the network, there is no way to delete them. As a result, the smart contract should maintained by 
+the governance model and upgraded by pointing to a newly defined smart contracts. The upgrading mechanism
+ uses a directory service contract which acts as Key/value store that allows the logic/control to 
+ call other contracts i.e storage contract also service contract maintains the versioning status in 
+ interfaces and logic. For more information about implementation details of [Directory Service Contract](#) section.
+
 ## Implementation Requirements in Ocean components
 
 This section describes the implementation requirements for the software components of Ocean protocol in order to 
@@ -228,13 +241,24 @@ Finally the implementation of CRUD APIs of service level agreement [schema](#eve
   
 ### Keeper contracts
 
-The keeper contracts needs to be refactored in which follow the [storage-control](#storage-control-pattern). The below source 
-code show the required functions in `service level agreement` in ocean:
+The keeper contracts needs to be refactored in which follow the [storage-control](#storage-control-pattern). 
+
+#### Service Level Agreement Contract
+
+The below source code show the required functions in `service level agreement` in ocean:
 
 ```javascript
-
+TBC Service Level Agreement Solidity Contract
 
 ```
+
+#### Directory Service Contract
+
+TBC
+
+#### Control Contract Example
+
+TBC
   
 ### Relay/Event handler
   
@@ -243,18 +267,6 @@ code show the required functions in `service level agreement` in ocean:
 
 ## Flow
 What are the steps involved in setting up and executing a service agreement. 
-
-## Storing and Upgrading SLA
-
-As mentioned before, the service agreement has two representation, this [event-action](#event-action-representation) representation stored in OceanBD/Provider-py and 
-the [on-chain agreement](#on-chain-representation) representation is stored in the service agreement storage contract.
-
-The service agreements could be upgraded by the service provider at anytime but once the smart contracts are deployed 
-on the network, there is no way to delete them. As a result, the smart contract should maintained by 
-the governance model and upgraded by pointing to a newly defined smart contracts. The upgrading mechanism
- uses a directory service contract which acts as Key/value store that allows the logic/control to 
- call other contracts i.e storage contract also service contract maintains the versioning status in 
- interfaces and logic.
 
 
 
