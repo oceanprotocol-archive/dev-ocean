@@ -35,9 +35,22 @@ in order to avoid any circular dependency and satisfy the `termination` and `cor
 
 ## Components
 
+### 1. SLA Contract
+
+The storage contract is meant to be a storage contract in which stores the status of conditions for each service. This 
+is used to be minimize the interaction between contracts and decouple the business logic into smaller logic or control contracts.
+
+### 2. Control Contracts
+
+Control contracts may define the business logic for one or more conditions. As a service provider (i.e marketplace), has the 
+right to define conditions by using pre-defined control contracts such as payment, token swapping, access, etc. or define their own control 
+contract which implements new conditions. The newly defined control contracts will be whitelisted according to the defined governance model 
+in ocean (ie. It could be TCR based governance approach or community based governance approach). And as a consumer you are illegible to `accept/reject`
+the service level agreement.  
+
 ![Servie level agreement components](img/SLA_Components.png)
 
-### - Conditions
+### 3. Conditions
 
 In Ocean Protocol, Condition has two representations. The first representation defines 
 the `event` and the associated `action` where stakeholders (consumers, tribes, marketplaces, 
@@ -126,7 +139,7 @@ mapping (bytes32 => ServiceAgreement) agreements;
 
 
 
-### - Access Control
+### 4. Access Control
 
 Access control in the service agreement is defined by control contract address. If the caller (smart contract address) 
 has the right to maintain the state of the condition in the storage contract (service agreement contract), the storage contract will grant the control contract an access using 
@@ -150,7 +163,7 @@ modifier isValidControlContract(bytes32 serviceId, bytes32 functionFingerprint){
 }
 ```
 
-### - Treaty Interface
+### 5. Treaty Interface
 
 The control contracts should implements the `treaty interface`. This interface has only two functions in which 
 used to fulfill and un-fulfill the conditions in the storage contract (service agreement contract). The interface
