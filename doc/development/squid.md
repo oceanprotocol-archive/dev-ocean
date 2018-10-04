@@ -2,38 +2,37 @@
 ## This is the New API, the old ones are listed at the bottom
 
 ## Ocean
-- getInstance(config(web3Provider, nodeURI, gas, network, providerURI))
-- getMessageHash(message) => hash of the given message
-- createDIDRecord(content) => ocean specific DID with an id based on hash of the given string message
+- instance(config(web3Provider, nodeURI, gas, network, providerURI))
+- computeMessageHash(message) => hash of the given message
 - registerProvider(url, provider_address)
-- getProviders()
+- providers()
 
 ## Account 
-- getAccounts() => list of accounts along with token and eth balances
-- getTokenBalance()
-- getEthBalance()
+- list() => list of accounts along with token and eth balances
+- tokenBalance()
+- ethBalance()
 - requestTokens(amount) => bool
 
 ## Order
-- purchaseAsset(assetDID, publisherId, price, timeout, conditions)
-- getOrderStatus(orderId) => integer representing the order status as defined in the keeper 
-- getOrders() => list of orders
+- placeOrder(didList, timeout)
+- status(orderId) => integer representing the order status as defined in the keeper 
+- list() => list of orders
 - verifyOrderPayment(orderId) => true / false
 
-## Asset / Metadata
-- publishAsset(assetDID, assetDDO, price)
-- updateAsset(assetDDO)
-- retireAsset(assetDID)
-- getAssets() => asset ids from keeper
-- isAssetActive(assetDID) => true / false
-- getAssetPrice(assetDID)
-- getAssetMetadata(assetDID) => asset DDO
-- getAssetsMetadata(<search-params>) => list of assets DDOs
-- resolveAssetDID(did) => DDO of the given DID
-- getAssets() => asset ids from keeper
-- checkAsset(assetDID) => true / false
-- getAssetConditions
-
+## Service
+- createPDDO(pubKeys, services, metadata, slaId) => ddo with no id to be used for creating ddo hash which forms the main part of the DID
+- computePDDOHash(pddo)
+- createDIDRecord(pddo) => ocean specific DID with an id based on hash of the given ddo
+- publish(did, ddo, price)
+- retire(did)
+- isActive(did) => true / false
+- validate(did) => true / false
+- price(did)
+- didRecord(did (@optional), <search-params> (@optional)) => list of DDOs
+- resolveDID(did) => DDO of the given DID
+- list() => service ids from keeper
+- provider(did)
+- slaList()
 
 
 # Old squid API
