@@ -35,7 +35,7 @@ in order to avoid any circular dependency and satisfy the `termination` and `cor
 
 ## Components
 
-### Conditions
+### - Conditions
 
 In Ocean Protocol, Condition has two representations. The first representation defines 
 the `event` and the associated `action` where stakeholders (consumers, tribes, marketplaces, 
@@ -92,7 +92,7 @@ IsPaymentLocked(bytes32 serviceId, bytes32 conditionId, bool status, address par
 
 function isPaymentLocked(bytes32 serviceId, bytes32 conditionId, address provider, address arg2){
     ...
-    // TODO: business logic here
+    // TODO: user defined business logic in the control contract
     emit IsPaymentLocked(serviceId, conditionId, status, provider);
 }
 ```
@@ -124,27 +124,44 @@ mapping (bytes32 => ServiceAgreement) agreements;
 
 
 
-### Access Control
+### - Access Control
 
 Access control in the service agreement is defined by control contract address. If the caller (smart contract address) 
-has the right to maintain the state of the condition in the storage contract (service agreement contract), the storage contract will grant the control access using 
+has the right to maintain the state of the condition in the storage contract (service agreement contract), the storage contract will grant the control contract an access using 
 the following modifier:
 
 ```javascript
 
 modifier isValidControlContract(bytes32 serviceId, bytes32 functionFingerprint){
     bytes32 contractHash = keccak256(abi.encodePacked(msg.sender, functionFingerprint));
+    // check if the condition belongs this service agreement
+    require(agreements[serviceId].conditions[contractHash]);
     // check if the caller is the control contract
-    require(conditions[agreements[serviceId][contractHash].control == msg.sender);
+    require(conditions[contractHash].control == msg.sender);
     // check if all dependency conditions are fulfilled
     if(conditions[contractHash].dependency.length > 0){
         for(uint256 i = 0; i < conditions[contractHash].dependency.length; i++){
-            require(condition[contractHash].dependency[i]);
+            require(conditions[dependency[i]].status == true);
         }
     }
     _;
 }
 ```
+
+### - Treaty Interface
+
+The control contracts should implements the `treaty interface`. This interface has only two functions in which 
+used to fulfill and un-fulfill the conditions in the storage contract (service agreement contract). The interface
+is defined as follows:
+
+```javascript
+pragma solidity ^0.4.24;
+
+contract Treaty{
+    function fulfillCondition(bytes32 service, bytes32 condition, bytes32 function) private returns (bool);
+    function unfulfillCondition(bytes32 service, bytes32 condition, bytes32 function) private returns(bool);
+}
+``` 
 
 ## Roles of Ocean Software components
 * Squid-lib
