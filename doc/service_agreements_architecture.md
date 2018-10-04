@@ -37,15 +37,17 @@ in order to avoid any circular dependency and satisfy the `termination` and `cor
 
 ### 1. SLA Contract
 
-The storage contract is meant to be a storage contract in which stores the status of conditions for each service. This 
-is used to be minimize the interaction between contracts and decouple the business logic into smaller logic or control contracts.
+The service level agreement contract is meant to be a storage contract in which stores the status of conditions for each service. This 
+is used to be minimize the interaction between control contracts and decouple the business logic by splitting it into smaller logic or control contracts. In this way, 
+we can reuse the control contracts (pre-defined conditions) to define any kind of service agreements.
 
 ### 2. Control Contracts
 
 Control contracts may define the business logic for one or more conditions. As a service provider (i.e marketplace), has the 
-right to define conditions by using pre-defined control contracts such as payment, token swapping, access, etc. or define their own control 
-contract which implements new conditions. The newly defined control contracts will be whitelisted according to the defined governance model 
-in ocean (ie. It could be TCR based governance approach or community based governance approach). And as a consumer you are illegible to `accept/reject`
+right to define conditions by using pre-defined control contracts such as TCR, identities, payments, incentives, token swapping, access,
+ etc. or define their own control  contract which implements new conditions. The newly defined 
+ control contracts will be whitelisted according to the governance model 
+in ocean (ie. It could be TCR based governance approach or community based governance approach). Finally as a consumer you are illegible to `accept/reject`
 the service level agreement.  
 
 ![Servie level agreement components](img/SLA_Components.png)
@@ -191,7 +193,7 @@ Squid library ([js](https://github.com/oceanprotocol/squid-js), [python](https:/
 is meant to be an interface which includes the methods to make easy the connection with contracts deployed in different 
 networks. This repository include also the methods to encrypt and decrypt information. The role of Squid is to:
 
-- CRUD operation for service level agreement in OceanDB or [Provider-py](https://hub.docker.com/r/oceanprotocol/provider/)
+- CRUD operations for service level agreement in OceanDB or [Provider-py](https://hub.docker.com/r/oceanprotocol/provider/)
 - Setup a service level agreement on-chain which is signed by the consumer
 - Trigger condition calls in control contracts (send transactions)
 
@@ -205,11 +207,23 @@ def trigger_condition(conditionInvokeFunction, parameters, serviceId, conditionI
     return reciept
     
 # setup a service agreement on-chain
-def setup_agreement(conditoins, dependencies, fingerprints, signature):
+def setup_agreement(control_contracts, dependencies, fingerprints, signature):
+    # signature : consumer's signature for the data as follows:
+    # for each condition in control_contracts:
+    #    text += contractAddress+fingerprint[i]+dependencies[i]
+    # signature = ECDSA_sign(text)by_consumer_public_key
+    # TODO: setup on-chain agreement (call setup service agreement in ServiceAgreement.sol)
     return status
 ```
 
 ### Provider node
+
+Provider node uses bigchainDB in order to store the metadata. The required update in this repository includes
+the ability to attach and detach a predefined service level agreement into existing asset metadata.
+
+![provider - service level agreement](img/SLA_ProviderMetadata.png)
+
+Finally implement the APIs which provide the CRUD operations for Squid.
   
 ### Keeper contracts
   
