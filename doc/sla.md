@@ -25,9 +25,9 @@ between parties may/not be associated with a set of conditions
 ![SLA Condition Definition](img/SLA_ConditionDefinition.png)
 
 
-- Control Smart Contract Address: This defines the business logic concerning one or more conditions
-in the service agreement. This applies [Storage-Control Pattern](#storage-control-pattern)
-- Function Fingerprint: For each condition in the control smart contract, there is a function. For more information check out the 
+- Controller Smart Contract Address: This defines the business logic concerning one or more conditions
+in the service agreement. This applies [Controller-Storage Pattern](#controller-storage-pattern)
+- Function Fingerprint: For each condition in the controller smart contract, there is a function. For more information check out the 
 [appendix - function fingerprint](#function-fingerprint). 
 fulfills only one condition
 - Dependency Conditions (*Optional*): enforces the execution of the dependency model for this condition 
@@ -40,17 +40,17 @@ in order to avoid any circular dependency and satisfy the `termination` and `cor
 
 ### 1. SLA Contract
 
-The service level agreement contract is meant to be a [storage contract](#storage-control-pattern) in which maintains the status of conditions for a service. This 
-is used to be minimize the interaction between [control contracts](#storage-control-pattern) and decouple the business logic by splitting it into smaller logic (control contracts). Consequently, 
-we can reuse the control contracts (pre-defined conditions) to define any kind of service agreements.
+The service level agreement contract is meant to be a [Storage contract](#controller-storage-pattern) in which maintains the status of conditions for a service. This 
+is used to be minimize the interaction between [controller contracts](#controller-storage-pattern) and decouple the business logic by splitting it into smaller logic (controller contracts). Consequently, 
+we can reuse the controller contracts (pre-defined conditions) to define any kind of service agreements.
 For more information about implementation details check out the [Keeper Contracts](#keeper-contracts) section.
 
-### 2. Control Contracts
+### 2. Controller Contracts
 
-Control contracts may define the business logic for one or more conditions. As a service provider (i.e marketplace), has the 
-right to define conditions by using pre-defined control contracts such as TCR, identities, payments, incentives, token swapping, access,
- etc. or define their own control  contract which implements new conditions. The newly defined 
- control contracts will be whitelisted according to the governance model 
+Controller contracts may define the business logic for one or more conditions. As a service provider (i.e marketplace), has the 
+right to define conditions by using pre-defined controller contracts such as TCR, identities, payments, incentives, token swapping, access,
+ etc. or define their own controller  contract which implements new conditions. The newly defined 
+ controller contracts will be whitelisted according to the governance model 
 in ocean (ie. It could be TCR based governance approach or community based governance approach). Finally as a consumer you are illegible to `accept/reject`
 the service level agreement during the setup phase.
 
@@ -104,15 +104,15 @@ by the service agreement provider. Therefore, it provides any entity (tribe,
 organization, consortium, or marketplace) the `optionality` to define there own internal 
 actions and integrate their off-chain services.
 
-Event example in control contract (Best Practice):
+Event example in controller contract (Best Practice):
 ```javascript
-// use the same function name in the control contract, but keep the first character capital as follows
+// use the same function name in the controller contract, but keep the first character capital as follows
 
 IsPaymentLocked(bytes32 serviceId, bytes32 conditionId, bool status, address party)
 
 function isPaymentLocked(bytes32 serviceId, bytes32 conditionId, address provider, address arg2){
     ...
-    // TODO: user defined business logic in the control contract
+    // TODO: user defined business logic in the controller contract
     emit IsPaymentLocked(serviceId, conditionId, status, provider);
 }
 ```
@@ -146,14 +146,14 @@ defined in a `solidity code`:
 
 ### 4. Access Control
 
-Access control in the service agreement is defined by control contract address. If the caller (smart contract address) 
-has the right to maintain the state of the condition in the storage contract (service agreement contract), the storage contract will grant the control contract an access using 
+Access controller in the service agreement is defined by controller contract address. If the caller (smart contract address) 
+has the right to maintain the state of the condition in the storage contract (service agreement contract), the storage contract will grant the controller contract an access using 
 the following modifier:
 
 ```javascript
 
     modifier isValidControlContract(bytes32 service, bytes32 functionHash){
-        // check if the caller is the condition owner (control contract)
+        // check if the caller is the condition owner (controller contract)
         bytes32 condition = keccak256(abi.encodePacked(msg.sender, functionHash, service));
         // check if all the dependency conditions are fulfilled!
         if(conditions[condition].dependency.length > 0) {
@@ -167,19 +167,19 @@ the following modifier:
 
 ### 5. Treaty Interface
 
-The control contracts should implements the `treaty interface`. This interface has only two functions in which 
+The controller contracts should implements the `treaty interface`. This interface has only two functions in which 
 used to fulfill and un-fulfill the conditions in the storage contract (service agreement contract). For more information about implementation details, checkout this [section](#treaty-implementation).
 ## Storing and Upgrading SLA
 
 As mentioned before, the service agreement has two representations, the [event-driven based](#event-driven-representation) representation is stored in OceanBD/Provider-py and 
 the [on-chain agreement](#on-chain-representation) representation is stored in the service agreement storage contract.
 
-The service agreements could be upgraded by the service provider at anytime but once the `control contracts` smart contracts are deployed 
+The service agreements could be upgraded by the service provider at anytime but once the `controller contracts` smart contracts are deployed 
 on the network, there is no way to change them. As a result, the smart contract should be maintained and upgraded according to 
 the governance model in ocean. The upgrading mechanism
- uses a directory service contract which acts as Key/value store that allows the logic/control to 
+ uses a directory service contract which acts as Key/value store that allows the logic/controller to 
  call other contracts i.e storage contract. Moreover this contract maintains the versioning status of
- interfaces and control contracts. For more information about implementation details of [Directory Service Contract](#directory-service-contract) section.
+ interfaces and controller contracts. For more information about implementation details of [Directory Service Contract](#directory-service-contract) section.
 
 ## Implementation Requirements in Ocean components
 
@@ -195,7 +195,7 @@ This repository includes also the methods to encrypt and decrypt information.
 
 - CRUD operations for service level agreement in OceanDB or [Provider-py](https://hub.docker.com/r/oceanprotocol/provider/)
 - Setup a service level agreement on-chain which is signed by the consumer
-- Generic function which triggers condition calls in control contracts (send transactions)
+- Generic function which triggers condition calls in controller contracts (send transactions)
 
 ```python
 
@@ -226,7 +226,7 @@ the ability to attach and detach a predefined service level agreement into an ex
   
 ### Keeper contracts
 
-The keeper contracts needs to be refactored in order to satisfy the  [storage-control pattern](#storage-control-pattern). The following
+The keeper contracts needs to be refactored in order to satisfy the  [controller-storage pattern](#controller-storage-pattern). The following
 contracts are used to be a guide for implementation details of the service level agreement in keeper-contracts repo.
 
 #### Service Level Agreement Contract
@@ -256,8 +256,8 @@ contract SLA{
     event ConditionStatusChanged(bytes32 service, bytes32 condition, bool status, address party);
     event SetupAgreement(bytes32 service, bool status, address consumer, address provider);
     
-    modifier isValidControlContract(bytes32 service, bytes32 functionHash){
-        // check if the caller is the condition owner (control contract)
+    modifier isValidControllerContract(bytes32 service, bytes32 functionHash){
+        // check if the caller is the condition owner (controller contract)
         bytes32 condition = keccak256(abi.encodePacked(msg.sender, functionHash, service));
         // check if all the dependency conditions are fulfilled!
         if(conditions[condition].dependency.length > 0) {
@@ -339,7 +339,7 @@ contract Treaty{
 
 TBC
 
-#### Control Contract Example
+#### Controller Contract Example
 
 TBC
   
@@ -386,9 +386,9 @@ We can drive the method ID `baz(uint32, bool)` by calculating the `Keccak-256` o
 get the first 4 bytes of  hash `0xcdcd77c0992ec5bbfc459984220f8c45084cc24d9b6efed1fae540db8de801d2`of the ASCII form of the signature: `0xcdcd77c0`. This what we need to add as a fingerprint for the function. For more information, check out the 
 [Solidity - ABI Function Selectors](https://solidity.readthedocs.io/en/develop/abi-spec.html#abi-function-selector)
 
-### Storage-Control Pattern
+### Controller-Storage Pattern
 
-The storage-control pattern also know as (Interface, Controller, and Storage ICS Pattern) is used as design pattern
+The controller-storage pattern also know as (Interface, Controller, and Storage ICS Pattern) is used as design pattern
 in solidity contracts in order to reduce the complexity of the contracts design. 
 
 ![controller-storage design pattern](img/SLA_Storage_ControlPattern.png)
