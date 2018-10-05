@@ -1,4 +1,6 @@
-# Smart Service Level Agreement
+# Merkelized Service Level Agreement
+
+***DISCLAIMER: THIS IS A WORK IN PROGRESS***
 
 This document provides technical details and describes the design of `merkelized service level agreements` 
 in ocean protocol.
@@ -123,20 +125,19 @@ defined in a `solidity code`:
 
 ```javascript
 
-struct Condition {
-    bool status;
-    address control; // control contract address
-    bytes32 [] dependency; // list of dependency conditions (if exist)
-}
-struct ServiceAgreement{
-    bool status;
-    address [] parties;
-    bytes32 [] conditions;
-}
-
-// condition id = hash (control contract address + function fingerprint)
-mapping (bytes32 => Condition) conditions;
-mapping (bytes32 => ServiceAgreement) agreements;
+    struct Condition{
+        bool status;
+        bytes32 [] dependency;
+    }
+    
+    struct Agreement{
+        bool status;
+        bytes32 [] assets;
+        address [] parties;
+        mapping (bytes32 => Condition) conditions;
+    }
+    
+    mapping (bytes32 => Agreement) agreements;
 
 ```
 
@@ -150,20 +151,17 @@ the following modifier:
 
 ```javascript
 
-modifier isValidControlContract(bytes32 serviceId, bytes32 functionFingerprint){
-    bytes32 contractHash = keccak256(abi.encodePacked(msg.sender, functionFingerprint));
-    // check if the condition belongs this service agreement
-    require(agreements[serviceId].conditions[contractHash]);
-    // check if the caller is the control contract
-    require(conditions[contractHash].control == msg.sender);
-    // check if all dependency conditions are fulfilled
-    if(conditions[contractHash].dependency.length > 0){
-        for(uint256 i = 0; i < conditions[contractHash].dependency.length; i++){
-            require(conditions[dependency[i]].status == true);
+    modifier isValidControlContract(bytes32 service, bytes32 functionHash){
+        // check if the caller is the condition owner (control contract)
+        bytes32 condition = keccak256(abi.encodePacked(msg.sender, functionHash));
+        // check if all the dependency conditions are fulfilled!
+        if(agreements[service].conditions[condition].dependency.length > 0) {
+            for (uint256 i=0; i < agreements[service].conditions[condition].dependency.length; i++) {
+                require(agreements[service].conditions[agreements[service].conditions[condition].dependency[i]].status == true);
+            }
         }
+        _;
     }
-    _;
-}
 ```
 
 ### 5. Treaty Interface
@@ -248,8 +246,60 @@ The keeper contracts needs to be refactored in which follow the [storage-control
 The below source code show the required functions in `service level agreement` in ocean:
 
 ```javascript
-TBC Service Level Agreement Solidity Contract
+pragma solidity ^0.4.25;
 
+contract SLA{
+    
+    struct Condition{
+        bool status;
+        bytes32 [] dependency;
+    }
+    
+    struct Agreement{
+        bool status;
+        int count;
+        bytes32 [] assets;
+        address provider;
+        mapping (bytes32 => Condition) conditions;
+    }
+    
+    mapping (bytes32 => Agreement) agreements;
+    
+    modifier isValidControlContract(bytes32 service, bytes32 functionHash){
+        // check if the caller is the condition owner (control contract)
+        bytes32 condition = keccak256(abi.encodePacked(msg.sender, functionHash));
+        // check if all the dependency conditions are fulfilled!
+        if(agreements[service].conditions[condition].dependency.length > 0) {
+            for (uint256 i=0; i < agreements[service].conditions[condition].dependency.length; i++) {
+                require(agreements[service].conditions[agreements[service].conditions[condition].dependency[i]].status == true);
+            }
+        }
+        _;
+    }
+    
+    function generateServiceID(bytes _signature, uint256 _contracts) private view returns (bytes32) {
+        return keccak256(abi.encodePacked(_signature, _contracts, block.timestamp));
+    }
+    
+    function setupAgreement(address[] _contracts, 
+                            bytes32[] _fingerprints, 
+                            uint256 [] _parents, 
+                            bytes _signature,
+                            bytes32 [] _assets)  public returns(bool) {
+       // check conditions length
+       require(_contracts.length > 0);
+       require(_contracts.length == _fingerprints.length);
+       require(_contracts.length == _parents.length);
+       // TODO: verify the consumer's signature
+       bytes32 service = generateServiceID(_signature, _contracts.length);
+       for (uint256 i; i < _contracts.length;  i++){
+            bytes32 condition = keccak256(abi.encodePacked(_contracts, _fingerprints));
+            // TODO: check if the condition is whitelisted
+            
+            
+       }
+    }
+}
 ```
 
 #### Directory Service Contract
@@ -271,6 +321,10 @@ What are the steps involved in setting up and executing a service agreement.
 
 
 ## Marketplace Reference Architecture
+
+TBC
+
+## Curating Service Agreements
 
 TBC
 
