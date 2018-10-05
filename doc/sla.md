@@ -317,7 +317,7 @@ contract SLA{
 }
 ```
 
-### Treaty Implementation
+#### Treaty Implementation
 
 The treaty interface is defined as follows:
 
@@ -374,7 +374,7 @@ based on the `function selector` and `argument encoding`. The following example 
 the function fingerprint:
 
 ```javascript
-pragma solidity >=0.4.16 <0.6.0;
+pragma solidity ^0.4.24;
 
 contract Foo {
   function baz(uint32 x, bool y) public pure returns (bool r) { r = x > 32 || y; }
@@ -382,13 +382,26 @@ contract Foo {
 
 ```
 
-We can drive the method ID `bar(uint32, bool)` by calculating the `Keccak-256` of the function then
+We can drive the method ID `baz(uint32, bool)` by calculating the `Keccak-256` of the function then
 get the first 4 bytes of  hash `0xcdcd77c0992ec5bbfc459984220f8c45084cc24d9b6efed1fae540db8de801d2`of the ASCII form of the signature: `0xcdcd77c0`. This what we need to add as a fingerprint for the function. For more information, check out the 
 [Solidity - ABI Function Selectors](https://solidity.readthedocs.io/en/develop/abi-spec.html#abi-function-selector)
 
 ### Storage-Control Pattern
 
-TBC
+The storage-control pattern also know as (Interface, Controller, and Storage ICS Pattern) is used as design pattern
+in solidity contracts in order to reduce the complexity of the contracts design. 
+
+![controller-storage design pattern](img/SLA_Storage_ControlPattern.png)
+
+This pattern is defined by five components:
+
+- Interface contract
+- Controller contract
+- Storage contract
+- Access control
+- Directory Service/Resolver 
+
+
 
 ### Event-Driven Architecture
 
