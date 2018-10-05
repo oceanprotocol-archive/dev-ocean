@@ -187,20 +187,19 @@ integrate the service level agreement model
 
 ### Squid-lib
 Squid library ([js](https://github.com/oceanprotocol/squid-js), [python](https://github.com/oceanprotocol/squid-py))
-is meant to be an interface which includes the methods to make easy the connection with contracts deployed in different 
-networks. This repository include also the methods to encrypt and decrypt information. The role of Squid is to:
+is meant to be an interface which includes the methods to facilitates the interaction with the deployed smart contracts in Ocean Protocol. 
+This repository includes also the methods to encrypt and decrypt information. 
+
+**The required APIs for the SLA in Squid as follow:**
 
 - CRUD operations for service level agreement in OceanDB or [Provider-py](https://hub.docker.com/r/oceanprotocol/provider/)
 - Setup a service level agreement on-chain which is signed by the consumer
-- Trigger condition calls in control contracts (send transactions)
-
-Triggering conditions by invoking transactions on-chain, this interface should be designed to 
-handle the defined condition in off-chain service agreement in a generic way.
+- Generic function which triggers condition calls in control contracts (send transactions)
 
 ```python
 
 def trigger_condition(conditionInvokeFunction, parameters, serviceId, conditionId):
-    # TODO: generic Interface to invoke condition Transaction in a service agreement
+    # TODO: generic Interface to invoke condition transaction in a service agreement
     return reciept
     
 # setup a service agreement on-chain
@@ -220,11 +219,14 @@ the ability to attach and detach a predefined service level agreement into an ex
 
 ![provider - service level agreement](img/SLA_ProviderMetadata.png)
 
-Finally the implementation of CRUD APIs of service level agreement [schema](#event-driven-representation) for Squid.
+**Implementation Requirements:**
+
+- The provider should provide CRUD APIs of service level agreement [schema](#event-driven-representation) for Squid.
   
 ### Keeper contracts
 
-The keeper contracts needs to be refactored in which follow the [storage-control](#storage-control-pattern). 
+The keeper contracts needs to be refactored in order to satisfy the  [storage-control pattern](#storage-control-pattern). The following
+contracts are used to be a guide for implementation details of the service level agreement in keeper-contracts repo.
 
 #### Service Level Agreement Contract
 
@@ -370,11 +372,12 @@ TBC
 
 ### Event-Driven Architecture
 
-In the service agreement, the conditions state are represented by events where the state change is the `norm`. Events act as alerts for the state change, The Event-driven Architecture or (EDA) is a design pattern built around the `production`, `detection`, and `reaction` to 
+In the service agreement, the conditions state are represented by events where the state change is the `norm`. 
+Events act as alerts for the state change, The [Event-driven Architecture (EDA)](https://en.wikipedia.org/wiki/Event-driven_architecture) is a design pattern built around the `production`, `detection`, and `reaction` to 
 events that take place in time. Most of complex engineered systems are loosely coupled networks of 
 unassociated components.
 
-The event-action pattern is close to [Event-driven Architecture](https://en.wikipedia.org/wiki/Event-driven_architecture). It 
+The event-action pattern is close to . It 
 is specified as model to represents the interaction between parties. As shown in the below figure:
 
 ![Event Driven architecture pattern](img/SLA_Trigger-Event-Action.png)
@@ -388,3 +391,4 @@ TBC
 
 ## References
 - [Event-Driven Architecture Design Pattern - Wikipedia](https://en.wikipedia.org/wiki/Event-driven_architecture)
+- [ABI Function Selectors in Solidity - Solidity Official Documentation](https://solidity.readthedocs.io/en/develop/abi-spec.html#abi-function-selector)
