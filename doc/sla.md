@@ -27,7 +27,8 @@ between parties may/not be associated with a set of conditions
 
 - Control Smart Contract Address: This defines the business logic concerning one or more conditions
 in the service agreement. This applies [Storage-Control Pattern](#storage-control-pattern)
-- Function Fingerprint: For each condition in the control smart contract, there is a function 
+- Function Fingerprint: For each condition in the control smart contract, there is a function. For more information check out the 
+[appendix - function fingerprint](#function-fingerprint). 
 fulfills only one condition
 - Dependency Conditions (*Optional*): enforces the execution of the dependency model for this condition 
 in terms of list of condition/s that must be fulfilled. The dependency model is defined in terms of tree structure 
@@ -366,6 +367,25 @@ TBC
 
 ## Appendix
 
+### Function Fingerprint
+
+In solidity, the function fingerprint is defined by the the function signature. The signature is 
+based on the `function selector` and `argument encoding`. The following example shows how to get 
+the function fingerprint:
+
+```javascript
+pragma solidity >=0.4.16 <0.6.0;
+
+contract Foo {
+  function baz(uint32 x, bool y) public pure returns (bool r) { r = x > 32 || y; }
+}
+
+```
+
+We can drive the method ID `bar(uint32, bool)` by calculating the `Keccak-256` of the function then
+get the first 4 bytes of  hash `0xcdcd77c0992ec5bbfc459984220f8c45084cc24d9b6efed1fae540db8de801d2`of the ASCII form of the signature: `0xcdcd77c0`. This what we need to add as a fingerprint for the function. For more information, check out the 
+[Solidity - ABI Function Selectors](https://solidity.readthedocs.io/en/develop/abi-spec.html#abi-function-selector)
+
 ### Storage-Control Pattern
 
 TBC
@@ -377,8 +397,6 @@ Events act as alerts for the state change, The [Event-driven Architecture (EDA)]
 events that take place in time. Most of complex engineered systems are loosely coupled networks of 
 unassociated components.
 
-The event-action pattern is close to . It 
-is specified as model to represents the interaction between parties. As shown in the below figure:
 
 ![Event Driven architecture pattern](img/SLA_Trigger-Event-Action.png)
 
@@ -387,7 +405,6 @@ TBC
 ### Security Threats
 
 TBC
-
 
 ## References
 - [Event-Driven Architecture Design Pattern - Wikipedia](https://en.wikipedia.org/wiki/Event-driven_architecture)
