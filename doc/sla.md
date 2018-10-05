@@ -257,21 +257,24 @@ contract SLA{
     
     struct Agreement{
         bool status;
-        int count;
         bytes32 [] assets;
         address provider;
-        mapping (bytes32 => Condition) conditions;
+        bytes32[] conditions;
     }
     
     mapping (bytes32 => Agreement) agreements;
+    mapping (bytes32 => Condition) conditions;
+    
+    event ConditionStatusChanged(bytes32 service, bytes32 condition, bool status, address party);
+    event SetupAgreement(bytes32 service, bool status, address consumer, address provider);
     
     modifier isValidControlContract(bytes32 service, bytes32 functionHash){
         // check if the caller is the condition owner (control contract)
-        bytes32 condition = keccak256(abi.encodePacked(msg.sender, functionHash));
+        bytes32 condition = keccak256(abi.encodePacked(msg.sender, functionHash, service));
         // check if all the dependency conditions are fulfilled!
-        if(agreements[service].conditions[condition].dependency.length > 0) {
-            for (uint256 i=0; i < agreements[service].conditions[condition].dependency.length; i++) {
-                require(agreements[service].conditions[agreements[service].conditions[condition].dependency[i]].status == true);
+        if(conditions[condition].dependency.length > 0) {
+            for (uint256 i=0; i < conditions[condition].dependency.length; i++) {
+                require(conditions[conditions[condition].dependency[i]].status == true);
             }
         }
         _;
@@ -283,21 +286,45 @@ contract SLA{
     
     function setupAgreement(address[] _contracts, 
                             bytes32[] _fingerprints, 
-                            uint256 [] _parents, 
+                            int256 [] _parents,
+                            int256 [] _childs,
                             bytes _signature,
-                            bytes32 [] _assets)  public returns(bool) {
+                            bytes32 [] _assets,
+                            address consumer)  public returns(bool) {
        // check conditions length
        require(_contracts.length > 0);
        require(_contracts.length == _fingerprints.length);
        require(_contracts.length == _parents.length);
        // TODO: verify the consumer's signature
        bytes32 service = generateServiceID(_signature, _contracts.length);
-       for (uint256 i; i < _contracts.length;  i++){
-            bytes32 condition = keccak256(abi.encodePacked(_contracts, _fingerprints));
+       // build the dependency model
+       bytes32 [] conds;
+       for (uint256 i=0; i < _contracts.length;  i++){
+            bytes32 condition = keccak256(abi.encodePacked(_contracts[i], _fingerprints[i], service));
             // TODO: check if the condition is whitelisted
-            
-            
-       }
+            // TODO: build the dependency as follows
+            // parents = [0, 0, 1, 1, 2,  3,  4,  5]
+            // childs  = [1, 2, 3, 4, 5, -1, -1, -1]
+            // -1 means no dependency
+        }
+        emit SetupAgreement(service, true, consumer, msg.sender);
+        return true;
+    }
+    
+    function setConditionStatus(bytes32 service, bytes32 fingerprint) public 
+        isValidControlContract(service, fingerprint) returns (bool){
+            bytes32 condition = keccak256(abi.encodePacked(msg.sender, fingerprint, service));
+            conditions[condition].status = true;
+            return true;
+    }
+    function fulfillAgreement(bytes32 service) public returns (bool) {
+        for (uint256 i=0 ; i < agreements[service].conditions.length; i++){
+            if (conditions[agreements[service].conditions[i]].status != true){
+                return false;
+            }
+        }
+        agreements[service].status = true;
+        return true;
     }
 }
 ```
