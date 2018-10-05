@@ -30,7 +30,12 @@ In the context of Ocean Protocol components, following scenarios are important f
 
 ### Tribes and/or marketplaces (publishing data sets)
 
-// TODO
+All services MUST be registered/published at one of the tribes/marketplaces associated with Ocean Protocol. The result of the registration of service SHOULD be generation of a service identifier which can be used to identify a service in a service agreement.
+
+As part of publishing a service, the conditions of availability should also be published with the service metadata. For example,
+
+1. If a data set is being published as a service, the state of data should be clearly mentioned - raw, clean, transformed, etc.
+1. If an algorithm is being published as a service, the language in which the algorithm is available should also be published.
 
 ### Providers (serving meta-data and/or data)
 
@@ -59,6 +64,12 @@ In the context of Ocean Protocol components, following scenarios are important f
 ### Payments and escrows
 
 // TODO
+
+### Service agreement negotiation
+
+Before the service agreements are deployed or invoked as smart-contracts on the Ocean keeper network, they should be negotiated off-chain between all the involved parties. Once all parties agree on the parameters and values in an agreement, then it SHOULD be invoked/initialized using the smart contracts.
+
+// TODO - add more details - json data with key value pairs - values go in as smart contract invocation parameters
 
 ## Example services and agreements (templates)
 
