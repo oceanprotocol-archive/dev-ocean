@@ -340,7 +340,37 @@ contract Treaty{
 
 #### Directory Service Contract
 
-TBC
+This contract is implemented (optionally) as a part of [controller-storage pattern](#controller-storage-pattern).
+The directory service contract is key/value store which fulfill the following key points:
+
+- It preserves the versioning of the controller and storage contracts. Therefore, it is used as means to upgrade the controller contracts addresses.
+- It provides the whitelisting mechanism in which limits the privilege of the caller entities. 
+- Finally, it provides access control by limiting the access to user defined controller and storage contracts
+
+**1. Registering/Unregistering Contract**
+
+The directory service resolves the controller/storage contracts key into a contract address. The key is by design preserve the capability for the 
+ contract owner as follows:
+ 
+ - Owner: entity/organization/tribe/marketplace
+ - Contract Address: the first version of the controller/storage contract
+ - R+W: Read and Write capabilities 
+ 
+ If we combine the (owner + contract_address + capability), the owner should be illegible to update the contract addresses 
+ by defining new version of the contract.
+
+![directory service](img/SLA_DirectoryService.png)
+
+**2. Resolving Contract**
+
+Any entity can resolve the contract address by providing the contract key and contract version
+
+
+**3. Delegating Capabilities**
+
+The directory service uses the capability delegation approach in order to manage and maintain the updatability of the contracts address. 
+However the super-admin is the owner of the contract which implicitly embodied in the `key`. Delegatees are a list of 
+addresses where they are coupled to the permissions or capabilities. 
 
 #### Controller Contract Example
 
@@ -424,4 +454,5 @@ TBC
 
 ## References
 - [Event-Driven Architecture Design Pattern - Wikipedia](https://en.wikipedia.org/wiki/Event-driven_architecture)
-- [ABI Function Selectors in Solidity - Solidity Official Documentation](https://solidity.readthedocs.io/en/develop/abi-spec.html#abi-function-selector)
+- [ABI Function Selectors in Solidity](https://solidity.readthedocs.io/en/develop/abi-spec.html#abi-function-selector)
+- [Directory service Wikipedia](https://en.wikipedia.org/wiki/Directory_service)
