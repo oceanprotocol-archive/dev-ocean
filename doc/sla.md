@@ -8,7 +8,7 @@ in ocean protocol.
 
 ## Definition
 
-### Service
+### Service Agreement
 
 Service agreement is a commitment between provider/s and consumer of a service. In this commitment, the provider and 
 consumer agree on quality, availability, and responsibilities involved in the service.
@@ -302,10 +302,10 @@ contract SLA{
         return true;
     }
     
-    function setConditionStatus(bytes32 service, bytes32 fingerprint) public 
+    function setConditionStatus(bytes32 service, bytes32 fingerprint, bool _status) public 
         isValidControlContract(service, fingerprint) returns (bool){
             bytes32 condition = keccak256(abi.encodePacked(msg.sender, fingerprint, service));
-            conditions[condition].status = true;
+            conditions[condition].status = _status;
             return true;
     }
     function fulfillAgreement(bytes32 service) public returns (bool) {
@@ -368,13 +368,114 @@ Any entity can resolve the contract address by providing the contract key and co
 
 **3. Delegating Capabilities**
 
-The directory service uses the capability delegation approach in order to manage and maintain the updatability of the contracts address. 
+The directory service uses the capability delegation approach in order to manage and maintain the upgradability of the contracts address. 
 However the super-admin is the owner of the contract which implicitly embodied in the `key`. Delegatees are a list of 
 addresses where they are coupled to the permissions or capabilities. 
 
+
+From service level agreement point of view, this provides more flexibility for the network actors/entities to 
+upgrade their own service level agreement in the future without affecting the current existing contracts.
+ 
 #### Controller Contract Example
 
-TBC
+This subsection shows an example of controller contract. The following example implements a simple
+access payment operations which fulfill two conditions `lockPayment` and `releasePayment`:
+
+```javascript
+
+pragma solidity ^0.4.25;
+
+import './Treaty.sol';
+import './ServiceAgreement.sol';
+
+
+contract LogicPayment is Treaty {
+
+    // this contract is an example for access lock condition
+    // which unlock payment and lock access control
+    // Don't use it for production purposes
+    // This is not a secure contract!!
+    
+    struct Payment {
+        bool status;
+        uint256 amount;
+        address sender;
+        address receiver;
+        bytes32 asset;
+        bytes32 condition; // dependency condition (access condition to release payment)
+    }
+
+    mapping (bytes32 => Payment) payments;
+
+    modifier isSender(bytes32 _payment){
+        require(payments[_payment].sender == msg.sender);
+        _;
+    }
+
+    modifier isReciever(bytes32 _payment){
+        require(payments[_payment].receiver == msg.sender);
+        _;
+    }
+
+    modifier isLocked(bytes32 _payment){
+        require(payments[_payment].status == true);
+        _;
+    }
+
+    modifier isUnLocked(bytes32 _payment){
+        require(payments[_payment].status == false);
+        _;
+    }
+
+
+    ServiceAgreement private serviceAgreement;
+    address private thisContract = address(this);
+
+    constructor(address _serviceAgreementAddress) public {
+        require(_serviceAgreementAddress != address(0), 'invalid contract address');
+        serviceAgreement = ServiceAgreement(_serviceAgreementAddress);
+    }
+
+    function unfulfillCondition(bytes32 service, bytes32 fingerprint) private returns (bool) {
+        return false;
+    } 
+    // fulfill condition means fullfilling the condition by the logic contract
+    function fulfillCondition(bytes32 service, bytes16 fingerprint) private returns (bool){
+        serviceAgreement.setCondition(service, fingerprint, true);
+        return true;
+    }
+
+    // unsafe function!
+    function lockPayment(address receiver, bytes32 asset, uint256 amount, bytes32 condition) public payable returns(bytes32){
+        
+        require(msg.sender.balance > amount);
+        thisContract.transfer(amount);
+        // lock payments
+        Payment memory newPayment = Payment(true, amount, msg.sender, receiver, asset, condition);
+        bytes32 paymentId = keccak256(abi.encodePacked(amount, msg.sender, receiver, asset));
+        payments[paymentId] = newPayment;
+        return paymentId;
+    }
+
+    function requestAsset(bytes32 payment,
+                          bytes32 service) public isLocked(payment) isSender(payment) returns (bool){
+        // fulfil locked payment condition
+        fulfillCondition(service, '0xca9df58c');
+    }
+
+    function releasePayment(bytes32 payment, bytes32 service) public isLocked(payment) isReciever(payment) payable returns (bool){
+        // check that access was granted to the sender (consumer)
+        assert(serviceAgreement.getConditionStatus(payments[payment].condition) == true);
+        // TODO: transfer ether to reciever
+        payments[payment].receiver.transfer(payments[payment].amount);
+        // fulfill release payment condition
+        fulfillCondition(service, '0xf42adbd8');
+        return true;
+    }
+
+
+}
+```
   
 ### Relay/Event handler
   
