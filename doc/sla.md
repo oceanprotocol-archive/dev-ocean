@@ -25,17 +25,20 @@ between parties may/not be associated with a set of conditions
 ![SLA Condition Definition](img/SLA_ConditionDefinition.png)
 
 
-- Controller Smart Contract Address: This defines the business logic concerning one or more conditions
+- ***Controller Smart Contract Address:*** This defines the business logic concerning one or more conditions
 in the service agreement. This applies [Controller-Storage Pattern](#controller-storage-pattern)
-- Function Fingerprint: For each condition in the controller smart contract, there is a function. For more information check out the 
+- ***Function Fingerprint:*** For each condition in the controller smart contract, there is a function fulfills only one condition For more information check out the 
 [appendix - function fingerprint](#function-fingerprint). 
-fulfills only one condition
-- Dependency Conditions (*Optional*): enforces the execution of the dependency model for this condition 
-in terms of list of condition/s that must be fulfilled. The dependency model is defined in terms of tree structure 
+- ***Dependency Conditions (*Optional*):*** enforces the execution of the dependency model for this condition 
+in terms of list of condition/s that must be fulfilled. The dependency model is defined in terms of tree data structure 
 in order to avoid any circular dependency and satisfy the `termination` and `correctness` of the model as shown below:
 
 ![SLA Dependency Model](img/SLA_DependencyModelDefinition.png)
 
+
+Any entity, organization, tribe could bundle the same conditions in order to define the different service level agreements. Moreover
+they can define and integrate new conditions by following the same pattern.
+ 
 ## Components
 
 ### 1. SLA Contract
