@@ -4,17 +4,26 @@ Table of Contents
 =================
 
    * [Squid API](#squid-api)
-      * [This is the New API, the old ones are listed at the bottom](#this-is-the-new-api-the-old-ones-are-listed-at-the-bottom)
-      * [Ocean](#ocean)
+   * [Table of Contents](#table-of-contents)
+      * [Common](#common)
          * [Getting an instance](#getting-an-instance)
-         * [Tokens](#tokens)
+            * [Functions](#functions)
+      * [Ocean](#ocean)
          * [Balance](#balance)
-            * [Request Tokens](#request-tokens)
+            * [Functions](#functions-1)
+         * [Tokens](#tokens)
+            * [Functions](#functions-2)
          * [Decentralized Identifiers (DID)](#decentralized-identifiers-did)
+            * [Functions](#functions-3)
          * [Helpers](#helpers)
+            * [Functions](#functions-4)
       * [Assets](#assets)
-      * [Service Agreements // Orders](#service-agreements--orders)
+            * [Functions](#functions-5)
+      * [Service Agreements and Orders](#service-agreements-and-orders)
+            * [Functions](#functions-6)
       * [Provider](#provider)
+            * [Functions](#functions-7)
+      * [Squid API Implementation state](#squid-api-implementation-state)
          * [Deleted](#deleted)
    * [Old squid API](#old-squid-api)
       * [Ocean](#ocean-1)
@@ -27,16 +36,19 @@ Table of Contents
    * [Examples](#examples)
 
 
+
 **This is the New API, the old ones are listed at the bottom**
 
-## Ocean
+## Common
 
-Interface with core Ocean functions
+Common functions exposed by an abstract class extended by all the other core classes
 
 ### Getting an instance
 
+#### Functions
+
 ```
-OceanManager.getInstance(web3Dto, providerDto, gasPrice, gasLimit, nodeURI?, network?)
+getInstance(web3Dto, providerDto, gasPrice, gasLimit, nodeURI?, network?)
 ```
 
 Parameters:
@@ -50,133 +62,190 @@ Parameters:
 
 This method returns an instance of the **OceanManager** class. It allows to get access to the other Ocean core methods
 
-### Tokens
+## Ocean
+
+Interface with core Ocean functions
 
 ### Balance
 
+
+#### Functions
+
+* **getOceanBalance** - The only parameter required is an account address (ie. 0x6309b5dd9245278a7fdfb2186dfb80583caeadc7). Returns the Ocean Tokens balance for that account.
 ```
-// Returns the Ocean Tokens balance for a specific account
 oceanBalance= getOceanBalance(address)
+```
 
-// Returns the Ether balance for a specific account
+* **getEtherBalance** - The only parameter required is an account address. Returns the Ether balance for that account.
+```
 ethBalance= getEtherBalance(address)
+```
 
-// Returns the Ocean Tokens & Ether balance for a specific account
+* **getBalance** - The only parameter required is an account address. Returns the Ocean tokens and Ether balance for that account.
+```
 balance= getBalance(address)
 ```
 
-The only parameter required is the account address (i.e. 0x6309b5dd9245278a7fdfb2186dfb80583caeadc7)
-It returns the balance of Ocean tokens and/or Ether
 
-#### Request Tokens
+### Tokens
+
+#### Functions
+
+* **requestTokens** - Request a number of Ocean Tokens. Returns a boolean to know if everything was right.
 
 ```
 result= requestTokens(amountTokens)
 ```
 
-Request a number of Ocean Tokens. Returns a boolean to know if everything was right.
-
 
 ### Decentralized Identifiers (DID)
+
+#### Functions
+
+* **generateDID** - Generates a specific DID with a random id based on the given.
 
 ```
 did= generateDID(seed)
 ```
 
-This method generates a specific DID with a random id based on the given
-
+* **resolveDID** - Given a DID the method returns the DDO associated to it.
 ```
 ddo= resolveDID(did)
 ```
 
-Given a DID the method returns the DDO associated to it
 
 ### Helpers
+
+#### Functions
+
+* **getMessageHash** - Generates a Hash in (format ???) using as input a given message.
 
 ```
 hash= getMessageHash(message)
 ```
 
-Generates a Hash in (format ???) using as input a given message
-
 
 ## Assets
 
+#### Functions
+
+* **publishMetadata** - Given an asset DDO, register this DDO off-chain. It returns a boolean with the result of the operation.
 ```
-//
-publishMetadata(assetDDO)
+status= publishMetadata(assetDDO)
+```
 
-//
-updateMetadata(assetDDO)
+* **updateMetadata** - Given an asset DDO, update the DDO off-chain. This method replace the complete existing DDO by the DDO provided. It returns a boolean with the result of the operation.
+```
+status= updateMetadata(assetDDO)
+```
 
-// Nice to Have?
+* **retireMetadata** - Given an Asset DID, this method delete logically the Asset Metadata. **Nice to Have ??**
+```
 retireMetadata(assetDID)
-
-// internally calls Ocean.resolveDID(did)
-getAssetMetadata(assetDID)
+```
 
 //
-getAssetsMetadata(array[assetDID])
+* **getAssetMetadata** - Given a DID, returns the associated DDO. Internally calls Ocean.resolveDID(did).
+```
+ddo= getAssetMetadata(assetDID)
+```
 
-//
+* **getAssetsMetadata** - Given an array of DID's, returns an array of the associated DDO's. Internally calls Ocean.resolveDID(did).
+```
+array[ddo]= getAssetsMetadata(array[assetDID])
+```
+
+* **getAssetPrice** - Get the asset price information existing on-chain. Shouldn't we move this to Service Agreements? The parameter should be a serviceAgreementId.
+```
 getAssetPrice(assetDID)
+```
 
-// Get a list of the service agreements published for a specific asset. providerId could be optional
+* **getAssetServiceAgreement** - Get a list of the service agreements published for a specific asset. providerId could be optional. Shouldn't we move this to Service Agreements?
+```
 getAssetServiceAgreement(assetDID, providerId)
+```
 
-// ?????
+* **checkAsset** - ?????
+```
 checkAsset(assetDID)
+```
 
-//
-search(searchQuery)
+* **search** - Given a search query, returns a list of the DDO's matching with that query
+```
+array[ddo]= search(searchQuery)
 ```
 
 
 
-## Service Agreements // Orders
+## Service Agreements and Orders
+
+#### Functions
+
+* **publishServiceAgreement** -  The Publisher register a Service Agreement related with a specific Asset
 
 ```
-// The Publisher register a Service Agreement related with a specific Asset
 serviceAgreementId= publishServiceAgreement(assetDID, providerId, price, ..)
+```
 
-// The Publisher retire a Service Agreement
+* **retireServiceAgreement** - Given a Service Agreement id, the Publisher retire a Service Agreement
+```
 result= retireServiceAgreement(serviceAgreementId)
+```
 
-// The Consumer purchase an Asset
+* **purchaseAsset** - Given a Service Agreement and Publisher Id, the Consumer purchase an asset
+```
 orderId= purchaseAsset(serviceAgreementId, publisherId , timeout)
+```
 
-// Get all the information required to get access to an asset after the purchase process
+* **getAssetAccess** -  Get all the information required to get access to an asset after the purchase process
+```
 asset= getAssetAccess(serviceAgreementId)
+```
 
-// Integer representing the order status as defined in the keeper
+* **getOrderStatus** - Given an order id, returns an integer representing the order status as defined in the keeper
+```
 status= getOrderStatus(orderId)
+```
 
-// Return a list of orders purchased by the user (Consumer)
+* **getPurchasedOrders** - Return a list of orders purchased by the user (Consumer)
+```
 array[order]= getPurchasedOrders()
+```
 
-// Return a list of servive agreements published by the user (Publisher)
+* **getServiceAgreements** - Return a list of the Servive agreements published by the user (Publisher)
+```
 array[serviceAgreement]= getServiceAgreements()
+```
 
-// Verify if the order was paid
+* **verifyOrderPayment** -  Given an order id, verifies if the order was paid
+```
 status= verifyOrderPayment(orderId)
 ```
 
 
 ## Provider
 
+#### Functions
+
+* **registerProvider** -
 ```
-//
 result= registerProvider(providerAddress, url)
+```
 
-//
+* **getProviders** -
+```
 getProviders()
+```
 
-// Get the Providers giving access to an Asset
+* **getAssetProviders** - Get the Providers giving access to an Asset
+```
 getAssetProviders(assetDID)
 ```
 
 
+## Squid API Implementation state
 
+Table not completed yet
 
 | Category                  | Method                      | Python Implementation   | Javascript Implementation   | Java Implementation   |
 |:--------------------------|:----------------------------|-------------------------|-----------------------------|-----------------------|
