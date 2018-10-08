@@ -122,6 +122,12 @@ did= generateDID(seed)
 ddo= resolveDID(did)
 ```
 
+* **createDDO** - SYNC. Given the public keys, services and metadata information, creates a DDO and a DID.
+```
+ddo= createDDO(pubKeys, services, metadata)
+```
+
+
 
 ## Assets
 
@@ -238,6 +244,7 @@ Table not completed yet
 | Ocean                     | requestTokens               | Not Implemented         | Not Implemented             | Not Implemented       |
 | Ocean                     | generateDID                 | Not Implemented         | Not Implemented             | Not Implemented       |
 | Ocean                     | resolveDID                  | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean                     | createDDO                   | Not Implemented         | Not Implemented             | Not Implemented       |
 | Assets                    | register                    | Not Implemented         | Not Implemented             | Not Implemented       |
 | Assets                    | publishMetadata             | Not Implemented         | Not Implemented             | Not Implemented       |
 | Assets                    | updateMetadata              | Not Implemented         | Not Implemented             | Not Implemented       |
