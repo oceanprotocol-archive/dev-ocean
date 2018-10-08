@@ -77,8 +77,9 @@ in order to avoid any circular dependency and satisfy the `termination` and `cor
 ![SLA Dependency Model](img/SLA_DependencyModelDefinition.png)
 
 
-Any entity, organization, tribe could bundle the same conditions in order to define the different service level agreements. Moreover
-they can define and integrate new conditions by following the same pattern.
+Any entity, organization, tribe could bundle and use the same conditions in order to define different service level agreements. 
+This approach provides more `granularity` and `optionality` for the service level agreement definition. Moreover
+it enable the service providers to integrate new conditions using the same pattern.
  
 ## Components
 
@@ -103,11 +104,11 @@ the service level agreement during the setup phase.
 ### 3. Conditions
 
 In Ocean Protocol, A Condition has two representations. The first representation defines 
-the `event` and the associated `action` where stakeholders (tribes, marketplaces, 
+the off-chain representation in terms of `controller contract address`, `function fingerprint`, `description`, the `event` and the associated `action` where stakeholders (tribes, marketplaces, 
 data scientists, etc.) store it `off-chain` ( in terms of json object). 
 This will enable parties to interact asynchronously and track the progress of the service agreement. This model is based on
 [the event-driven design pattern](#event-driven-architecture). The second representation is a compressed version of 
-the `event based json object` and stored `on-chain`. This compressed version holds only the *minimal required information* 
+the `off-chain json object` and stored `on-chain`. This compressed version holds only the *minimal required information* 
 in order to maintain the state of the condition on-chain.
 
 #### Event-Driven Representation
@@ -150,14 +151,13 @@ actions and integrate their off-chain services.
 
 Event example in controller contract (Best Practice):
 ```javascript
-// use the same function name in the controller contract, but keep the first character capital as follows
+// sample event emitted by condition <ControllerContract + fingerprint(lockPayment(bytes32, bytes32, address, address))
+event PaymentLocked(bytes32 serviceId, bytes32 conditionId, bool status, address party)
 
-IsPaymentLocked(bytes32 serviceId, bytes32 conditionId, bool status, address party)
-
-function isPaymentLocked(bytes32 serviceId, bytes32 conditionId, address provider, address arg2){
+function lockPayment(bytes32 serviceId, bytes32 conditionId, address provider, address arg2){
     ...
     // TODO: user defined business logic in the controller contract
-    emit IsPaymentLocked(serviceId, conditionId, status, provider);
+    emit PaymentLocked(serviceId, conditionId, status, provider);
 }
 ```
 
@@ -196,7 +196,7 @@ the following modifier:
 
 ```javascript
 
-    modifier isValidControlContract(bytes32 service, bytes32 functionHash){
+    modifier isValidControllerContract(bytes32 service, bytes32 functionHash){
         // check if the caller is the condition owner (controller contract)
         bytes32 condition = keccak256(abi.encodePacked(msg.sender, functionHash, service));
         // check if all the dependency conditions are fulfilled!
@@ -215,9 +215,12 @@ The controller contracts should implements the `treaty interface`. This interfac
 used to fulfill and un-fulfill the conditions in the storage contract (service agreement contract). For more information about implementation details, checkout this [section](#treaty-implementation).
 ## Storing and Upgrading SLA
 
-As mentioned before, the service agreement has two representations, the [event-driven based](#event-driven-representation) representation is stored in OceanBD/Provider-py and 
+#### Storing SLA
+
+As mentioned before, the service agreement has two representations, the [off-chain json object](#event-driven-representation) representation is stored in OceanBD/Provider-py and 
 the [on-chain agreement](#on-chain-representation) representation is stored in the service agreement storage contract.
 
+#### Upgrading SLA
 The service agreements could be upgraded by the service provider at anytime but once the `controller contracts` smart contracts are deployed 
 on the network, there is no way to change them. As a result, the smart contract should be maintained and upgraded according to 
 the governance model in ocean. The upgrading mechanism
@@ -420,7 +423,7 @@ upgrade their own service level agreement in the future without affecting the cu
 #### Controller Contract Example
 
 This subsection shows an example of controller contract. The following example implements a simple
-access payment operations which fulfill two conditions `lockPayment` and `releasePayment`:
+payment operations which fulfill two conditions `lockPayment` and `releasePayment`:
 
 ```javascript
 
@@ -432,9 +435,9 @@ import './ServiceAgreement.sol';
 
 contract LogicPayment is Treaty {
 
-    // this contract is an example for access lock condition
-    // which unlock payment and lock access control
-    // Don't use it for production purposes
+    // this contract is an example for payment conditions
+    // which unlock payment and release payments
+    // Don't use it for production
     // This is not a secure contract!!
     
     struct Payment {
@@ -460,11 +463,6 @@ contract LogicPayment is Treaty {
 
     modifier isLocked(bytes32 _payment){
         require(payments[_payment].status == true);
-        _;
-    }
-
-    modifier isUnLocked(bytes32 _payment){
-        require(payments[_payment].status == false);
         _;
     }
 
@@ -528,7 +526,7 @@ the event-driven approach. In order to use this approach, we have to define the 
 events are generated by smart contract where they may or may not be associated with off-chain actions. The creator might be an actor, or 
 software invokes a transaction which in turn emits event.
 - **Event Manager**: It is a piece of software which acts as intermediary managing and processing events.
-When a manager receives a notification from a creator, it may pass it to event consumer or apply some 
+When a manager receives a notification from a creator, it may pass it to event consumer directly or apply some 
 rules to process the event before passing it to the consumer. In ocean protocol, the network acts as a event manager.
 - **Event Consumer/Listener**: Consumer is an entity that needs to subscribe to an event manager (Ocean Network), and takes actions based on the event type/name.
 
@@ -548,9 +546,9 @@ For conditions events
 event EventName(type<Condition>, service<SERVICEID>, codition<ConditionID>, status<BOOLEAN>)
 ```
 
-Now if the emitted event imply that condition is fulfilled. The listener get the associated action from
+Now if the emitted event imply that condition is fulfilled. The listener gets the associated action from
 the local instance of the service agreement stored in OceanDB as shown in the [schema](#event-driven-representation) events section then
-resolve the callback function. This function represents the off-chain or on-chain associated action.
+resolves the callback function. This function represents the off-chain or on-chain associated action.
 
 ### Ocean Relay
 
@@ -562,7 +560,7 @@ on Non-byzantine fault tolerant consensus.
 
 ![Ocean Relay](img/SLA_OceanRelay.png)
 
-We can decompose the relay into smaller building blocks:
+The relay could be divided into smaller building blocks:
 
 - Ocean Event Listener subscribes to specific events where the event type `event.args.type == 'relay'`. This means that this event will be consumed by 
 the ocean relay in which will be routed to another blockchain network.
@@ -581,7 +579,7 @@ shows a sample representation for SLA in the frontend:
 
 ![frontend](img/SLA_Frontend.png)
 
-We can notice that the each condition will be associated with description will be rendered in the frontend.
+We can notice that each condition will be associated with a description. This description will be rendered in the frontend as shown above.
 The user will sign this agreement by selecting the conditions and click on accept/order button.
 
 ## Flow
@@ -596,7 +594,7 @@ they are defined in the [off-chain schema](#event-driven-representation).
 
 **2. Setup Phase**
 
-In the setup phase, the consumer sign the service level agreement provided by the marketplace, then the marketplace
+In the setup phase, the consumer signs the service level agreement provided by the marketplace, then the marketplace
 will invoke the `setupAgreement` on-chain by providing 
 
 - set of controller contracts
@@ -604,30 +602,30 @@ will invoke the `setupAgreement` on-chain by providing
 - the dependency model
 - the consumer signature
 
-The SLA contract will emit events for the service id and indicating the SLA setup status (true/false).
+The SLA contract will emit events for the service id. This will indicate that the SLA setup status is true.
 
 
 **3. Execute Phase**
 
-Once the SLA is setup on-chain, the actors will trigger the associated tranasctions. For instance, the consumer will 
-lock the payment on-chain `fulfills lockPayment` condition. An event will be emitted by the condition indicate the fulfilment, as 
-marketplace, will react to this by granting access to the user and so on. This will seem like a chain reaction between 
+Once the SLA is publicly available on-chain, the actors will trigger the associated tranasctions. For instance, the consumer will 
+lock the payment on-chain `fulfills lockPayment` condition. An event will be emitted by the condition indicating a change happened on-chain, the 
+marketplace will respond by granting access to the user/actor-n and so on. This seems like a chain reaction between 
 parties. 
 
 **4. Dispute Phase (Optional)**
 
-Dispute in merkelized SLA is super easy because, it could be resolved by `log(n)` search in the merkelized SLA. The dispute itslf could be defined 
-as a part of the SLA conditions as well.
+Dispute in merkelized SLA is super easy because, it could be resolved by `log(n)` search in the merkelized SLA. The dispute itself could be defined 
+as a part of the SLA conditions as well where this condition points to the controller contract that is responsible for new dispute such as running verification game through `trubit network`.
 
 
 **5. Fulfilling Phase**
 
-Fulfilling service level agreement is conducted by fulfilling all the conditions in the on-chain instance of the service agreement.
+Fulfilling service level agreement is managed by fulfilling all the conditions in the on-chain instance of the service agreement.
 
 ## Marketplace Reference Architecture
 
 The marketplace is one of the Ocean protocol actors, the following figure proposes the reference components where a marketplace
-could need in order to interact with the ocean network.
+might need in order to interact with the ocean network.
 
 ![reference marketplace](img/SLA_marketplace.png)
 
@@ -651,13 +649,13 @@ contract Foo {
 
 ```
 
-We can drive the method ID `baz(uint32, bool)` by calculating the `Keccak-256` of the function then
+We can drive the fingerprint of `baz(uint32, bool)` by calculating the `Keccak-256` of the function then
 get the first 4 bytes of  hash `0xcdcd77c0992ec5bbfc459984220f8c45084cc24d9b6efed1fae540db8de801d2`of the ASCII form of the signature: `0xcdcd77c0`. This what we need to add as a fingerprint for the function. For more information, check out the 
 [Solidity - ABI Function Selectors](https://solidity.readthedocs.io/en/develop/abi-spec.html#abi-function-selector)
 
 ### Controller-Storage Pattern
 
-The controller-storage pattern also know as (Interface, Controller, and Storage ICS Pattern) is used as design pattern
+The controller-storage pattern (also know as Interface, Controller, and Storage or ICS Pattern) is used as a design pattern
 in solidity contracts in order to reduce the complexity of the contracts design. 
 
 ![controller-storage design pattern](img/SLA_Storage_ControlPattern.png)
@@ -683,7 +681,7 @@ unassociated components.
 ![Event Driven architecture pattern](img/SLA_Trigger-Event-Action.png)
 
 
-The flow here relys on the actors actions. For instance, An actor trigger transaction invocation
+The flow here relys on the actors actions. For instance, An actor triggers a transaction invocation
 on-chain, which in turn emits an event. In the meanwhile, another actor is subscribing to this event, once
 he/she catches this event he will take the associated action.
 
