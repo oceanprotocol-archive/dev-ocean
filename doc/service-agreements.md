@@ -1,6 +1,6 @@
 # Service Agreements in Ocean Protocol
 
-Ocean Protocol is a network enabling discovery and trust between service (data and related services) providers and consumers. To enable delivery and payment for these services, we need pre-signed agreements between the providers and consumers. These service agreements can greatly help with setting expectations and defining terms of delivery in a permission-less network.
+Ocean Protocol is a network enabling discovery and trust between service (data and related services) providers and consumers. To enable delivery and payment for these services, we need pre-signed agreements between the providers and consumers. These service agreements can greatly help with setting expectations and defining terms of delivery in a permission-less network. The goal for having service agreements is to have all important elements for services delivery and consumption at the same place.
 
 The service-agreement in Ocean Protocol will be deployed and executed on-chain, on the Ocean keeper network. For this to work seamlessly, its important that the primitives for service agreements should be identified.
 
@@ -140,3 +140,4 @@ Once all the involved parties agree on the values for the fields in the JSON obj
 
 1. [Simple service agreement template](https://www.docracy.com/0y5gb5cl0hc/simple-software-services-agreement)
 1. [Sub-contractor agreement template](https://www.pandadoc.com/subcontractor-agreement-template/)
+1. [SLA template](http://www.slatemplate.com/)
