@@ -545,7 +545,7 @@ The user will sign this agreement by selecting the conditions and click on accep
 
 ## Flow
 
-The lifecycle of the service level agreement is determined by three phases
+The lifecycle of the service level agreement is determined by four mandatory phases
 
 **1. Definition Phase**
 
@@ -578,10 +578,20 @@ parties.
 Dispute in merkelized SLA is super easy because, it could be resolved by `log(n)` search in the merkelized SLA. The dispute itslf could be defined 
 as a part of the SLA conditions as well.
 
+
+**5. Fulfilling Phase**
+
+Fulfilling service level agreement is conducted by fulfilling all the conditions in the on-chain instance of the service agreement.
+
 ## Marketplace Reference Architecture
 
-TBC
+The marketplace is one of the Ocean protocol actors, the following figure proposes the reference components where a marketplace
+could need in order to interact with the ocean network.
 
+![reference marketplace](img/SLA_marketplace.png)
+
+The frontend is use-case specific and it is based on the published service. The gray components 
+are provided by ocean protocol, the blue components are marketplace use-case specific.
 
 ## Appendix
 
