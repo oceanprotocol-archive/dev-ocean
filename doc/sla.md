@@ -549,12 +549,34 @@ The lifecycle of the service level agreement is determined by three phases
 
 **1. Definition Phase**
 
+**The service level agreement is defined once, consumed many.** This means that the marketplace, tribe, or any entity provides 
+a service could able to define their own SLA in terms of conditions. The conditions reflect the on-chain `<controller-contract and function fingerprints` where
+they are defined in the [off-chain schema](#event-driven-representation).
+
 **2. Setup Phase**
+
+In the setup phase, the consumer sign the service level agreement provided by the marketplace, then the marketplace
+will invoke the `setupAgreement` on-chain by providing 
+
+- set of controller contracts
+- set of fingerprints
+- the dependency model
+- the consumer signature
+
+The SLA contract will emit events for the service id and indicating the SLA setup status (true/false).
+
 
 **3. Execute Phase**
 
+Once the SLA is setup on-chain, the actors will trigger the associated tranasctions. For instance, the consumer will 
+lock the payment on-chain `fulfills lockPayment` condition. An event will be emitted by the condition indicate the fulfilment, as 
+marketplace, will react to this by granting access to the user and so on. This will seem like a chain reaction between 
+parties. 
+
 **4. Dispute Phase (Optional)**
 
+Dispute in merkelized SLA is super easy because, it could be resolved by `log(n)` search in the merkelized SLA. The dispute itslf could be defined 
+as a part of the SLA conditions as well.
 
 ## Marketplace Reference Architecture
 
