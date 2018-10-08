@@ -476,10 +476,34 @@ contract LogicPayment is Treaty {
 
 }
 ```
-  
-### Relay/Event handler
-  
-TBC  
+
+### Event Listener
+
+One of the building block that interact with service agreement is the event listener.
+
+TBC 
+
+
+### Ocean Relay
+
+As a part of the integration with parachains in ocean. The key point is to enforce the 
+ execution of conditions on multiple blockchains. The following figure shows the building blocks concerning 
+relaying transactions. It is based on [Kafka based ordering mechanism](https://kafka.apache.org/documentation/#intro_topics).
+The current implementation seems `centralized system` because it is based on centralized cluster `kafka cluster` which relies 
+on Non-byzantine fault tolerant consensus.
+
+![Ocean Relay](img/SLA_OceanRelay.png)
+
+We can decompose the relay into smaller building blocks:
+
+- Ocean Event Listener subscribes to specific events where the event type `event.args.type == 'relay'`. This means that this event will be consumed by 
+the ocean relay in which will be routed to another blockchain network.
+- [Squid.py](https://github.com/oceanprotocol/squid-py) is a generic interface which facilitates the transaction invocations in ocean network.
+- Ocean Kafka Module routes the events from ocean network to the associated blockchain topic in kafka.
+- [Kafka](https://kafka.apache.org/) cluster in the middle in which operates the publish/subscribe mechanism in order to read and write data streams.
+- Invoker module reads from the associated topic and invoke transaction in the corresponding blockchain network.
+- Subscriber module receives events from parachain and publishes them to the corresponding kafka topic.
+
   
 ### UI/frontend interface/CLI
   
@@ -557,3 +581,4 @@ TBC
 - [Event-Driven Architecture Design Pattern - Wikipedia](https://en.wikipedia.org/wiki/Event-driven_architecture)
 - [ABI Function Selectors in Solidity](https://solidity.readthedocs.io/en/develop/abi-spec.html#abi-function-selector)
 - [Directory service Wikipedia](https://en.wikipedia.org/wiki/Directory_service)
+- [A Kafka-based Ordering Service for Fabric](https://docs.google.com/document/d/19JihmW-8blTzN99lAubOfseLUZqdrB6sBR0HsRgCAnY/edit)
