@@ -15,24 +15,13 @@ Table of Contents
             * [Functions](#functions-2)
          * [Decentralized Identifiers (DID)](#decentralized-identifiers-did)
             * [Functions](#functions-3)
-         * [Helpers](#helpers)
-            * [Functions](#functions-4)
       * [Assets](#assets)
-            * [Functions](#functions-5)
+            * [Functions](#functions-4)
       * [Service Agreements and Orders](#service-agreements-and-orders)
-            * [Functions](#functions-6)
-      * [Provider](#provider)
-            * [Functions](#functions-7)
+            * [Functions](#functions-5)
       * [Squid API Implementation state](#squid-api-implementation-state)
          * [Deleted](#deleted)
-   * [Old squid API](#old-squid-api)
-      * [Ocean](#ocean-1)
-         * [Token](#token)
-         * [Market](#market)
-         * [py Acl <code>js</code> Auth](#py-acl-js-auth)
-         * [py Web3 <code>js</code> helper](#py-web3-js-helper)
-         * [Metadata](#metadata)
-         * [Providers](#providers)
+            * [Provider Functions (Nice to Have)](#provider-functions-nice-to-have)
    * [Examples](#examples)
 
 
@@ -56,11 +45,6 @@ abstract class SquidCommons {}
 class OceanCore extends SquidCommons {}
 
 /**
- * Extends SquidCommons providing access to Ocean Core functionalities
-*/
-class OceanCore extends SquidCommons {}
-
-/**
  * Extends SquidCommons providing Asset functionalities
 */
 class Assets extends SquidCommons {}
@@ -70,11 +54,6 @@ class Assets extends SquidCommons {}
 */
 class ServiceAgreements extends SquidCommons {}
 
-/**
- * Extends SquidCommons enabling Provider functionalities
-*/
-class Provider extends SquidCommons {}
-
 ```
 
 ### Getting an instance
@@ -82,17 +61,13 @@ class Provider extends SquidCommons {}
 #### Functions
 
 ```
-getInstance(web3Dto, providerDto, gasPrice, gasLimit, nodeURI?, network?)
+getInstance(web3Dto, providerDto)
 ```
 
 Parameters:
 
 * web3Dto - Web3 client wrapped in a DTO object to avoid coupling with specific web3 specific libraries
 * providerDto - Ocean Provider client wrapped in a DTO object
-* gasPrice - Gas price to pay per write transactions
-* gasLimit - Gas limit to pay per transaction
-* nodeURI - ??
-* network - is it needed ?
 
 This method returns an instance of the **OceanManager** class. It allows to get access to the other Ocean core methods
 
@@ -105,17 +80,17 @@ Interface with core Ocean functions
 
 #### Functions
 
-* **getOceanBalance** - The only parameter required is an account address (ie. 0x6309b5dd9245278a7fdfb2186dfb80583caeadc7). Returns the Ocean Tokens balance for that account.
+* **getOceanBalance** - SYNC. The only parameter required is an account address (ie. 0x6309b5dd9245278a7fdfb2186dfb80583caeadc7). Returns the Ocean Tokens balance for that account.
 ```
 oceanBalance= getOceanBalance(address)
 ```
 
-* **getEtherBalance** - The only parameter required is an account address. Returns the Ether balance for that account.
+* **getEtherBalance** - SYNC. The only parameter required is an account address. Returns the Ether balance for that account.
 ```
 ethBalance= getEtherBalance(address)
 ```
 
-* **getBalance** - The only parameter required is an account address. Returns the Ocean tokens and Ether balance for that account.
+* **getBalance** - SYNC. The only parameter required is an account address. Returns the Ocean tokens and Ether balance for that account.
 ```
 balance= getBalance(address)
 ```
@@ -125,7 +100,7 @@ balance= getBalance(address)
 
 #### Functions
 
-* **requestTokens** - Request a number of Ocean Tokens. Returns a boolean to know if everything was right.
+* **requestTokens** - SYNC. Request a number of Ocean Tokens. Returns a boolean to know if everything was right.
 
 ```
 result= requestTokens(amountTokens)
@@ -136,26 +111,15 @@ result= requestTokens(amountTokens)
 
 #### Functions
 
-* **generateDID** - Generates a specific DID with a random id based on the given.
+* **generateDID** - SYNC. Generates a specific DID with a random id based on the given.
 
 ```
 did= generateDID(seed)
 ```
 
-* **resolveDID** - Given a DID the method returns the DDO associated to it.
+* **resolveDID** - SYNC. Given a DID the method returns the DDO associated to it.
 ```
 ddo= resolveDID(did)
-```
-
-
-### Helpers
-
-#### Functions
-
-* **getMessageHash** - Generates a Hash in (format ???) using as input a given message.
-
-```
-hash= getMessageHash(message)
 ```
 
 
@@ -163,103 +127,144 @@ hash= getMessageHash(message)
 
 #### Functions
 
-* **publishMetadata** - Given an asset DDO, register this DDO off-chain. It returns a boolean with the result of the operation.
+* **register** - ASYNC. High-level method publishing the metadata off-chain and registering the Service Agreement on-chain. It orchestrate the `publishMetadata` and `publishServiceAgreement` methods.
+```
+status= register(assetDDO, price)
+```
+
+* **publishMetadata** - SYNC. Given an asset DDO, register this DDO off-chain. It returns a boolean with the result of the operation.
 ```
 status= publishMetadata(assetDDO)
 ```
 
-* **updateMetadata** - Given an asset DDO, update the DDO off-chain. This method replace the complete existing DDO by the DDO provided. It returns a boolean with the result of the operation.
+* **updateMetadata** - SYNC. Given an asset DDO, update the DDO off-chain. This method replace the complete existing DDO by the DDO provided. It returns a boolean with the result of the operation.
 ```
 status= updateMetadata(assetDDO)
 ```
 
-* **retireMetadata** - Given an Asset DID, this method delete logically the Asset Metadata. **Nice to Have ??**
-```
-retireMetadata(assetDID)
-```
-
-//
-* **getAssetMetadata** - Given a DID, returns the associated DDO. Internally calls Ocean.resolveDID(did).
+* **getAssetMetadata** - SYNC. Given a DID, returns the associated DDO. Internally calls Ocean.resolveDID(did).
 ```
 ddo= getAssetMetadata(assetDID)
 ```
 
-* **getAssetsMetadata** - Given an array of DID's, returns an array of the associated DDO's. Internally calls Ocean.resolveDID(did).
+* **getAssetPrice** - SYNC. Given a service agreement id, get's the asset price information existing on-chain.
 ```
-array[ddo]= getAssetsMetadata(array[assetDID])
-```
-
-* **getAssetPrice** - Get the asset price information existing on-chain. Shouldn't we move this to Service Agreements? The parameter should be a serviceAgreementId.
-```
-getAssetPrice(assetDID)
+getAssetPrice(serviceAgreementId)
 ```
 
-* **getAssetServiceAgreement** - Get a list of the service agreements published for a specific asset. providerId could be optional. Shouldn't we move this to Service Agreements?
-```
-getAssetServiceAgreement(assetDID, providerId)
-```
-
-* **checkAsset** - ?????
-```
-checkAsset(assetDID)
-```
-
-* **search** - Given a search query, returns a list of the DDO's matching with that query
+* **search** - SYNC. Given a search query, returns a list of the DDO's matching with that query
 ```
 array[ddo]= search(searchQuery)
 ```
 
+* **retireMetadata** - SYNC. Given an Asset DID, this method delete logically the Asset Metadata. **Nice to Have**
+```
+retireMetadata(assetDID)
+```
 
 
 ## Service Agreements and Orders
 
 #### Functions
 
-* **publishServiceAgreement** -  The Publisher register a Service Agreement related with a specific Asset
+* **publishServiceAgreement** -  ASYNC. The Publisher register a Service Agreement related with a specific Asset
 
 ```
 serviceAgreementId= publishServiceAgreement(assetDID, providerId, price, ..)
 ```
 
-* **retireServiceAgreement** - Given a Service Agreement id, the Publisher retire a Service Agreement
+* **getServiceAgreementStatus** -  SYNC. Return's the status of a Service Agreement. Possible values are (0=> Pending, 1=> Enabled, 2=> Retired)
+
+```
+status= getServiceAgreementStatus(serviceAgreementId)
+```
+
+* **retireServiceAgreement** - ASYNC. Given a Service Agreement id, the Publisher retire a Service Agreement. It changes the status to the value 2=>Retired.
 ```
 result= retireServiceAgreement(serviceAgreementId)
 ```
 
-* **purchaseAsset** - Given a Service Agreement and Publisher Id, the Consumer purchase an asset
+* **purchaseAsset** - ASYNC. Given a Service Agreement and Publisher Id, the Consumer purchase an asset
 ```
 orderId= purchaseAsset(serviceAgreementId, publisherId , timeout)
 ```
 
-* **getAssetAccess** -  Get all the information required to get access to an asset after the purchase process
+* **getAssetAccess** -  SYNC. Get all the information required to get access to an asset after the purchase process
 ```
 asset= getAssetAccess(serviceAgreementId)
 ```
 
-* **getOrderStatus** - Given an order id, returns an integer representing the order status as defined in the keeper
+* **getOrderStatus** - SYNC. Given an order id, returns an integer representing the order status as defined in the keeper. Possible values are (0=>Pending, 1=>Paid, 2=>Canceled)
 ```
 status= getOrderStatus(orderId)
 ```
 
-* **getPurchasedOrders** - Return a list of orders purchased by the user (Consumer)
-```
-array[order]= getPurchasedOrders()
-```
-
-* **getServiceAgreements** - Return a list of the Servive agreements published by the user (Publisher)
-```
-array[serviceAgreement]= getServiceAgreements()
-```
-
-* **verifyOrderPayment** -  Given an order id, verifies if the order was paid
+* **verifyOrderPayment** -  SYNC. Given an order id, verifies if the order was paid.
 ```
 status= verifyOrderPayment(orderId)
 ```
 
+* **getAssetsMetadata** - SYNC. Given an array of DID's, returns an array of the associated DDO's. Internally calls Ocean.resolveDID(did). **Nice to Have**.
+```
+array[ddo]= getAssetsMetadata(array[assetDID])
+```
 
-## Provider
+* **getAssetServiceAgreement** - SYNC. Get a list of the service agreements published for a specific asset. providerId could be optional. **Nice to Have**
+```
+getAssetServiceAgreement(assetDID, providerId)
+```
 
-#### Functions
+* **getPurchasedOrders** - SYNC. Return a list of orders purchased by the user (Consumer). **Nice to Have**.
+```
+array[order]= getPurchasedOrders()
+```
+
+* **getServiceAgreements** - SYNC. Return a list of the Service agreements published by the user (Publisher). **Nice to Have**.
+```
+array[serviceAgreement]= getServiceAgreements()
+```
+
+
+## Squid API Implementation state
+
+Table not completed yet
+
+| Category                  | Method                      | Python Implementation   | Javascript Implementation   | Java Implementation   |
+|:--------------------------|:----------------------------|-------------------------|-----------------------------|-----------------------|
+| Commons                   | getInstance                 | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean                     | getOceanBalance             | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean                     | getEtherBalance             | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean                     | getBalance                  | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean                     | requestTokens               | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean                     | generateDID                 | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean                     | resolveDID                  | Not Implemented         | Not Implemented             | Not Implemented       |
+| Assets                    | register                    | Not Implemented         | Not Implemented             | Not Implemented       |
+| Assets                    | publishMetadata             | Not Implemented         | Not Implemented             | Not Implemented       |
+| Assets                    | updateMetadata              | Not Implemented         | Not Implemented             | Not Implemented       |
+| Assets                    | getAssetMetadata            | Not Implemented         | Not Implemented             | Not Implemented       |
+| Assets                    | getAssetPrice               | Not Implemented         | Not Implemented             | Not Implemented       |
+| Assets                    | search                      | Not Implemented         | Not Implemented             | Not Implemented       |
+| Service Agreements        | publishServiceAgreement     | Not Implemented         | Not Implemented             | Not Implemented       |
+| Service Agreements        | getServiceAgreementStatus   | Not Implemented         | Not Implemented             | Not Implemented       |
+| Service Agreements        | retireServiceAgreement      | Not Implemented         | Not Implemented             | Not Implemented       |
+| Service Agreements        | purchaseAsset               | Not Implemented         | Not Implemented             | Not Implemented       |
+| Service Agreements        | getAssetAccess              | Not Implemented         | Not Implemented             | Not Implemented       |
+| Service Agreements        | getOrderStatus              | Not Implemented         | Not Implemented             | Not Implemented       |
+| Service Agreements        | verifyOrderPayment          | Not Implemented         | Not Implemented             | Not Implemented       |
+
+
+
+### Deleted
+
+- Ocean(config(web3Provider, nodeURI, gas, network, providerURI))
+
+Constructor is private so only way to get an instance is using the `getInstance()` method.
+
+- getAccounts() => list of accounts along with token and eth balances
+
+Not having an Actor registry make difficult to implement this. Maybe this business logic is not necessary.
+
+#### Provider Functions (Nice to Have)
 
 * **registerProvider** -
 ```
@@ -275,36 +280,6 @@ getProviders()
 ```
 getAssetProviders(assetDID)
 ```
-
-
-## Squid API Implementation state
-
-Table not completed yet
-
-| Category                  | Method                      | Python Implementation   | Javascript Implementation   | Java Implementation   |
-|:--------------------------|:----------------------------|-------------------------|-----------------------------|-----------------------|
-| Ocean                     | getInstance                 | Not Implemented         | Not Implemented             | Not Implemented       |
-| Ocean                     | getOceanBalance             | Not Implemented         | Not Implemented             | Not Implemented       |
-| Ocean                     | getEtherBalance             | Not Implemented         | Not Implemented             | Not Implemented       |
-| Ocean                     | getBalance                  | Not Implemented         | Not Implemented             | Not Implemented       |
-| Ocean                     | requestTokens               | Not Implemented         | Not Implemented             | Not Implemented       |
-| Ocean                     | getMessageHash              | Not Implemented         | Not Implemented             | Not Implemented       |
-| Ocean                     | generateDID                 | Not Implemented         | Not Implemented             | Not Implemented       |
-| Ocean                     | resolveDID                  | Not Implemented         | Not Implemented             | Not Implemented       |
-
-
-
-
-### Deleted
-
-- Ocean(config(web3Provider, nodeURI, gas, network, providerURI))
-
-Constructor is private so only way to get an instance is using the `getInstance()` method.
-
-- getAccounts() => list of accounts along with token and eth balances
-
-Not having an Actor registry make difficult to implement this. Maybe this business logic is not necessary.
-
 
 
 
