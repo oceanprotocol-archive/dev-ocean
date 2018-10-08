@@ -477,11 +477,21 @@ contract LogicPayment is Treaty {
 }
 ```
 
-### Event Listener
+### Event Consumer/Listener
 
-One of the building block that interact with service agreement is the event listener.
+Ocean protocol is a dynamic network which means that it reacts based on the requests invoked by 
+the the network actors. Therefore, the event listener is meant to be the means to orchestrate 
+the event-driven approach. In order to use this approach, we have to define the following key points in the system:
 
-TBC 
+- **Event Creator:** in Ocean protocol, each 
+event is generated from smart contract may or may not be associated with an off-chain action.
+- **Event Manager**: It is a piece of software which acts as intermediary managing and processing events.
+when a manager receives a notification from a creator, it may pass it to event consumer or apply some 
+rules to process the event before passing it to the consumer. In ocean protocol, the network acts as a event manager.
+- **Event Consumer/Listener**: Consumer is an entity that needs to subscribe to an event manager (Ocean Network), and take the associated actions based on the event type.
+
+
+ 
 
 
 ### Ocean Relay
@@ -501,8 +511,8 @@ the ocean relay in which will be routed to another blockchain network.
 - [Squid.py](https://github.com/oceanprotocol/squid-py) is a generic interface which facilitates the transaction invocations in ocean network.
 - Ocean Kafka Module routes the events from ocean network to the associated blockchain topic in kafka.
 - [Kafka](https://kafka.apache.org/) cluster in the middle in which operates the publish/subscribe mechanism in order to read and write data streams.
-- Invoker module reads from the associated topic and invoke transaction in the corresponding blockchain network.
-- Subscriber module receives events from parachain and publishes them to the corresponding kafka topic.
+- Invoker module reads from the associated topic and invoke transaction into the corresponding blockchain network.
+- Subscriber module receives events from parachain and publishes them on the corresponding kafka topic.
 
   
 ### UI/frontend interface/CLI
