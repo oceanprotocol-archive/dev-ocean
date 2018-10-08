@@ -72,19 +72,23 @@ If a data owner is publishing a data set which is too large or too sensitive to 
 
 Third party verifiers are also considered service providers in the context of Ocean Protocol. If a service provided needs third-party verification then the verification service should also be part of the same service agreement. This would then be a service agreement between at least three parties - consumer, service provider(s) and verifiers (also service providers). The verification service should also be registered/published via an Ocean marketplace.
 
-### On-chain dispute resolution
-
-The service agreements should provide a mechanism to support on-chain dispute resolution.
-
-// TODO
-
-### Off-chain dispute resolution
-
-// TODO
-
 ### Payments and escrows
 
-// TODO
+The service agreement should provide clear terms and execution of payments. For a fair game, the service agreements should have a provision of payment using escrows where both the provider and the consumer should lock a minimum deposit. Once the service is provided, the payments should be unlocked for both parties.
+
+### Dispute resolution
+
+The service agreements should provide a mechanism to support dispute resolution. In case of a dispute raised by the consumer, the payment locked in escrow should stay locked until the dispute is resolved.
+
+To resolve disputes on-chain, the service agreement should have pre-defined dispute resolution functions which can be called to initiate one of the following,
+
+1. On-chain deterministic compute
+1. Third-party verification
+1. Voting via TCR
+
+Once the dispute is resolved using any of the above options, the payments should be unlocked. 
+
+If a dispute cannot be resolved by these on-chain options, the service agreement should have a provision to escalate the dispute to off-chain arbitration. In that case, the payments should be unlocked after manual intervention after the dispute has been resolved.
 
 ### Service agreement negotiation
 
