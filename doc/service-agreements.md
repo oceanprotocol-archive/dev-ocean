@@ -76,6 +76,15 @@ Third party verifiers are also considered service providers in the context of Oc
 
 The service agreement should provide clear terms and execution of payments. For a fair game, the service agreements should have a provision of payment using escrows where both the provider and the consumer should lock a minimum deposit. Once the service is provided, the payments should be unlocked for both parties.
 
+### Terms of payment
+
+As per the nature of the services provided as part of Ocean Protocol, the service agreements can follow primarily two types of payment terms.
+
+1. Fixed Fee - For a single instance of service provided (running an algorithm on a data-set and returning results), the terms of payment can be a one-time fixed fee.
+1. Time and Material - For a continuous set of services a time and material service agreement can also be set-up between the consumer and the provider. (Think of it as hiring a delivery provider when selling your product on Amazon.)
+    1. Bundling of compute with data for all instances of data consumption (mostly relevant at lower-levels, sub-contracts)
+    1. Verification of results for all data sets consumed. This is relevant for scenarios where a consumer would like to hire a verifier using a blanket agreement for getting all services verified.
+
 ### Dispute resolution
 
 The service agreements should provide a mechanism to support dispute resolution. In case of a dispute raised by the consumer, the payment locked in escrow should stay locked until the dispute is resolved.
@@ -90,12 +99,44 @@ Once the dispute is resolved using any of the above options, the payments should
 
 If a dispute cannot be resolved by these on-chain options, the service agreement should have a provision to escalate the dispute to off-chain arbitration. In that case, the payments should be unlocked after manual intervention after the dispute has been resolved.
 
-### Service agreement negotiation
+### Service agreement negotiation (off-chain)
 
 Before the service agreements are deployed or invoked as smart-contracts on the Ocean keeper network, they should be negotiated off-chain between all the involved parties. Once all parties agree on the parameters and values in an agreement, then it should be invoked/initialized using the smart contracts.
 
-// TODO - add more details - json data with key value pairs - values go in as smart contract invocation parameters
+One way of approaching this would be to add service agreement templates as simple JSON objects in the metadata store for Ocean marketplace. The following JSON object shows how a service agreement can be represented.
 
-## Example services and agreements (templates)
+```json
+{
+    "services": [
+        {
+            "serviceId": "abcdef1234",
+            "serviceProviderId": "5678fedcba",
+            "cost": 100,
+            "deposit": 10
+        },
+        {
+            "serviceId": "abcdef1234",
+            "serviceProviderId": "5678fedcba",
+            "cost": 5000,
+            "deposit": 500
+        }
+    ],
+    "on-chain-verification": {
+        "function": "",
+        "input": "",
+        "expectedOutput": ""
+    },
+    "third-party-verification": {
+        "verifierId": "",
+        "verificationParameters": "",
+        "verificationFunction": ""
+    }
+}
+```
 
-// TODO
+Once all the involved parties agree on the values for the fields in the JSON object, these values can then be passed to a smart-contract for invocation and set-up of on-chain service agreement.
+
+## References
+
+1. [Simple service agreement template](https://www.docracy.com/0y5gb5cl0hc/simple-software-services-agreement)
+1. [Sub-contractor agreement template](https://www.pandadoc.com/subcontractor-agreement-template/)
