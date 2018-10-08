@@ -2,11 +2,11 @@
 
 Ocean Protocol is a network enabling discovery and trust between service (data and related services) providers and consumers. To enable delivery and payment for these services, we need pre-signed agreements between the providers and consumers. These service agreements can greatly help with setting expectations and defining terms of delivery in a permission-less network. The goal for having service agreements is to have all important elements for services delivery and consumption at the same place.
 
-The service-agreement in Ocean Protocol will be deployed and executed on-chain, on the Ocean keeper network. For this to work seamlessly, its important that the primitives for service agreements should be identified.
+The service agreements in Ocean Protocol will be deployed and executed on-chain, on the Ocean keeper network. For this to work seamlessly, its important that the primitives for service agreements should be identified.
 
 This document provides an over-view or a blueprint for Service Agreements in Ocean Protocol and their primitives.
 
-This is a work in progress.
+*This is a work in progress.*
 
 ## Services
 
@@ -16,12 +16,12 @@ On a high-level, the services published and provided as part of a marketplace ba
 1. Algorithms
 1. Compute
 1. Storage
-1. Verification of compute
-1. Combination of some of the above
+1. Verification (data, compute results or both)
+1. Combination of some of the above (bundles)
 
 ## Service Agreements
 
-For providing and consuming the services defined above, a service agreement should define the following elements,
+For providing and consuming the services listed above, a service agreement should define the following elements,
 
 1. Service provider(s) and consumer - The agreement should identify the involved parties in the service delivery.
 1. Scope of delivery - The service agreement should clearly define what services are to be provided.
@@ -58,7 +58,7 @@ Ocean being a multi-party marketplace for data and associated services, there wi
 1. Data + algorithm + compute
 1. and so on...
 
-In scenarios such as these, it's important to have lower-level service agreements which can combine to form a high-level service agreement. If a data set owner and a compute provider would like to create a combined offering by associating with each other, they should first have a service agreement between each other. For example, in this lower-level service agreement, the data-set owner can be the consumer and the compute provider can be the service-provider.
+In scenarios such as these, it's important to have lower-level service agreements (sub-contracts) which can be combined to form a high-level service agreement. For example, if a data set owner and a compute provider would like to create a combined offering by associating with each other, they should first have a service agreement between each other. In this lower-level service agreement, the data-set owner can be the consumer and the compute provider can be the service-provider.
 
 ![multi-level service agreements](./img/service-agreements.png)
 
@@ -68,20 +68,20 @@ The overall idea is to support hierarchical service-agreements so that services 
 
 If a data owner is publishing a data set which is too large or too sensitive to leave its premises, it's important for better consumption, that they must provide and bundle the compute service with the data. The service agreement between the data owner and the consumer will then be prepared accordingly.
 
-### Third-party verification of service delivery
+### Third-party verification of services delivery
 
 Third party verifiers are also considered service providers in the context of Ocean Protocol. If a service provided needs third-party verification then the verification service should also be part of the same service agreement. This would then be a service agreement between at least three parties - consumer, service provider(s) and verifiers (also service providers). The verification service should also be registered/published via an Ocean marketplace.
 
 ### Payments and escrows
 
-The service agreement should provide clear terms and execution of payments. For a fair game, the service agreements should have a provision of payment using escrows where both the provider and the consumer should lock a minimum deposit. Once the service is provided, the payments should be unlocked for both parties.
+The service agreement should provide clear terms for processing of payments. For a fair game, the service agreements should have a provision of payment using escrows where both the provider and the consumer should lock a minimum deposit. Once the service is provided, the payments should be unlocked for both parties.
 
 ### Terms of payment
 
 As per the nature of the services provided as part of Ocean Protocol, the service agreements can follow primarily two types of payment terms.
 
 1. Fixed Fee - For a single instance of service provided (running an algorithm on a data-set and returning results), the terms of payment can be a one-time fixed fee.
-1. Time and Material - For a continuous set of services a time and material service agreement can also be set-up between the consumer and the provider. (Think of it as hiring a delivery provider when selling your product on Amazon.)
+1. Time and Material - For a continuous set of services, a time and material service agreement can also be set-up between the consumer and the provider. (Think of it as hiring a delivery provider when selling your product on Amazon.)
     1. Bundling of compute with data for all instances of data consumption (mostly relevant at lower-levels, sub-contracts)
     1. Verification of results for all data sets consumed. This is relevant for scenarios where a consumer would like to hire a verifier using a blanket agreement for getting all services verified.
 
@@ -89,19 +89,19 @@ As per the nature of the services provided as part of Ocean Protocol, the servic
 
 The service agreements should provide a mechanism to support dispute resolution. In case of a dispute raised by the consumer, the payment locked in escrow should stay locked until the dispute is resolved.
 
-To resolve disputes on-chain, the service agreement should have pre-defined dispute resolution functions which can be called to initiate one of the following,
+To resolve disputes on-chain, the service agreement should have pre-defined dispute resolution functions which can be called to initiate one or more of the following,
 
 1. On-chain deterministic compute
 1. Third-party verification
 1. Voting via TCR
 
-Once the dispute is resolved using any of the above options, the payments should be unlocked. 
+Once the dispute is resolved using any of the above options, the payments should be unlocked.
 
-If a dispute cannot be resolved by these on-chain options, the service agreement should have a provision to escalate the dispute to off-chain arbitration. In that case, the payments should be unlocked after manual intervention after the dispute has been resolved.
+If a dispute cannot be resolved by these on-chain options, the service agreement should have a provision to escalate the dispute to off-chain arbitration. In that case, the payments should be unlocked after manual intervention once the dispute has been resolved.
 
 ### Service agreement negotiation (off-chain)
 
-Before the service agreements are deployed or invoked as smart-contracts on the Ocean keeper network, they should be negotiated off-chain between all the involved parties. Once all parties agree on the parameters and values in an agreement, then it should be invoked/initialized using the smart contracts.
+Before the service agreements are deployed or invoked as smart-contracts on the Ocean keeper network, they should be negotiated off-chain between all the involved parties.
 
 One way of approaching this would be to add service agreement templates as simple JSON objects in the metadata store for Ocean marketplace. The following JSON object shows how a service agreement can be represented.
 
@@ -111,12 +111,14 @@ One way of approaching this would be to add service agreement templates as simpl
         {
             "serviceId": "abcdef1234",
             "serviceProviderId": "5678fedcba",
+            "consumerId": "did:ocn:1234567890",
             "cost": 100,
             "deposit": 10
         },
         {
             "serviceId": "abcdef1234",
             "serviceProviderId": "5678fedcba",
+            "consumerId": "did:ocn:0987654321",
             "cost": 5000,
             "deposit": 500
         }
