@@ -538,7 +538,10 @@ The frontend should be able to render the service level agreement in terms of `d
 happen for the CLI. The consumer should be able to accept or reject the agreement by selecting or not selecting the conditions. The below figure 
 shows a sample representation for SLA in the frontend:
 
-TBC
+![frontend](img/SLA_Frontend.png)
+
+We can notice that the each condition will be associated with description will be rendered in the frontend.
+The user will sign this agreement by selecting the conditions and click on accept/order button.
 
 ## Flow
 
