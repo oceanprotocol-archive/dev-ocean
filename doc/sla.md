@@ -6,6 +6,47 @@ This document provides technical details and describes the design of `merkelized
 in ocean protocol.
 
 
+<!--ts-->
+
+Table of Contents
+=================
+
+   * [Table of Contents](#table-of-contents)
+   * [Definition](#definition)
+      * [Service Agreement](#service-agreement)
+      * [Condition](#condition)
+   * [Components](#components)
+      * [SLA Contract](#1-sla-contract)
+      * [Controller Contracts](#2-controller-contracts)
+      * [Conditions](#3-conditions)
+        * [Event-Driven Representation](#event-driven-representation)
+        * [On-chain Representation](#on-chain-representation)
+      * [Access Control](#4-access-control)
+      * [Treaty Interface](#5-treaty-interface)
+   * [Storing and Upgrading SLA](#storing-and-upgrading-sla)
+   * [Implementation Requirements](#implementation-requirements)
+      * [Squid-lib](#squid-lib)
+      * [Provider node](#provider-node)
+      * [Keeper contracts](#keeper-contracts)
+        * [Service Level Agreement Contract](#service-level-agreement-contract)
+        * [Treaty Implementation](#treaty-implementation)
+        * [Directory Service Contract](#directory-service-contract)
+        * [Controller Contract Example](#controller-contract-example)
+      * [Event Consumer/Listener](#event-consumerlistener)
+      * [Ocean Relay](#ocean-relay)
+      * [UI/frontend interface/CLI](#uifrontend-interfacecli)
+   * [Flow](#flow)
+   * [Marketplace Reference Architecture](#marketplace-reference-architecture)
+   * [Appendix](#appendix)
+     * [Function Fingerprint](#function-fingerprint)
+     * [Controller-Storage Pattern](#controller-storage-pattern)
+     * [Event-Driven Architecture](#event-driven-architecture)
+     * [Security Threats](#security-threats)
+   * [References](#references)
+
+<!--te-->
+
+
 ## Definition
 
 ### Service Agreement
