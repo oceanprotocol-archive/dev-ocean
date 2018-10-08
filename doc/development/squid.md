@@ -43,6 +43,40 @@ Table of Contents
 
 Common functions exposed by an abstract class extended by all the other core classes
 
+```java
+
+/**
+ * Abstract class providing the common methods like initilizers and similar
+*/
+abstract class SquidCommons {}
+
+/**
+ * Extends SquidCommons providing access to Ocean Core functionalities
+*/
+class OceanCore extends SquidCommons {}
+
+/**
+ * Extends SquidCommons providing access to Ocean Core functionalities
+*/
+class OceanCore extends SquidCommons {}
+
+/**
+ * Extends SquidCommons providing Asset functionalities
+*/
+class Assets extends SquidCommons {}
+
+/**
+ * Extends SquidCommons providing ServiceAgreements functionalities
+*/
+class ServiceAgreements extends SquidCommons {}
+
+/**
+ * Extends SquidCommons enabling Provider functionalities
+*/
+class Provider extends SquidCommons {}
+
+```
+
 ### Getting an instance
 
 #### Functions
