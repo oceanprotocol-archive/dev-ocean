@@ -16,14 +16,16 @@ Table of Contents
          * [Decentralized Identifiers (DID)](#decentralized-identifiers-did)
             * [Functions](#functions-3)
       * [Assets](#assets)
+         * [Metadata](#metadata)
             * [Functions](#functions-4)
-      * [Service Agreements and Orders](#service-agreements-and-orders)
+         * [Secret Store](#secret-store)
             * [Functions](#functions-5)
+      * [Service Agreements and Orders](#service-agreements-and-orders)
+            * [Functions](#functions-6)
       * [Squid API Implementation state](#squid-api-implementation-state)
          * [Deleted](#deleted)
             * [Provider Functions (Nice to Have)](#provider-functions-nice-to-have)
    * [Examples](#examples)
-
 
 
 **This is the New API, the old ones are listed at the bottom**
@@ -131,6 +133,8 @@ ddo= createDDO(pubKeys, services, metadata)
 
 ## Assets
 
+### Metadata
+
 #### Functions
 
 * **register** - ASYNC. High-level method publishing the metadata off-chain and registering the Service Agreement on-chain. It orchestrate the `publishMetadata` and `publishServiceAgreement` methods.
@@ -168,6 +172,21 @@ array[ddo]= search(searchQuery)
 retireMetadata(assetDID)
 ```
 
+### Secret Store
+
+#### Functions
+
+* **encryptDocument** - SYNC. **Private function** encapsulated as part of the **register** function. It integrates the Parity Ethereum & Secret Store API allowing to encrypt a document.
+Given by a **Publisher** an unique resource id (did), the document to encrypt and the Secret Store cluster threshold (could be pre-defined to a fixed number), integrate the Secret Store API's to encrypt the document.
+```
+encryptedDocument= encryptDocument(did, document, threshold)
+```
+
+* **decryptDocument** - SYNC.  **Private function** encapsulated as part of the **getAssetAccess** function. It integrates the Parity Ethereum & Secret Store API allowing to decrypt a document if the user executing this function is authorized by a Smart Contract.
+Given by a **Consumer** an unique resource id (did) and the document encrypted, this functions integrates the Secret Store API's to decrypt the document. The on-chain authorization phase is transparent for the user.
+```
+document= decryptDocument(did, encryptedDocument)
+```
 
 ## Service Agreements and Orders
 
@@ -251,6 +270,8 @@ Table not completed yet
 | Assets                    | getAssetMetadata            | Not Implemented         | Not Implemented             | Not Implemented       |
 | Assets                    | getAssetPrice               | Not Implemented         | Not Implemented             | Not Implemented       |
 | Assets                    | search                      | Not Implemented         | Not Implemented             | Not Implemented       |
+| Assets.SecretStore        | encryptDocument             | Not Implemented         | Not Implemented             | Not Implemented       |
+| Assets.SecretStore        | decryptDocument             | Not Implemented         | Not Implemented             | Not Implemented       |
 | Service Agreements        | publishServiceAgreement     | Not Implemented         | Not Implemented             | Not Implemented       |
 | Service Agreements        | getServiceAgreementStatus   | Not Implemented         | Not Implemented             | Not Implemented       |
 | Service Agreements        | retireServiceAgreement      | Not Implemented         | Not Implemented             | Not Implemented       |
