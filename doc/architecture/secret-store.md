@@ -17,12 +17,18 @@ Table of Contents
 
 This page describes the Parity Secret Store integration.
 
+# Motivation
+
+The current implementation of Ocean Protocol, detailed in the [OEP-10](https://github.com/oceanprotocol/OEPs/tree/master/10) requires Publishers, Consumers, Providers and Smart Contracts
+to setup a complete negotiation between them. This integration was difficult, needs to scale to support delegation of permissions and because the complexity is a potential source of errors.
+Because of that we investigated alternative approaches to achieve a more secure and scalable way to share secrets between parties.
+
+
 # Introduction
 
 Parity Secret Store is a feature included as part of the Parity Ethereum client that allows to store on the blockchain a fragmented ECDSA key which retrievals are controlled by a permissioned Smart Contract.
 The Secret Store implements a Threshold System that makes nodes unable to reconstruct the keys that allows to decrypt the documents.
 It means a Secret Store node, only saves a portion of the ECDSA key. The decryption key can only be generated if a consensus is reached by an amount of Secret Store nodes bigger than the threshold that the publisher of secret chooses.
-
 
 From the [Parity Secret Store documentation](https://wiki.parity.io/Secret-Store) page:
 
@@ -44,10 +50,6 @@ and these contents only can be decrypted after a On-Chain authorization phase.
 
 # Architecture
 
-
-The current implementation of Ocean Protocol, detailed in the [OEP-10](https://github.com/oceanprotocol/OEPs/tree/master/10) requires to involve to the Publisher, Consumer, Provider and Smart Contracts
-to build an interaction flow. This integration was difficult, needs to scale to support delegation of permissions and because the complexity is a potential source of errors.
-
 The integration of the Secret could have the following characteristics:
 
 * All the negotiation required to encrypt or decrypt a resource is happening without write any information on-chain
@@ -66,6 +68,10 @@ The standard Parity Secret Store publishing flow is the following:
 
 This logic was encapsulated as part of the [Ocean Protocol Secret Store Java Client](https://github.com/oceanprotocol/secret-store-client-java), and is abstracted as part of the `encryptDocument` Squid method.
 This method allows to a Publisher to given a resource unique id and a document, to retrieve the document encrypted and store/distribute the keys used to encrypt/decrypt the document in the Secret Store cluster.
+The concept of document to encrypt is totally flexible. A document could be one or multiple URL's, access tokens to an external resource, etc.
+Typically in Ocean, during the Asset access phase, what we are encrypting/decrypting is the URL to get access to an Asset that is stored in a cloud provider.
+This could be extended in following phases, allowing to encrypt/decrypt a unique Marketplace/Provider URL that a part of give access to a resource, as a previous phase setup the cloud provider access policies for a specific user/ip address.
+
 The lower level implementation is represented in the following flow:
 
 ![Ocean Secret Store Publishing Flow](img/secret-store-flow-publish.png)
