@@ -3,6 +3,7 @@ Table of Contents
 =================
 
    * [Table of Contents](#table-of-contents)
+   * [Motivation](#motivation)
    * [Introduction](#introduction)
    * [Architecture](#architecture)
       * [Encryption](#encryption)
