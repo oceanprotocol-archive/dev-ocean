@@ -2,7 +2,14 @@
 Table of Contents
 =================
 
-
+   * [Table of Contents](#table-of-contents)
+   * [Introduction](#introduction)
+   * [Architecture](#architecture)
+      * [Encryption](#encryption)
+      * [Decryption](#decryption)
+      * [Authorization](#authorization)
+   * [Deployment](#deployment)
+      * [Links](#links)
 
 
 ---
@@ -51,8 +58,91 @@ The integration of the Secret could have the following characteristics:
 
 ![High-Level Architecture using Secret Store](img/secret-store-high-level.png)
 
+## Encryption
+
+The standard Parity Secret Store publishing flow is the following:
+
+![Secret Store Publishing Flow](img/ss-overview-2.jpg)
+
+This logic was encapsulated as part of the [Ocean Protocol Secret Store Java Client](https://github.com/oceanprotocol/secret-store-client-java), and is abstracted as part of the `encryptDocument` Squid method.
+This method allows to a Publisher to given a resource unique id and a document, to retrieve the document encrypted and store/distribute the keys used to encrypt/decrypt the document in the Secret Store cluster.
+The lower level implementation is represented in the following flow:
+
+![Ocean Secret Store Publishing Flow](img/secret-store-flow-publish.png)
+
+As a result of this flow, the encrypted document can be shared with the potential Consumers (as part of the Metadata or via libp2p).
+
+The action of Granting permissions on-chain to a specific user is not part of this flow.
+
+## Decryption
+
+The standard Parity Secret Store consuming flow is the following:
+
+![Secret Store Publishing Flow](img/ss-overview-3.jpg)
+
+Again this logic is encapsulated as part of the `decryptDocument` Squid method. This method allows a to Consumer, given a resource unique id and a encrypted document (shared for the Publisher via Metadata or libp2p) to decrypt this document using the Secret Store cluster capabilities.
+Decryption only can be achieved if the Secret Store cluster achieve the quorum specified by the Publisher during the publishing process with the **threshold** attribute.
+The Secret Store validates on-chain the authorization permissions of the user trying to decrypt a document, not allowing to do it if those permissions are not satisfied.
+
+![Ocean Secret Store Consuming Flow](img/secret-store-flow-consume.png)
+
+## Authorization
+
+The Consumer on-chain authorization will be implemented using the Secret Store ACL capabilities.
+In the Secret Store configuration, an address of the authorization Smart Contract can be configured:
+```
+acl_contract = "6d6a34f2be1e76902a2fde049f317610cdf453eb"
+```
+
+Doing that, during the decryption phase, the Secret Store will call to the `checkPermissions` method of that address passing as parameter the following attributes:
+
+* public key of the user trying to get access or decrypt
+* document key id to check if user has permissions
+
+Using this capability, a simple `checkPermissions` method could be as following:
+
+```solidity
+  // Checks if a specific user has grants to access using the acl mapping
+  function checkPermissions(address user, bytes32 document) constant public returns (bool) {
+    require(acl[document][user].canRead == 1, 'User was not whitelisted');
+    return true;
+  }
+```
+
+This could be easily adapted to use the Service Agreements approach.
+
+
+# Deployment
+
+The Secret Store functionality is provided by a Permissioned cluster that will be executed as part of the Ocean Protocol basic infrastructure.
+The nodes part of this cluster only can be added changing the configuration of the members of the cluster, so a third-party malicious user can't join the cluster without changing the configuration of the other nodes.
+
+```
+[secretstore]
+
+// Here the list of all the nodes part of the Secret Store cluster
+nodes = [
+  "97ca0129faba1e3d69c79bd49f186c4e0732d240fb05b2351d77f2490958d5c4396ae2f6f56f37177f3442896a590c8e73486d0cb956aa794d156cb69c88cf9d@127.0.0.1:8011",
+  "2a81fad8d8a3c932a06c724bb1034850f228de8afdadabd1e13f71cedc0e58fac7814dc3f269630f2edef388906a7d7de6f6d1a2c448db03de19fa133f396db1@127.0.0.1:8012",
+  "4824f1e7b73ff964a0f0026679d0ff4a88c22722bbc8ea571029b7a0e893ee68d5d299e86b70633ed5dd80c85ef7b8c11169a6a8fd4a4e914b4d10011a61b0b3@127.0.0.1:8013"
+]
+```
+
+Having this into account, Ocean Protocol in order to facilitate the normal operation at the network launch will run a Secret Store cluster in different cloud locations providing good performance and high-availability in this setup.
+The governance of the basic infrastructure could be shared in following phases with different organizations allowing to de-centralized the control of this infrastructure.
+
+Having this into account, at network launch, the initial Ocean deployment could include the following basic infrastructure:
+
+* A pool of Parity Ethereum client/nodes used to deployed the Ocean Keeper Contracts and syncronize with the Ethereum network
+* A Secret Store cluster allowing to share secrets between parties
+* A possible Commons Marketplace with his own Provider agent and Ocean DB instance. It would be used to demonstrate the Ocean capabilities using free/open assets
+
+![Ocean initial deployment](img/ocean-initial-deployment.png)
+
 
 ## Links
 
 * [Parity Secret Store](https://wiki.parity.io/Secret-Store)
 * [ECDKG: A Distributed Key Generation Protocol Based on Elliptic Curve Discrete Logarithm](http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.124.4128&rank=1)
+* [Ocean Protocol Secret Store Java Client](https://github.com/oceanprotocol/secret-store-client-java)
+* [Secret Store Proof of Concept](https://github.com/oceanprotocol/poc-secret-store)
