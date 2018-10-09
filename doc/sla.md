@@ -499,7 +499,7 @@ contract LogicPayment is Treaty {
     function requestAsset(bytes32 payment,
                           bytes32 service) public isLocked(payment) isSender(payment) returns (bool){
         // fulfil locked payment condition
-        fulfillCondition(service, '0xca9df58c');
+        fulfillCondition(service, this.requestAsset.selector);
     }
 
     function releasePayment(bytes32 payment, bytes32 service) public isLocked(payment) isReciever(payment) payable returns (bool){
@@ -508,7 +508,7 @@ contract LogicPayment is Treaty {
         // TODO: transfer ether to reciever
         payments[payment].receiver.transfer(payments[payment].amount);
         // fulfill release payment condition
-        fulfillCondition(service, '0xf42adbd8');
+        fulfillCondition(service, this.releasePayment.selector);
         return true;
     }
 
@@ -651,7 +651,17 @@ contract Foo {
 
 We can drive the fingerprint of `baz(uint32, bool)` by calculating the `Keccak-256` of the function then
 get the first 4 bytes of  hash `0xcdcd77c0992ec5bbfc459984220f8c45084cc24d9b6efed1fae540db8de801d2`of the ASCII form of the signature: `0xcdcd77c0`. This what we need to add as a fingerprint for the function. For more information, check out the 
-[Solidity - ABI Function Selectors](https://solidity.readthedocs.io/en/develop/abi-spec.html#abi-function-selector)
+[Solidity - ABI Function Selectors](https://solidity.readthedocs.io/en/develop/abi-spec.html#abi-function-selector). The function selector is one of special members in `public` and `external` functions. This selector returns the ABI function selector 
+as follows:
+
+```javascript
+pragma solidity ^0.4.25;
+contract Selector {
+  function f() public view returns (bytes4) {
+    return this.f.selector;
+  }
+}
+```
 
 ### Controller-Storage Pattern
 
