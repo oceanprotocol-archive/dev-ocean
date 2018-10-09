@@ -41,7 +41,6 @@ Table of Contents
      * [Function Fingerprint](#function-fingerprint)
      * [Controller-Storage Pattern](#controller-storage-pattern)
      * [Event-Driven Architecture](#event-driven-architecture)
-     * [Security Threats](#security-threats)
    * [References](#references)
 
 <!--te-->
@@ -694,10 +693,6 @@ unassociated components.
 The flow here relys on the actors actions. For instance, An actor triggers a transaction invocation
 on-chain, which in turn emits an event. In the meanwhile, another actor is subscribing to this event, once
 he/she catches this event he will take the associated action.
-
-### Security Threats
-
-TBC
 
 ## References
 - [Event-Driven Architecture Design Pattern - Wikipedia](https://en.wikipedia.org/wiki/Event-driven_architecture)
