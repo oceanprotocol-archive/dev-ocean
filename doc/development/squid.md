@@ -375,10 +375,12 @@ Access market functionality in JavaScript
 ```javascript
 import { Ocean } from '@oceanprotocol/squid'
 
-const ocean = await new Ocean({network: 'kovan'})
-const { market } = ocean
+const ocean = await Ocean.getInstance({
+    nodeUri: 'http://localhost:8545'
+})
+const { orders } = ocean
 
-await market.verifyOrderPayment('0x970e8f18ebfEa0B08810f33a5A40438b9530FBCF')
+await orders.verifyOrderPayment('0x970e8f18ebfEa0B08810f33a5A40438b9530FBCF')
 ```
 
 ----------
