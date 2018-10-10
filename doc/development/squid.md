@@ -320,10 +320,6 @@ Table not completed yet
 
 Constructor is private so only way to get an instance is using the `getInstance()` method.
 
-- getAccounts() => list of accounts along with token and eth balances
-
-Not having an Actor registry make difficult to implement this. Maybe this business logic is not necessary.
-
 #### Provider Functions (Nice to Have)
 
 * **registerProvider** -
