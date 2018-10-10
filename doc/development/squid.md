@@ -3,58 +3,78 @@
 Table of Contents
 =================
 
-   * [Squid API](#squid-api)
-   * [Table of Contents](#table-of-contents)
-      * [Common](#common)
-         * [Getting an instance](#getting-an-instance)
-            * [Functions](#functions)
-      * [Ocean](#ocean)
+* [Table of Contents](#table-of-contents)
+   * [Common](#common)
+      * [Getting an instance](#getting-an-instance)
+         * [Functions](#functions)
+   * [Ocean](#ocean)
+      * [Accounts](#accounts)
          * [Balance](#balance)
-            * [Functions](#functions-1)
+             * [Functions](#functions-1)
          * [Tokens](#tokens)
-            * [Functions](#functions-2)
-         * [Decentralized Identifiers (DID)](#decentralized-identifiers-did)
-            * [Functions](#functions-3)
+             * [Functions](#functions-2)
+      * [Decentralized Identifiers (DID)](#decentralized-identifiers-did)
+         * [Functions](#functions-3)
       * [Assets](#assets)
          * [Metadata](#metadata)
-            * [Functions](#functions-4)
+             * [Functions](#functions-4)
          * [Secret Store](#secret-store)
-            * [Functions](#functions-5)
-      * [Service Agreements and Orders](#service-agreements-and-orders)
-            * [Functions](#functions-6)
-      * [Squid API Implementation state](#squid-api-implementation-state)
-         * [Deleted](#deleted)
-            * [Provider Functions (Nice to Have)](#provider-functions-nice-to-have)
+             * [Functions](#functions-5)
+      * [Service Agreements](#service-agreements)
+         * [Functions](#functions-6)
+      * [Orders](#orders)
+          * [Functions](#functions-7)
+   * [Squid API Implementation state](#squid-api-implementation-state)
+      * [Deleted](#deleted)
+         * [Provider Functions (Nice to Have)](#provider-functions-nice-to-have)
    * [Examples](#examples)
+* [Old Squid API](#old-squid-api)
 
+---
 
-**This is the New API, the old ones are listed at the bottom**
+**🐲🦑 THERE BE DRAGONS AND SQUIDS. This is in alpha state and you can expect running into problems. If you run into them, please open up [a new issue](https://github.com/oceanprotocol/dev-ocean/issues). 🦑🐲**
+
+---
 
 ## Common
 
 Common functions exposed by an abstract class extended by all the other core classes
 
 ```java
-
 /**
  * Abstract class providing the common methods like initilizers and similar
 */
-abstract class SquidCommons {}
+abstract class OceanBase {}
 
 /**
- * Extends SquidCommons providing access to Ocean Core functionalities
+ * Access to Ocean functionalities
 */
-class OceanCore extends SquidCommons {}
+class Ocean {
+    public Accounts
+    public Assets
+    public Orders
+    public ServiceAgreements
+}
 
 /**
- * Extends SquidCommons providing Asset functionalities
+ * Extends OceanBase providing Account functionalities
 */
-class Assets extends SquidCommons {}
+class Accounts extends OceanBase {}
 
 /**
- * Extends SquidCommons providing ServiceAgreements functionalities
+ * Extends OceanBase providing Asset functionalities
 */
-class ServiceAgreements extends SquidCommons {}
+class Assets extends OceanBase {}
+
+/**
+ * Extends OceanBase providing ServiceAgreements functionalities
+*/
+class Orders extends OceanBase {}
+
+/**
+ * Extends OceanBase providing ServiceAgreements functionalities
+*/
+class ServiceAgreements extends OceanBase {}
 
 ```
 
@@ -71,16 +91,17 @@ Parameters:
 * web3Dto - Web3 client wrapped in a DTO object to avoid coupling with specific web3 specific libraries
 * providerDto - Ocean Provider client wrapped in a DTO object
 
-This method returns an instance of the **OceanManager** class. It allows to get access to the other Ocean core methods
+This method returns an instance of the **Ocean** class. It allows to get access to the other Ocean core methods
 
 ## Ocean
 
 Interface with core Ocean functions
 
-### Balance
+### Accounts
 
+#### Balance
 
-#### Functions
+##### Functions
 
 * **getOceanBalance** - SYNC. The only parameter required is an account address (ie. 0x6309b5dd9245278a7fdfb2186dfb80583caeadc7). Returns the Ocean Tokens balance for that account.
 ```
@@ -97,17 +118,15 @@ ethBalance= getEtherBalance(address)
 balance= getBalance(address)
 ```
 
+#### Tokens
 
-### Tokens
-
-#### Functions
+##### Functions
 
 * **requestTokens** - SYNC. Request a number of Ocean Tokens. Returns a boolean to know if everything was right.
 
 ```
 result= requestTokens(amountTokens)
 ```
-
 
 ### Decentralized Identifiers (DID)
 
@@ -129,13 +148,11 @@ ddo= resolveDID(did)
 ddo= createDDO(pubKeys, services, metadata)
 ```
 
+### Assets
 
+#### Metadata
 
-## Assets
-
-### Metadata
-
-#### Functions
+##### Functions
 
 * **register** - ASYNC. High-level method publishing the metadata off-chain and registering the Service Agreement on-chain. It orchestrate the `publishMetadata` and `publishServiceAgreement` methods.
 ```
@@ -172,9 +189,9 @@ array[ddo]= search(searchQuery)
 retireMetadata(assetDID)
 ```
 
-### Secret Store
+#### Secret Store
 
-#### Functions
+##### Functions
 
 * **encryptDocument** - SYNC. **Private function** encapsulated as part of the **register** function. It integrates the Parity Ethereum & Secret Store API allowing to encrypt a document.
 Given by a **Publisher** an unique resource id (did), the document to encrypt and the Secret Store cluster threshold (could be pre-defined to a fixed number), integrate the Secret Store API's to encrypt the document.
@@ -188,9 +205,9 @@ Given by a **Consumer** an unique resource id (did) and the document encrypted, 
 document= decryptDocument(did, encryptedDocument)
 ```
 
-## Service Agreements and Orders
+### Service Agreements
 
-#### Functions
+##### Functions
 
 * **publishServiceAgreement** -  ASYNC. The Publisher register a Service Agreement related with a specific Asset
 
@@ -209,24 +226,9 @@ status= getServiceAgreementStatus(serviceAgreementId)
 result= retireServiceAgreement(serviceAgreementId)
 ```
 
-* **purchaseAsset** - ASYNC. Given a Service Agreement and Publisher Id, the Consumer purchase an asset
-```
-orderId= purchaseAsset(serviceAgreementId, publisherId , timeout)
-```
-
 * **getAssetAccess** -  SYNC. Get all the information required to get access to an asset after the purchase process
 ```
 asset= getAssetAccess(serviceAgreementId)
-```
-
-* **getOrderStatus** - SYNC. Given an order id, returns an integer representing the order status as defined in the keeper. Possible values are (0=>Pending, 1=>Paid, 2=>Canceled)
-```
-status= getOrderStatus(orderId)
-```
-
-* **verifyOrderPayment** -  SYNC. Given an order id, verifies if the order was paid.
-```
-status= verifyOrderPayment(orderId)
 ```
 
 * **getAssetsMetadata** - SYNC. Given an array of DID's, returns an array of the associated DDO's. Internally calls Ocean.resolveDID(did). **Nice to Have**.
@@ -239,16 +241,34 @@ array[ddo]= getAssetsMetadata(array[assetDID])
 getAssetServiceAgreement(assetDID, providerId)
 ```
 
-* **getPurchasedOrders** - SYNC. Return a list of orders purchased by the user (Consumer). **Nice to Have**.
-```
-array[order]= getPurchasedOrders()
-```
-
 * **getServiceAgreements** - SYNC. Return a list of the Service agreements published by the user (Publisher). **Nice to Have**.
 ```
 array[serviceAgreement]= getServiceAgreements()
 ```
 
+### Orders
+
+##### Functions
+
+* **purchaseAsset** - ASYNC. Given a Service Agreement and Publisher Id, the Consumer purchase an asset
+```
+orderId= purchaseAsset(serviceAgreementId, publisherId , timeout)
+```
+
+* **getOrderStatus** - SYNC. Given an order id, returns an integer representing the order status as defined in the keeper. Possible values are (0=>Pending, 1=>Paid, 2=>Canceled)
+```
+status= getOrderStatus(orderId)
+```
+
+* **verifyOrderPayment** -  SYNC. Given an order id, verifies if the order was paid.
+```
+status= verifyOrderPayment(orderId)
+```
+
+* **getPurchasedOrders** - SYNC. Return a list of orders purchased by the user (Consumer). **Nice to Have**.
+```
+array[order]= getPurchasedOrders()
+```
 
 ## Squid API Implementation state
 
@@ -280,8 +300,6 @@ Table not completed yet
 | Service Agreements        | getOrderStatus              | Not Implemented         | Not Implemented             | Not Implemented       |
 | Service Agreements        | verifyOrderPayment          | Not Implemented         | Not Implemented             | Not Implemented       |
 
-
-
 ### Deleted
 
 - Ocean(config(web3Provider, nodeURI, gas, network, providerURI))
@@ -309,8 +327,47 @@ getProviders()
 getAssetProviders(assetDID)
 ```
 
+## Examples
 
+List orders in JavaScript
 
+```javascript
+import { Ocean } from '@oceanprotocol/squid'
+
+const ocean = await Ocean.getInstance({
+    nodeUri: 'http://localhost:8545'
+})
+
+const orders = await ocean.order.getOrdersByConsumer('0x970e8f18ebfEa0B08810f33a5A40438b9530FBCF')
+
+console.log('Orders', JSON.stringify(orders, null, 2))
+```
+
+List accounts in JavaScript
+```javascript
+import { Ocean } from '@oceanprotocol/squid'
+
+const ocean = await Ocean.getInstance({
+    nodeUri: 'http://localhost:8545'
+})
+
+const accounts = await ocean.account.list()
+
+console.log(JSON.stringify(accounts, null, 2))
+```
+
+Access market functionality in JavaScript
+
+```javascript
+import { Ocean } from '@oceanprotocol/squid'
+
+const ocean = await new Ocean({network: 'kovan'})
+const { market } = ocean
+
+await market.verifyOrderPayment('0x970e8f18ebfEa0B08810f33a5A40438b9530FBCF')
+```
+
+----------
 
 # Old squid API
 
@@ -375,43 +432,3 @@ getAssetProviders(assetDID)
 - `py` registerProvider(url, provider_address)
 - `py` getProviders()
 - `py` getAssetProvider(assetId)
-
-# Examples
-
-List orders in JavaScript
-
-```javascript
-import { Ocean } from '@oceanprotocol/squid'
-
-const ocean = await Ocean.getInstance({
-    nodeUri: 'http://localhost:8545'
-})
-
-const orders = await ocean.order.getOrdersByConsumer('0x970e8f18ebfEa0B08810f33a5A40438b9530FBCF')
-
-console.log('Orders', JSON.stringify(orders, null, 2))
-```
-
-List accounts in JavaScript
-```javascript
-import { Ocean } from '@oceanprotocol/squid'
-
-const ocean = await Ocean.getInstance({
-    nodeUri: 'http://localhost:8545'
-})
-
-const accounts = await ocean.account.list()
-
-console.log(JSON.stringify(accounts, null, 2))
-```
-
-Access market functionality in JavaScript
-
-```javascript
-import { Ocean } from '@oceanprotocol/squid'
-
-const ocean = await new Ocean({network: 'kovan'})
-const { market } = ocean
-
-await market.verifyOrderPayment('0x970e8f18ebfEa0B08810f33a5A40438b9530FBCF')
-```
