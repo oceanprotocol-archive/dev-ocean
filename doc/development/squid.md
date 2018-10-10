@@ -54,6 +54,7 @@ class Ocean {
     public Assets
     public Orders
     public ServiceAgreements
+    public DID
 }
 
 /**
@@ -67,14 +68,19 @@ class Accounts extends OceanBase {}
 class Assets extends OceanBase {}
 
 /**
- * Extends OceanBase providing ServiceAgreements functionalities
+ * Extends OceanBase providing Order functionalities
 */
 class Orders extends OceanBase {}
 
 /**
- * Extends OceanBase providing ServiceAgreements functionalities
+ * Extends OceanBase providing Service Agreement functionalities
 */
 class ServiceAgreements extends OceanBase {}
+
+/**
+ * Extends OceanBase providing Decentralized Identifier functionalities
+*/
+class DID extends OceanBase {}
 
 ```
 
@@ -98,6 +104,13 @@ This method returns an instance of the **Ocean** class. It allows to get access 
 Interface with core Ocean functions
 
 ### Accounts
+
+#### Functions
+
+* **list** - Returns all accounts.
+```
+oceanAccounts= list()
+```
 
 #### Balance
 
@@ -154,19 +167,19 @@ ddo= createDDO(pubKeys, services, metadata)
 
 ##### Functions
 
-* **register** - ASYNC. High-level method publishing the metadata off-chain and registering the Service Agreement on-chain. It orchestrate the `publishMetadata` and `publishServiceAgreement` methods.
+* **register** - ASYNC. High-level method publishing the metadata off-chain and registering the Service Agreement on-chain. It orchestrate the `publishAssetMetadata` and `publishServiceAgreement` methods.
 ```
 status= register(assetDDO, price)
 ```
 
-* **publishMetadata** - SYNC. Given an asset DDO, register this DDO off-chain. It returns a boolean with the result of the operation.
+* **publishAssetMetadata** - SYNC. Given an asset DDO, register this DDO off-chain. It returns a boolean with the result of the operation.
 ```
-status= publishMetadata(assetDDO)
+status= publishAssetMetadata(assetDDO)
 ```
 
-* **updateMetadata** - SYNC. Given an asset DDO, update the DDO off-chain. This method replace the complete existing DDO by the DDO provided. It returns a boolean with the result of the operation.
+* **updateAssetMetadata** - SYNC. Given an asset DDO, update the DDO off-chain. This method replace the complete existing DDO by the DDO provided. It returns a boolean with the result of the operation.
 ```
-status= updateMetadata(assetDDO)
+status= updateAssetMetadata(assetDDO)
 ```
 
 * **getAssetMetadata** - SYNC. Given a DID, returns the associated DDO. Internally calls Ocean.resolveDID(did).
@@ -276,29 +289,30 @@ Table not completed yet
 
 | Category                  | Method                      | Python Implementation   | Javascript Implementation   | Java Implementation   |
 |:--------------------------|:----------------------------|-------------------------|-----------------------------|-----------------------|
-| Commons                   | getInstance                 | Not Implemented         | Not Implemented             | Not Implemented       |
-| Ocean                     | getOceanBalance             | Not Implemented         | Not Implemented             | Not Implemented       |
-| Ocean                     | getEtherBalance             | Not Implemented         | Not Implemented             | Not Implemented       |
-| Ocean                     | getBalance                  | Not Implemented         | Not Implemented             | Not Implemented       |
-| Ocean                     | requestTokens               | Not Implemented         | Not Implemented             | Not Implemented       |
-| Ocean                     | generateDID                 | Not Implemented         | Not Implemented             | Not Implemented       |
-| Ocean                     | resolveDID                  | Not Implemented         | Not Implemented             | Not Implemented       |
-| Ocean                     | createDDO                   | Not Implemented         | Not Implemented             | Not Implemented       |
-| Assets                    | register                    | Not Implemented         | Not Implemented             | Not Implemented       |
-| Assets                    | publishMetadata             | Not Implemented         | Not Implemented             | Not Implemented       |
-| Assets                    | updateMetadata              | Not Implemented         | Not Implemented             | Not Implemented       |
-| Assets                    | getAssetMetadata            | Not Implemented         | Not Implemented             | Not Implemented       |
-| Assets                    | getAssetPrice               | Not Implemented         | Not Implemented             | Not Implemented       |
-| Assets                    | search                      | Not Implemented         | Not Implemented             | Not Implemented       |
-| Assets.SecretStore        | encryptDocument             | Not Implemented         | Not Implemented             | Not Implemented       |
-| Assets.SecretStore        | decryptDocument             | Not Implemented         | Not Implemented             | Not Implemented       |
-| Service Agreements        | publishServiceAgreement     | Not Implemented         | Not Implemented             | Not Implemented       |
-| Service Agreements        | getServiceAgreementStatus   | Not Implemented         | Not Implemented             | Not Implemented       |
-| Service Agreements        | retireServiceAgreement      | Not Implemented         | Not Implemented             | Not Implemented       |
-| Service Agreements        | purchaseAsset               | Not Implemented         | Not Implemented             | Not Implemented       |
-| Service Agreements        | getAssetAccess              | Not Implemented         | Not Implemented             | Not Implemented       |
-| Service Agreements        | getOrderStatus              | Not Implemented         | Not Implemented             | Not Implemented       |
-| Service Agreements        | verifyOrderPayment          | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean                     | getInstance                 | Not Implemented         | x                           | Not Implemented       |
+| Ocean.DID                 | generateDID                 | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean.DID                 | resolveDID                  | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean.DID                 | createDDO                   | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean.Accounts            | getOceanBalance             | Not Implemented         | x                           | Not Implemented       |
+| Ocean.Accounts            | getEtherBalance             | Not Implemented         | x                           | Not Implemented       |
+| Ocean.Accounts            | getBalance                  | Not Implemented         | x                           | Not Implemented       |
+| Ocean.Accounts            | requestTokens               | Not Implemented         | x                           | Not Implemented       |
+| Ocean.Accounts            | list                        | Not Implemented         | x                           | Not Implemented       |
+| Ocean.Assets              | register                    | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean.Assets              | publishAssetMetadata        | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean.Assets              | updateAssetMetadata         | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean.Assets              | getAssetMetadata            | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean.Assets              | getAssetPrice               | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean.Assets              | search                      | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean.Assets.SecretStore  | encryptDocument             | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean.Assets.SecretStore  | decryptDocument             | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean.ServiceAgreements   | publishServiceAgreement     | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean.ServiceAgreements   | retireServiceAgreement      | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean.ServiceAgreements   | getServiceAgreementStatus   | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean.ServiceAgreements   | getAssetAccess              | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean.Orders              | purchaseAsset               | Not Implemented         | x                           | Not Implemented       |
+| Ocean.Orders              | getOrderStatus              | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean.Orders              | verifyOrderPayment          | Not Implemented         | Not Implemented             | Not Implemented       |
 
 ### Deleted
 
