@@ -28,8 +28,7 @@ Table of Contents
       * [Deleted](#deleted)
          * [Provider Functions (Nice to Have)](#provider-functions-nice-to-have)
    * [Examples](#examples)
-* [Old Squid API](#old-squid-api)
-
+   
 ---
 
 **🐲🦑 THERE BE DRAGONS AND SQUIDS. This is in alpha state and you can expect running into problems. If you run into them, please open up [a new issue](https://github.com/oceanprotocol/dev-ocean/issues). 🦑🐲**
@@ -382,69 +381,3 @@ const { orders } = ocean
 
 await orders.verifyOrderPayment('0x970e8f18ebfEa0B08810f33a5A40438b9530FBCF')
 ```
-
-----------
-
-# Old squid API
-
-## Ocean
-- `js` getInstance(config(web3Provider, nodeUri, gas, network, providerUri))
-- `js` getAccounts()
-- `js` getOrdersByConsumer(consumerAddress)
-- `js` purchaseAsset(assetId, publisherId, price, privateKey, publicKey, timeout, senderAddress, initialRequestEventHandler, accessCommittedEventHandler, tokenPublishedEventHandler)
-
-### Token
-- `py` approve(address, resource_price)
-- `py` getBalance(account)
-- `js` getTokenBalance(accountAddress)
-- `js` getEthBalance(account)
-
-### Market
-- `py` generateID(content)
-- `py` verifyOrderPayment(orderId)
-- `js` verifyOrderPayment(orderId) 
-- `py` register(name, description, price, publisherAddress)
-- `js` registerAsset(name, description, price, publisherAddress)
-- `py` requestTokens(amount, address)
-- `js` requestTokens(amount, address)
-- `py` sendPayment(assetId, order, publisherAddress, senderAddress)
-- `js` payAsset(assetId, order, publisherAddress, senderAddress)
-- `py` checkAsset(assetId)
-- `js` checkAsset(assetId)
-- `py` getAssetPrice(assetId)
-- `js` getAssetPrice(assetId)
-
-### `py` Acl `js` Auth
-- `py` getOrderStatus(orderId)
-- `js` getOrderStatus(orderId) 
-- `py` initiateAccessRequest(resourceID, providerAddress, pubKey, timeout)
-- `py` commitAccessRequest(id, isAvailable,  expirationDate,  discovery,  permissions,  accessAgreementRef,   accessAgreementType)
-- `py` deliverAccess Token(id, encryptedAccessToken)
-- `py` getEncryptedAccessToken(orderId, senderAddress)
-- `js` getEncryptedAccessToken(orderId, senderAddress)
-- `py` cancelAccessRequest(orderId, senderAddress)
-- `js` cancelAccessRequest(orderId, senderAddress)
-
-### `py` Web3 `js` helper
-- `py` sign(accountAddress, message)
-- `js` sign(accountAddress, message)
-- `py` getMessageHash(message)
-- `py` toChecksumAddress(address)
-- `py` toHex()
-- `py` toBytes()
-- `js` getAccounts()
-
-### Metadata
-- `py `getAssetMetadata(assetId)
-- `py` getAssets()
-- `py` getAsstesMetadata()
-- `js` getAssetsMetadata()
-- `py` publishAsset(providerId, assetId, publisherId, name, size, author, license, contentType, contentUrls, price, *)
-- `js` publishDataAsset(asset)
-- `py` updateAsset(providerId, assetId, publisherId, name, size, author, license, contentType, contentUrls, price, *)
-- `py `retireAsset(providerId, assetId)
-
-### Providers
-- `py` registerProvider(url, provider_address)
-- `py` getProviders()
-- `py` getAssetProvider(assetId)
