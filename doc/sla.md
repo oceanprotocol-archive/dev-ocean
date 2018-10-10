@@ -197,11 +197,20 @@ the following modifier:
 
     modifier isValidControllerContract(bytes32 service, bytes32 functionHash){
         // check if the caller is the condition owner (controller contract)
-        bytes32 condition = keccak256(abi.encodePacked(msg.sender, functionHash, service));
+        bytes32 conditionId = keccak256(abi.encodePacked(msg.sender, functionHash, service));
         // check if all the dependency conditions are fulfilled!
-        if(conditions[condition].dependency.length > 0) {
-            for (uint256 i=0; i < conditions[condition].dependency.length; i++) {
-                require(conditions[conditions[condition].dependency[i]].status == true);
+        bool ifExists = false;
+        for (uint256 j=0; j< agrrements[service].conditions.length; i++){
+            if (conditionId == agrrements[service].conditions[j]){
+                ifExist = true;
+            }
+        }
+        // this fulfills that the condition is exist
+        require(ifExist);
+        // check that the dependency condition were fullfiled
+        if(conditions[conditionId].dependency.length > 0) {
+            for (uint256 i=0; i < conditions[conditionId].dependency.length; i++) {
+                require(conditions[conditions[conditionId].dependency[i]].status == true);
             }
         }
         _;
@@ -304,11 +313,20 @@ contract SLA{
     
     modifier isValidControllerContract(bytes32 service, bytes32 functionHash){
         // check if the caller is the condition owner (controller contract)
-        bytes32 condition = keccak256(abi.encodePacked(msg.sender, functionHash, service));
+        bytes32 conditionId = keccak256(abi.encodePacked(msg.sender, functionHash, service));
         // check if all the dependency conditions are fulfilled!
-        if(conditions[condition].dependency.length > 0) {
-            for (uint256 i=0; i < conditions[condition].dependency.length; i++) {
-                require(conditions[conditions[condition].dependency[i]].status == true);
+        bool ifExists = false;
+        for (uint256 j=0; j< agrrements[service].conditions.length; i++){
+            if (conditionId == agrrements[service].conditions[j]){
+                ifExist = true;
+            }
+        }
+        // this fulfills that the condition is exist
+        require(ifExist);
+        // check that the dependency condition were fullfiled
+        if(conditions[conditionId].dependency.length > 0) {
+            for (uint256 i=0; i < conditions[conditionId].dependency.length; i++) {
+                require(conditions[conditions[conditionId].dependency[i]].status == true);
             }
         }
         _;
