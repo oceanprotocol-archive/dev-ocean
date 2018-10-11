@@ -108,3 +108,10 @@ TypeScript compilation is done with the TypeScript Compiler `tsc`. A sample `tsc
   ]
 }
 ```
+
+We use [typedoc](https://github.com/TypeStrong/typedoc) to generate documentation in TypeScript.
+
+```bash
+npm i -g typedoc
+typedoc --mode modules --out ./doc/ src/
+```
