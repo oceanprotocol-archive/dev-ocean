@@ -13,7 +13,8 @@ Table of Contents
 
    * [Table of Contents](#table-of-contents)
    * [Definition](#definition)
-      * [Service Agreement](#service-agreement)
+      * [Motivation](#motivation)
+      * [Service Level Agreement](#service-level-agreement-sla)
       * [Condition](#condition)
    * [Components](#components)
       * [SLA Contract](#1-sla-contract)
@@ -49,6 +50,23 @@ Table of Contents
 
 ## Definition
 
+### Motivation
+
+Ocean protocol orchestrates the value exchange of data related services. For instance, the 
+below figure shows the a simplified version and happy path of data assets exchange in ocean.
+
+![simple use case](img/SLA_simple_use_case.png)
+ 
+ What we can notice from this figure, is that there is a common pattern that usually happens when 
+ an arbitrary actor invokes a transaction that includes multiparty interactions. The pattern is simply is defined by
+ a `transaction` and the associated triggered `event`. But how these transactions are correlated, they
+ are correlated through the logic in the smart contract which means that our logic has a dependency conditions. 
+ Therefore we can model our use case as follows:
+ 
+ ![dependency](img/SLA_simple_use_case2.png)
+
+The figures shows that we can correlate between the business logic in different smart contracts and 
+provides an easy way to describe the dependency model of the simple service agreements in terms of conditions.
 ### Service Level Agreement (SLA)
 
 Service level agreement (SLA) is a commitment between provider/s and consumer of a service. In this commitment, the provider and 
@@ -60,7 +78,7 @@ service including how payment is processed and when service is delivered.
 ![](img/SLA_ServiceDefinition.png)
 
 ### Condition
-A `condition` represents an event that can be triggered by some actor in the system and can be setup to unlock or block other 
+A `condition` represents an event that can be triggered by some actor in the system and can be setup to unlock or lock other 
 conditions. 
 
 Each condition is associated with a boolean state and a specific function capable of verifying whether the condition 
@@ -72,7 +90,7 @@ can be defined and deployed to the ocean network after going through the `govern
 ![SLA Condition Definition](img/SLA_ConditionDefinition.png)
 
 A condition is identified by a smart contract function signature which consist of the smart contract address and 
-the function fingerprint (function signature).
+the [function fingerprint](#function-fingerprint) (function signature).
 
 Several conditions can be grouped in a single smart contract where each condition has its own handler function. The 
 smart contract should be stateless. States of all conditions are kept in the Service agreement storage contract. Only 
@@ -711,10 +729,6 @@ unassociated components.
 The flow here relys on the actors actions. For instance, An actor triggers a transaction invocation
 on-chain, which in turn emits an event. In the meanwhile, another actor is subscribing to this event, once
 he/she catches this event he will take the associated action.
-
-### Security Threats
-
-TBC
 
 ## References
 - [Event-Driven Architecture Design Pattern - Wikipedia](https://en.wikipedia.org/wiki/Event-driven_architecture)
