@@ -21,9 +21,8 @@ Table of Contents
   * [Deleted](#deleted)
     + [Provider Functions (Nice to Have)](#provider-functions--nice-to-have-)
 - [Examples](#examples)
-   
----
 
+---
 **🐲🦑 THERE BE DRAGONS AND SQUIDS. This is in alpha state and you can expect running into problems. If you run into them, please open up [a new issue](https://github.com/oceanprotocol/dev-ocean/issues). 🦑🐲**
 
 ---
@@ -45,14 +44,26 @@ class Ocean {
 }
 
 /**
- * Extends OceanBase providing Asset functionalities
+ * Access to Ocean functionalities
+ * Extends OceanBase providing Order functionalities
 */
-class Asset extends OceanBase {}
+class Ocean {
+    public Accounts
+    public Assets
+    public Orders
+    public ServiceAgreements
+    public DID
+}
 
 /**
  * Extends OceanBase providing Order functionalities
 */
 class Order extends OceanBase {}
+
+/**
+ * Extends OceanBase providing Asset functionalities
+*/
+class Asset extends OceanBase {}
 
 /**
  * Extends OceanBase providing Service Agreement functionalities
@@ -283,7 +294,7 @@ status= order.verifyPayment()
 access= order.getAccess()
 ```
 
-### Secret Store
+#### Secret Store
 
 ##### Functions
 
