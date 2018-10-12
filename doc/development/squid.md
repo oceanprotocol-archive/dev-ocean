@@ -179,17 +179,17 @@ Interface provides access to asset functions
 
 #### Functions
 
-* **getDDO** - ASYNC. Return the created DDO used by this asset.
+* **getDDO** - SYNC. Return the created DDO used by this asset.
 ```
 ddo= ocean.asset.getDDO()
 ```
 
-* **getDID** - ASYNC. Return the DID used by this asset.
+* **getDID** - SYNC. Return the DID used by this asset.
 ```
 did= ocean.asset.getDID()
 ```
 
-* **getId** - ASYNC. Return the Id used by this asset.
+* **getId** - SYNC. Return the Id used by this asset.
 ```
 id= ocean.asset.getId()
 ```
@@ -240,7 +240,7 @@ Interface provides access to ServiceAgreement functions
 
 #### Functions
 
-* **getId** - ASYNC. Return the Id used by this serviceAgreement.
+* **getId** - SYNC. Return the Id used by this serviceAgreement.
 ```
 id= ocean.serviceAgreement.getId()
 ```
@@ -278,7 +278,7 @@ Interface provides access to Order functions
 
 ##### Functions
 
-* **getId** - ASYNC. Return the Id used by this order.
+* **getId** - SYNC. Return the Id used by this order.
 ```
 id= ocean.order.getId()
 ```
