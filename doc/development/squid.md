@@ -140,12 +140,12 @@ result= ocean.requestTokens(account_address, amountTokens)
 
 * **searchAssets** - SYNC. Given a search query, returns a list of the DDO's matching with that query
 ```
-array[assetDID]= ocean.searchAssets(searchQuery)
+array[asset]= ocean.searchAssets(searchQuery)
 ```
 
 * **searchOrders** - SYNC. Return a list of orders by search query. **Nice to Have**.
 ```
-array[orderId]= ocean.searchOrders(searchQuery)
+array[order]= ocean.searchOrders(searchQuery)
 ```
 
 * **generateDID** - SYNC. Generates a specific DID with a random id based on the given.
