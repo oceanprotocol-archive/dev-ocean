@@ -2,15 +2,23 @@
 Table of Contents
 =================
 
+   * [Table of Contents](#table-of-contents)
    * [Architecture](#architecture)
       * [Components](#components)
-         * [Frontend](#frontend)
-         * [Keeper Smart Contracts](#keeper-smart-contracts)
-         * [Provider](#provider)
+         * [Tier 3 - Application Layer](#tier-3---application-layer)
+            * [Pleuston Frontend](#pleuston-frontend)
+            * [Datascience Tools](#datascience-tools)
+         * [Tier 2 - Protocol Layer](#tier-2---protocol-layer)
+            * [Squid Libraries](#squid-libraries)
+            * [Provider](#provider)
+            * [Brizo](#brizo)
+         * [Tier 3 - Decentralized VM Layer](#tier-3---decentralized-vm-layer)
+            * [Keeper Smart Contracts](#keeper-smart-contracts)
       * [Interactions](#interactions)
          * [Assets registering and consumption](#assets-registering-and-consumption)
          * [On-Chain Access Control](#on-chain-access-control)
       * [Project Repositories](#project-repositories)
+
 
 
 ---
