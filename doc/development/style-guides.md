@@ -87,10 +87,13 @@ TypeScript compilation is done with the TypeScript Compiler `tsc`. A sample `tsc
 ```json
 {
   "compilerOptions": {
+    "resolveJsonModule": true,
     "lib": [
       "es6",
       "es7"
     ],
+    "declaration": true,
+    "noUnusedLocals": true,
     "module": "commonjs",
     "noImplicitAny": false,
     "removeComments": true,
@@ -104,7 +107,7 @@ TypeScript compilation is done with the TypeScript Compiler `tsc`. A sample `tsc
   ],
   "exclude": [
     "node_modules",
-    "**/*.spec.ts"
+    "**/*.test.ts"
   ]
 }
 ```
