@@ -115,7 +115,7 @@ Interface with core Ocean functions
 
 * **getAccounts** - Returns all avalible accounts loaded via a wallet, or by Web3.
 ```
-array[address, tokenBalance, etherBalance]= ocean.getAccounts()
+array[address]= ocean.getAccounts()
 ```
 
 * **getOceanBalance** - SYNC. The only parameter required is an account address (ie. 0x6309b5dd9245278a7fdfb2186dfb80583caeadc7). Returns the Ocean Tokens balance for that account.
