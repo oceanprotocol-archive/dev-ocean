@@ -16,6 +16,8 @@ Table of Contents
       * [Motivation](#motivation)
       * [Service Level Agreement](#service-level-agreement-sla)
       * [Condition](#condition)
+      * [Condition and Dependency](#conditions-and-dependencies)
+      * [Condition reference to other SLA](#condition-reference-to-other-sla)
    * [Components](#components)
       * [SLA Contract](#1-sla-contract)
       * [Controller Contracts](#2-controller-contracts)
@@ -52,21 +54,12 @@ Table of Contents
 
 ### Motivation
 
-Ocean protocol orchestrates the value exchange of data related services. For instance, the 
-below figure shows the a simplified version and happy path of data assets exchange in ocean.
-
-![simple use case](img/SLA_simple_use_case.png)
- 
- What we can notice from this figure, is that there is a common pattern that usually happens when 
- an arbitrary actor invokes a transaction that includes multiparty interactions. The pattern is simply is defined by
- a `transaction` and the associated triggered `event`. But how these transactions are correlated, they
- are correlated through the logic in the smart contract which means that our logic has a dependency conditions. 
- Therefore we can model our use case as follows:
- 
- ![dependency](img/SLA_simple_use_case2.png)
-
-The figures shows that we can correlate between the business logic in different smart contracts and 
-provides an easy way to describe the dependency model of the simple service agreements in terms of conditions.
+Ocean protocol orchestrates the value exchange of data related services. The current implementation in 
+[Plankton](https://github.com/oceanprotocol/keeper-contracts) relies on the three basic components, the data marketplace, 
+access control and ocean token as means to exchange the value. The problem raises if a marketplace, 
+tribe or an entity wants to integrate new data related services that could be a composite of legacy, 
+cloud based systems (off-chain) and on-chain based services. Therefore this must be articulated in terms of service conditions.
+  
 ### Service Level Agreement (SLA)
 
 Service level agreement (SLA) is a commitment between provider/s and consumer of a service. In this commitment, the provider and 
@@ -78,27 +71,44 @@ service including how payment is processed and when service is delivered.
 ![](img/SLA_ServiceDefinition.png)
 
 ### Condition
-A `condition` represents an event that can be triggered by some actor in the system and can be setup to unlock or lock other 
-conditions. 
-
-Each condition is associated with a boolean state and a specific function capable of verifying whether the condition 
-is fulfilled.
-
-Ocean provides a set of predefined `conditions` that can be reused to form different types of SLAs. Custom `conditions` 
-can be defined and deployed to the ocean network after going through the `governance` process (to be defined).
+A `condition` represents a challenge that can be triggered by some actor in the system. This challenge needs a proof to be
+ evaluated in which resolves the condition state `{0, 1}`. 
 
 ![SLA Condition Definition](img/SLA_ConditionDefinition.png)
 
-A condition is identified by a smart contract function signature which consist of the smart contract address and 
-the [function fingerprint](#function-fingerprint) (function signature).
 
-Several conditions can be grouped in a single smart contract where each condition has its own handler function. The 
+For instance, the 
+below figure shows the a simplified version and happy path of data assets exchange in ocean.
+
+![simple use case](img/SLA_simple_use_case.png)
+ 
+ What we can notice from this figure, is that there is a common pattern that usually happens when 
+ an arbitrary actor invokes a transaction. The pattern is simply is defined by
+ a `transaction` and the associated triggered `event`. Consequently, a transaction
+ could provide a proof for challenge that will be evaluated in the smart contract. 
+ The invoked transactions and events are correlated through the logic in the smart contract which means that our logic has a dependency conditions. 
+ Therefore we can model our use case as follows:
+ 
+ ![dependency](img/SLA_simple_use_case2.png)
+
+As shown above that we can correlate between the business logic in different smart contracts by defining the
+dependency model for the service conditions.
+ 
+Ocean provides a set of predefined `conditions` that can be reused to form different types of SLAs. Custom `conditions` 
+can be defined and deployed to the ocean network after going through the `governance` process (to be defined).
+
+
+A condition is identified by a [hashlock](https://en.bitcoin.it/wiki/Hashlock) which consists of the controller smart contract address and 
+the [solidity function fingerprint](#function-fingerprint) (function signature).
+
+Several conditions can be grouped in a controller single smart contract where each condition has its own handler function. The 
 smart contract should be stateless. States of all conditions are kept in the Service agreement storage contract. Only 
 the condition's handler function can update the condition's state.
 
 An SLA `condition` handler function supports the following arguments:
 * Service ID (required): identifies a specific service session
-* Proof (optional): a form of proof that the handler function is able to validate in order to fulfill the conditi
+* Condition ID (required): embedded implicitly in the condition handler function
+* Proof (optional): a form of proof that the handler function is able to validate in order to fulfill the condition
 
 The condition handler function should do the following:
 * Validate the caller
