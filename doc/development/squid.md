@@ -155,6 +155,22 @@ result= ocean.requestTokens(account, amountTokens)
 ```
 array[asset]= ocean.searchAssets(searchQuery)
 ```
+You have to do a request to this endpoint:
+POST {provider.url}/api/v1/provider/assets/metadata/query
+This method is expecting a json object that contains the following structure: 
+ ```  {
+        "offset": 100,
+        "page": 0,
+        "query": {
+          "value": 1
+        },
+        "sort": {
+          "value": 1
+        },
+        "text": "Office"
+}
+```
+The only mandatory argument is query or text, but you have to use only one of them. The other fields are optionals.
 
 * **searchOrders** - SYNC. Return a list of orders by search query. **Nice to Have**.
 ```
@@ -221,23 +237,59 @@ Functions beeing called:
 ```
 status= ocean.asset.publishMetadata(metadata)
 ```
+You have to do a request to this endpoint:
+POST {provider.url}/api/v1/provider/assets/metadata
+This method is expecting a json object that contains the following structure: 
+ ```   {"assetId": ,
+        "publisherId":,
+        "base":{
+            "name":,
+            "size":,
+            "author":,
+            "license":,
+            "contentType":,
+            "contentUrls":,
+            "price":,
+            "type":
+        }
+       }
+```
 
-@enrique
+In the base object there are more optional fields that you can check in the [provider API](https://github.com/oceanprotocol/provider/blob/develop/provider/app/assets.py).
 
 * **updateMetadata** - SYNC. Given an asset metadata, update the metadata using the asset DDO off-chain. This method replace the complete existing DDO by the DDO provided. It returns a boolean with the result of the operation.
 ```
 status= ocean.asset.updateMetadata(metadata)
 ```
-
-@enrique
+You have to do a request to this endpoint:
+PUT {provider.url}/api/v1/provider/assets/metadata
+This method is expecting a json object that contains the following structure: 
+ ```   {"assetId": ,
+        "publisherId":,
+        "base":{
+            "name":,
+            "size":,
+            "author":,
+            "license":,
+            "contentType":,
+            "contentUrls":,
+            "price":,
+            "type":
+        },
+        "curation":{
+            "rating":
+            "numVotes":
+        }
+       }
+```
+In the base object there are more optional fields that you can check in the [provider API](https://github.com/oceanprotocol/provider/blob/develop/provider/app/assets.py).
 
 * **getMetadata** - SYNC. returns the metadata stored off chanin by using the asset DDO. Internally calls Ocean.resolveDID(did).
 ```
 metadata= ocean.asset.getMetadata()
 ```
-
-@enrique
-
+You have to do a request to this endpoint:
+GET {provider.url}/api/v1/provider/assets/metadata/<asset_id> 
 
 * **getPrice** - SYNC. Given a service agreement id, get's the asset price information existing on-chain.
 ```
@@ -351,7 +403,7 @@ Public API
 |:--------------------------|:-----------------------------------|:------------------------|:-------|:------------------------|:----------------------------|:----------------------|
 | Ocean                     | getInstance (js, java)/ Ocean (py) | Ocean                   | High   | Not Implemented         | x                           | Not Implemented       |
 | Ocean                     | getAccounts                        | array[Account]          | High   | Not Implemented         | x                           | Not Implemented       |
-| Ocean                     | searchAssets @Enrique              | array[Asset]            | High   | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean                     | searchAssets                       | array[Asset]            | High   | Not Implemented         | Not Implemented             | Not Implemented       |
 | Ocean                     | searchOrders `tbd`                 | array[Order]            | Low    | Not Implemented         | Not Implemented             | Not Implemented       |
 | Ocean                     | register                           | Asset                   | High   | Not Implemented         | Not Implemented             | Not Implemented       |
 | Ocean                     | generateDID                        | string                  | High   | Not Implemented         | Not Implemented             | Not Implemented       |
