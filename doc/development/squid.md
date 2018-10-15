@@ -50,17 +50,17 @@ class Ocean {}
  * Extends OceanBase providing Asset functionalities
 */
 class Asset extends OceanBase {
-    public id: string
-    public publisherId: string
-    public price: number
+    id: string
+    publisherId: string
+    price: number
 }
 
 /**
  * Extends OceanBase providing Account functionalities
 */
 class Account extends OceanBase  {
-    public name: string
-    public balance: Balance
+    name: string
+    balance: Balance
 }
 
 /**
@@ -74,14 +74,14 @@ class ServiceAgreement extends OceanBase {
  * Extends OceanBase providing Order functionalities
 */
 class Order extends OceanBase {
-    public id: string
-    public asset: Asset
-    public assetId: string
-    public timeout: number
-    public pubkey: string
-    public key: any
-    public paid: boolean
-    public status: number
+    id: string
+    asset: Asset
+    assetId: string
+    timeout: number
+    pubkey: string
+    key: any
+    paid: boolean
+    status: number
 }
 
 /**
@@ -94,8 +94,8 @@ class SecretStore extends OceanBase {
  * Balance Model
 */
 class Balance {
-    public eth: number
-    public ocn: number
+    eth: number
+    ocn: number
 }
 
 ```
