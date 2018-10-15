@@ -7,18 +7,17 @@ Table of Contents
       * [Components](#components)
          * [Tier 3 - Application Layer](#tier-3---application-layer)
             * [Pleuston Frontend](#pleuston-frontend)
-            * [Datascience Tools](#datascience-tools)
+            * [Data science Tools](#data-science-tools)
          * [Tier 2 - Protocol Layer](#tier-2---protocol-layer)
             * [Squid Libraries](#squid-libraries)
             * [Provider](#provider)
             * [Brizo](#brizo)
-         * [Tier 3 - Decentralized VM Layer](#tier-3---decentralized-vm-layer)
+         * [Tier 1 - Decentralized VM Layer](#tier-1---decentralized-vm-layer)
             * [Keeper Smart Contracts](#keeper-smart-contracts)
       * [Interactions](#interactions)
          * [Assets registering and consumption](#assets-registering-and-consumption)
          * [On-Chain Access Control](#on-chain-access-control)
       * [Project Repositories](#project-repositories)
-
 
 
 ---
@@ -36,7 +35,7 @@ In the above diagram you can see the following components (from top to bottom):
 
 
 - **Frontend** (Tier 3) - Application implemented using HTML + Javascript + CSS, running in the client side (user's browser).
-- **DataScience Tools** (Tier 3) - Applications executed by datascientists, typically getting access to the Ocean data and executing algorithms on top of that data
+- **Data Science Tools** (Tier 3) - Applications executed by data scientists, typically getting access to the Ocean data and executing algorithms on top of that data
 - **Provider** (Tier 2) - Backend application providing some advanced network services. Executed typically by Marketplaces. Initially:
   - On-Chain access control.
   - Metadata storage.
@@ -74,9 +73,9 @@ The frontend application will subscribe to the EVM transaction log, enabling the
 
 The Squid library showed in the above diagram encapsulates the logic to deal with the Ocean components (Keeper & Provider). Squid libraries in different languages are part of the Tier 2.
 
-#### Datascience Tools
+#### Data science Tools
 
-Datascience Tools are the interface to Ocean used by datascientists. Typically in Python (but not limited to it),
+Data science Tools are the interface to Ocean used by data scientists. Typically in Python (but not limited to it),
 those tools and libraries expose a high-level API allowing to integrate the Ocean capabilities in different kind of computation pipelines.
 
 
@@ -89,16 +88,16 @@ Includes all the high-level libraries to interact with Ocean Protocol, and the E
 Squid is a High Level specification API abstracting the interaction with the most relevant Ocean Protocol components.
 It allows to use the Ocean capabilities without requiring to know the complexity of Smart Contracts or Metadata storage systems.
 
-Squid API as specification, can be implemented in different languages, initially [Javascript](https://github.com/oceanprotocol/squid-js) (used in Pleuston) and [Python](https://github.com/oceanprotocol/squid-py) (used in the Datascience tools).
+Squid API as specification, can be implemented in different languages, initially [Javascript](https://github.com/oceanprotocol/squid-js) (used in Pleuston) and [Python](https://github.com/oceanprotocol/squid-py) (used in the Data science tools).
 
-The complete specification of the [Squid API](architecture/squid.md) can be reviewed as part of this repository.
+The complete specification of the [Squid API](development/squid.md) can be reviewed as part of this repository.
 
 
 #### Provider
 
 The Provider is an application running in the backend (Python) that enables some advanced network capabilities:
 
-- Metadata Management - Abstracts access to different Metadata stores, allowing Providers to integrate different metadata repositories. The OceanDB plugin system can integrate different datastores (ElasticSearch, MongoDB, BigChainDB) implementing the Oceandb interfaces.
+- Metadata Management - Abstracts access to different Metadata stores, allowing Providers to integrate different metadata repositories. The OceanDB plugin system can integrate different data stores (ElasticSearch, MongoDB, BigChainDB) implementing the Oceandb interfaces.
 - Gathering of Service Proofs - Enables different kind of service proofs from different providers. For example - allowing the retrieval of receipt's from cloud providers to validate service delivery.
 - On-Chain Access Control - The Provider is in charge of the on-chain validation that a consumer is entitled to get access to an asset or service. This happens by integrating with the Keeper from the Provider side.
 
@@ -118,7 +117,7 @@ Brizo enables, interacting with the infrastructure providers, to build additiona
 ![Brizo High-Level Architecture](architecture/img/brizo-hl-arch.png)
 
 
-### Tier 3 - Decentralized VM Layer
+### Tier 1 - Decentralized VM Layer
 
 #### Keeper Smart Contracts
 
