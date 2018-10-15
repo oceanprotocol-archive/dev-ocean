@@ -133,9 +133,9 @@ ethBalance= ocean.getEtherBalance(address)
 balance= ocean.getBalance(address)
 ```
 
-* **requestTokens** - SYNC. Request a number of Ocean Tokens for an address. Returns a boolean to know if everything was right.
+* **requestTokens** - ASYNC. Request a number of Ocean Tokens for an address. Returns a boolean to know if everything was right.
 ```
-result= ocean.requestTokens(account_address, amountTokens)
+result= ocean.requestTokens(account, amountTokens)
 ```
 
 * **searchAssets** - SYNC. Given a search query, returns a list of the DDO's matching with that query
@@ -194,32 +194,46 @@ did= ocean.asset.getDID()
 id= ocean.asset.getId()
 ```
 
-* **registerAsset** - ASYNC. High-level method publishing the metadata off-chain and registering the Service Agreement on-chain. It orchestrate the `publishAssetMetadata` and `publishServiceAgreement`, and creating a `DDO` methods.
+* **register** - ASYNC. High-level method publishing the metadata off-chain and registering the Service Agreement on-chain. It orchestrate the `publishAssetMetadata` and `publishServiceAgreement`, and creating a `DDO` methods.
 ```
-Asset= ocean.asset.registerAsset(metadata, services)
+Asset= ocean.asset.register(metadata, services)
 ```
+
+Functions beeing called:
+    * publishMetadata
+    * publishServiceAgreement (from ServiceAgreement)
+    * encryptDocument (from SecretStore)
 
 * **publishMetadata** - SYNC. Given an asset metadata, register this metadata using the assets DDO off-chain. It returns a boolean with the result of the operation.
 ```
 status= ocean.asset.publishMetadata(metadata)
 ```
 
+@enrique
+
 * **updateMetadata** - SYNC. Given an asset metadata, update the metadata using the asset DDO off-chain. This method replace the complete existing DDO by the DDO provided. It returns a boolean with the result of the operation.
 ```
 status= ocean.asset.updateMetadata(metadata)
 ```
+
+@enrique
 
 * **getMetadata** - SYNC. returns the metadata stored off chanin by using the asset DDO. Internally calls Ocean.resolveDID(did).
 ```
 metadata= ocean.asset.getMetadata()
 ```
 
+@enrique
+
+
 * **getPrice** - SYNC. Given a service agreement id, get's the asset price information existing on-chain.
 ```
 price= ocean.asset.getPrice(serviceAgreementId)
 ```
 
-* **retireMetadata** - SYNC. Given an Asset metadata, this method delete logically the Asset Metadata. **Nice to Have**
+`tbd`
+
+* **retireMetadata** - ASYNC. Given an Asset metadata, this method delete logically the Asset Metadata. **Nice to Have**
 ```
 ocean.asset.retireMetadata(metadata)
 ```
@@ -251,7 +265,7 @@ id= ocean.serviceAgreement.getId()
 status= ocean.serviceAgreement.getStatus()
 ```
 
-* **retireServiceAgreement** - ASYNC. Given a Service Agreement object, the Publisher retire a Service Agreement. It changes the status to the value 2=>Retired.
+* **retire** - ASYNC. Given a Service Agreement object, the Publisher retire a Service Agreement. It changes the status to the value 2=>Retired.
 ```
 result= ocean.serviceAgreement.retire()
 ```
@@ -318,47 +332,50 @@ document= ocean.secretStore.decryptDocument(did, encryptedDocument)
 
 ## Squid API Implementation state
 
-Table not completed yet
+Public API
 
-| Category                  | Method                      | Python Implementation   | Javascript Implementation   | Java Implementation   |
-|:--------------------------|:----------------------------|-------------------------|-----------------------------|-----------------------|
-| Ocean                     | 1 getInstance                 | Not Implemented         | x                           | Not Implemented       |
-| Ocean                     | 1 Ocean                       | Not Implemented         | x                           | Not Implemented       |
-| Ocean                     | 1 getAccounts                 | Not Implemented         | x                           | Not Implemented       |
-| Ocean                     | 1 getOceanBalance             | Not Implemented         | x                           | Not Implemented       |
-| Ocean                     | 1 getEtherBalance             | Not Implemented         | x                           | Not Implemented       |
-| Ocean                     | 1 getBalance                  | Not Implemented         | x                           | Not Implemented       |
-| Ocean                     | 1 searchAssets                | Not Implemented         | Not Implemented             | Not Implemented       |
-| Ocean                     | 2 getTrader                   | Not Implemented         | Not Implemented             | Not Implemented       |
-| Ocean                     | 2 searchOrders                | Not Implemented         | Not Implemented             | Not Implemented       |
-| Ocean                     | 1 requestTokens               | Not Implemented         | x                           | Not Implemented       |
-| Ocean                     | 1 register                    | Not Implemented         | Not Implemented             | Not Implemented       |
-| Ocean                     | 1 generateDID                 | Not Implemented         | Not Implemented             | Not Implemented       |
-| Ocean                     | 1 resolveDID                  | Not Implemented         | Not Implemented             | Not Implemented       |
-| Ocean                     | 1 getServiceAggremments       | Not Implemented         | Not Implemented             | Not Implemented       |
-| Ocean                     | 1 getOrder                    | Not Implemented         | Not Implemented             | Not Implemented       |
-| Asset                     | 1 registerAsset               | Not Implemented         | Not Implemented             | Not Implemented       |
-| Asset                     | 1 getId                       | Not Implemented         | Not Implemented             | Not Implemented       |
-| Asset                     | 1 getDDO                      | Not Implemented         | Not Implemented             | Not Implemented       |
-| Asset                     | 1 getDID                      | Not Implemented         | Not Implemented             | Not Implemented       |
-| Asset                     | 1 publishMetadata             | Not Implemented         | Not Implemented             | Not Implemented       |
-| Asset                     | 1 updateMetadata              | Not Implemented         | Not Implemented             | Not Implemented       |
-| Asset                     | 1 getMetadata                 | Not Implemented         | Not Implemented             | Not Implemented       |
-| Asset                     | 1 getPrice                    | Not Implemented         | Not Implemented             | Not Implemented       |
-| Asset                     | 2 retireMetadata              | Not Implemented         | Not Implemented             | Not Implemented       |
-| Asset                     | 1 publishServiceAgreement     | Not Implemented         | Not Implemented             | Not Implemented       |
-| Asset                     | 2 getServiceAgreements        | Not Implemented         | Not Implemented             | Not Implemented       |
-| ServiceAgreement          | 1 getId                       | Not Implemented         | Not Implemented             | Not Implemented       |
-| ServiceAgreement          | 1 getStatus                   | Not Implemented         | Not Implemented             | Not Implemented       |
-| ServiceAgreement          | 2 retire                      | Not Implemented         | Not Implemented             | Not Implemented       |
-| ServiceAgreement          | 1 getAccess                   | Not Implemented         | Not Implemented             | Not Implemented       |
-| Trader                    | 1 purchaseAsset               | Not Implemented         | Not Implemented             | Not Implemented       |
-| Order                     | 1 getId                       | Not Implemented         | Not Implemented             | Not Implemented       |
-| Order                     | 1 getStatus                   | Not Implemented         | Not Implemented             | Not Implemented       |
-| Order                     | 2 verifyPayment               | Not Implemented         | Not Implemented             | Not Implemented       |
-| Order                     | 1 getAccess                   | Not Implemented         | Not Implemented             | Not Implemented       |
-| SecretStore               | 1 encryptDocument             | Not Implemented         | Not Implemented             | Not Implemented       |
-| SecretStore               | 1 decryptDocument             | Not Implemented         | Not Implemented             | Not Implemented       |
+| Class                     | Method                             | Return Value            | Prio   | Python Implementation   | Javascript Implementation   | Java Implementation   |
+|:--------------------------|:-----------------------------------|:------------------------|:-------|:------------------------|:----------------------------|:----------------------|
+| Ocean                     | getInstance (js, java)/ Ocean (py) | Ocean                   | High   | Not Implemented         | x                           | Not Implemented       |
+| Ocean                     | getAccounts                        | array[Account]          | High   | Not Implemented         | x                           | Not Implemented       |
+| Ocean                     | searchAssets @Enrique              | array[Asset]            | High   | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean                     | searchOrders `tbd`                 | array[Order]            | Low    | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean                     | register                           | Asset                   | High   | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean                     | generateDID                        | string                  | High   | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean                     | resolveDID                         | ddo                     | High   | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean                     | getOrder                           | Order                   | High   | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean                     | getAsset                           | Asset                   | High   | Not Implemented         | Not Implemented             | Not Implemented       |
+| Account                   | getOceanBalance                    | number/integer          | High   | Not Implemented         | x                           | Not Implemented       |
+| Account                   | getEtherBalance                    | number/integer          | High   | Not Implemented         | x                           | Not Implemented       |
+| Account                   | getBalance                         | Balance                 | High   | Not Implemented         | x                           | Not Implemented       |
+| Account                   | requestTokens                      | number/integer          | High   | Not Implemented         | x                           | Not Implemented       |
+| Asset                     | purchase                           | Order                   | High   | Not Implemented         | Not Implemented             | Not Implemented       |
+| Asset                     | getId                              | string                  | High   | Not Implemented         | Not Implemented             | Not Implemented       |
+| Asset                     | getDDO                             | ddo                     | High   | Not Implemented         | Not Implemented             | Not Implemented       |
+| Asset                     | getDID                             | string                  | High   | Not Implemented         | Not Implemented             | Not Implemented       |
+| Asset                     | publishMetadata                    | string                  | High   | Not Implemented         | Not Implemented             | Not Implemented       |
+| Asset                     | getMetadata                        | Metadata                | High   | Not Implemented         | Not Implemented             | Not Implemented       |
+| Asset                     | updateMetadata                     | boolean                 | High   | Not Implemented         | Not Implemented             | Not Implemented       |
+| Asset                     | updateMetadata                     | boolean                 | High   | Not Implemented         | Not Implemented             | Not Implemented       |
+| Asset                     | retireMetadata                     | boolean                 | Low    | Not Implemented         | Not Implemented             | Not Implemented       |
+| Asset                     | getServiceAgreements               | array[ServiceAgreement] | Low    | Not Implemented         | Not Implemented             | Not Implemented       |
+| ServiceAgreement          | getId                              | string                  | High   | Not Implemented         | Not Implemented             | Not Implemented       |
+| ServiceAgreement          | getPrice                           | number/integer          | High   | Not Implemented         | Not Implemented             | Not Implemented       |
+| ServiceAgreement          | getStatus                          | xxx                     | High   | Not Implemented         | Not Implemented             | Not Implemented       |
+| ServiceAgreement          | publish                            | xxx                     | High   | Not Implemented         | Not Implemented             | Not Implemented       |
+| ServiceAgreement          | retire                             | xxx                     | Low    | Not Implemented         | Not Implemented             | Not Implemented       |
+| ServiceAgreement          | getAccess                          | xxx                     | High   | Not Implemented         | Not Implemented             | Not Implemented       |
+| Order                     | getId                              | string                  | High   | Not Implemented         | Not Implemented             | Not Implemented       |
+| Order                     | getStatus                          | Status                  | High   | Not Implemented         | Not Implemented             | Not Implemented       |
+| Order                     | verifyPayment                      | boolean                 | Low    | Not Implemented         | Not Implemented             | Not Implemented       |
+| Order                     | consume                            | blob                    | High   | Not Implemented         | Not Implemented             | Not Implemented       |
+                                                                                 
+Private API                                                                                 
+                                                                                 
+| Class                     | Method                             | Return Value            | Prio   | Python Implementation   | Javascript Implementation   | Java Implementation   |
+|:--------------------------|:-----------------------------------|:------------------------|:-------|:------------------------|:----------------------------|:----------------------|
+| SecretStore               | encryptDocument                    | string                  | High   | Not Implemented         | Not Implemented             | Not Implemented       |
+| SecretStore               | decryptDocument                    | string                  | Hight  | Not Implemented         | Not Implemented             | Not Implemented       |
 
 ### Deleted
 
