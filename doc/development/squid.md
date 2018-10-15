@@ -43,38 +43,51 @@ abstract class OceanBase {}
 /**
  * Access to Ocean functionalities
 */
-class Ocean {
-    public Order
-    public Asset
-    public ServiceAgreement
-    public Trader    
-    public SecretStore
+class Ocean {}
+
+/**
+ * Extends OceanBase providing Asset functionalities
+*/
+class Asset extends OceanBase {
+    public id: string
+    public publisherId: string
+    public price: number
+}
+
+/**
+ * Extends OceanBase providing Account functionalities
+*/
+class Account extends OceanBase  {
+    public name: string
+    public balance: Balance
+}
+
+/**
+ * Extends OceanBase providing Service Agreement functionalities
+*/
+class ServiceAgreement extends OceanBase {
+    tbd
 }
 
 /**
  * Extends OceanBase providing Order functionalities
 */
-class Order extends OceanBase {}
-
-/**
- * Extends OceanBase providing Asset functionalities
-*/
-class Asset extends OceanBase {}
-
-/**
- * Extends OceanBase providing Service Agreement functionalities
-*/
-class ServiceAgreement extends OceanBase {}
-
-/**
- * Extends OceanBase providing Trader functionalities
-*/
-class Trader extends OceanBase {}
+class Order extends OceanBase {
+    public id: string
+    public asset: Asset
+    public assetId: string
+    public timeout: number
+    public pubkey: string
+    public key: any
+    public paid: boolean
+    public status: number
+}
 
 /**
  * Extends OceanBase providing SecretStore functionalities
 */
-class SecretStore extends OceanBase {}
+class SecretStore extends OceanBase {
+}
 ```
 
 ### Getting an instance
