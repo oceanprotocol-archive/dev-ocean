@@ -3,22 +3,23 @@
 Table of Contents
 =================
 
-* [Table of Contents](#table-of-contents)
 * [Common](#common)
   * [Getting an instance](#getting-an-instance)
     * [Functions](#functions)
 * [Ocean](#ocean)
   * [Functions](#functions-1)
+  * [Account](#account)
+     - [Functions](#functions-2)
   * [Asset](#asset)
-     * [Functions](#functions-2)
+     - [Functions](#functions-3)
   * [ServiceAgreement](#serviceagreement)
-      * [Functions](#functions-3)
-  * [Trader](#trader)
       - [Functions](#functions-4)
-  * [Order](#order)
+  * [Trader](#trader)
       - [Functions](#functions-5)
-  * [Secret Store](#secret-store)
+  * [Order](#order)
       - [Functions](#functions-6)
+  * [Secret Store](#secret-store)
+      - [Functions](#functions-7)
 * [Squid API Implementation state](#squid-api-implementation-state)
   * [Deleted](#deleted)
     + [Provider Functions (Nice to Have)](#provider-functions--nice-to-have-)
@@ -88,6 +89,15 @@ class Order extends OceanBase {
 */
 class SecretStore extends OceanBase {
 }
+
+/**
+ * Balance Model
+*/
+class Balance {
+    public eth: number
+    public ocn: number
+}
+
 ```
 
 ### Getting an instance
@@ -129,26 +139,6 @@ Interface with core Ocean functions
 * **getAccounts** - Returns all avalible accounts loaded via a wallet, or by Web3.
 ```
 array[address]= ocean.getAccounts()
-```
-
-* **getOceanBalance** - SYNC. The only parameter required is an account address (ie. 0x6309b5dd9245278a7fdfb2186dfb80583caeadc7). Returns the Ocean Tokens balance for that account.
-```
-oceanBalance= ocean.getOceanBalance(address)
-```
-
-* **getEtherBalance** - SYNC. The only parameter required is an account address. Returns the Ether balance for that account.
-```
-ethBalance= ocean.getEtherBalance(address)
-```
-
-* **getBalance** - SYNC. The only parameter required is an account address. Returns the Ocean tokens and Ether balance for that account.
-```
-balance= ocean.getBalance(address)
-```
-
-* **requestTokens** - ASYNC. Request a number of Ocean Tokens for an address. Returns a boolean to know if everything was right.
-```
-result= ocean.requestTokens(account, amountTokens)
 ```
 
 * **searchAssets** - SYNC. Given a search query, returns a list of the DDO's matching with that query
@@ -202,11 +192,42 @@ serviceAgreement= ocean.getServiceAgreement(serviceAgreementId)
 Order= ocean.getOrder(orderId)
 ```
 
+### Account
+
+Ocean Account object
+
+#### Functions
+
+* **getOceanBalance** - SYNC. Returns the Ocean Tokens balance for that account.
+```
+oceanBalance= account.getOceanBalance()
+```
+
+* **getEtherBalance** - SYNC. Returns the Ether balance for that account.
+```
+ethBalance= account.getEtherBalance()
+```
+
+* **getBalance** - SYNC. Returns an instance of the Balance object for that account.
+```
+balance= account.getBalance()
+```
+
+* **requestTokens** - ASYNC. Request a number of Ocean Tokens. Returns the number of tokens accounted.
+```
+amount= account.requestTokens(amountTokens)
+```
+
 ### Asset 
 
 Interface provides access to asset functions
 
 #### Functions
+
+* **getId** - SYNC. Return the Id used by this asset.
+```
+id= asset.getId()
+```
 
 * **getDDO** - SYNC. Return the created DDO used by this asset.
 ```
@@ -216,11 +237,6 @@ ddo= ocean.asset.getDDO()
 * **getDID** - SYNC. Return the DID used by this asset.
 ```
 did= ocean.asset.getDID()
-```
-
-* **getId** - SYNC. Return the Id used by this asset.
-```
-id= ocean.asset.getId()
 ```
 
 * **register** - ASYNC. High-level method publishing the metadata off-chain and registering the Service Agreement on-chain. It orchestrate the `publishAssetMetadata` and `publishServiceAgreement`, and creating a `DDO` methods.
@@ -359,22 +375,22 @@ Interface provides access to Order functions
 
 * **getId** - SYNC. Return the Id used by this order.
 ```
-id= ocean.order.getId()
+id= order.getId()
 ```
 
-* **getStatus** - SYNC. Using an order object, returns an integer representing the order status as defined in the keeper. Possible values are (0=>Pending, 1=>Paid, 2=>Canceled)
+* **getStatus** - SYNC. Using an order object, returns an integer representing the order status as defined in the keeper. It is described as an Enum Possible values are (0=>Pending, 1=>Paid, 2=>Canceled)
 ```
-status= ocean.order.getStatus()
+status= order.getStatus()
 ```
 
 * **verifyPayment** -  SYNC. Given an order object, verifies if the order was paid.
 ```
-status= ocean.order.verifyPayment()
+status= order.verifyPayment()
 ```
 
-* **getAccess** -  SYNC. Get all the information required to get access to an asset after the purchase process, using the internal assetI and serviceAgreementId
+* **consume** -  SYNC. Get all the information required to get access to an asset after the purchase process, using the internal assetId and serviceAgreementId
 ```
-access= ocean.order.getAccess()
+url= ocean.consume()
 ```
 
 #### SecretStore
