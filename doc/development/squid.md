@@ -115,11 +115,21 @@ Parameters:
 
 This method returns an instance of the **Ocean** class. It allows to get access to the other Ocean core methods
 
-In Python 
+In Python
 Instantiate an ocean object
 
 ```python
-ocean = Ocean(keeper_url = '', provider_url = '', [web3=web3Object] ...)
+ocean = Ocean(web3Dto, providerDto)
+
+# for comaptability use get_instance to return an Ocean object
+ocean = Ocean.get_instance(web3Dto, providerDto)
+
+
+class Ocean:
+  ...
+  @staticmethod
+  def getInsance(web3Dto, providerDto):
+    return Ocean(web3Dto, providerDto)
 ```
 
 In JavaScript
@@ -147,7 +157,7 @@ array[asset]= ocean.searchAssets(searchQuery)
 ```
 You have to do a request to this endpoint:
 POST {provider.url}/api/v1/provider/assets/metadata/query
-This method is expecting a json object that contains the following structure: 
+This method is expecting a json object that contains the following structure:
  ```  {
         "offset": 100,
         "page": 0,
@@ -218,7 +228,7 @@ balance= account.getBalance()
 amount= account.requestTokens(amountTokens)
 ```
 
-### Asset 
+### Asset
 
 Interface provides access to asset functions
 
@@ -255,7 +265,7 @@ status= ocean.asset.publishMetadata(metadata)
 ```
 You have to do a request to this endpoint:
 POST {provider.url}/api/v1/provider/assets/metadata
-This method is expecting a json object that contains the following structure: 
+This method is expecting a json object that contains the following structure:
  ```   {"assetId": ,
         "publisherId":,
         "base":{
@@ -279,7 +289,7 @@ status= ocean.asset.updateMetadata(metadata)
 ```
 You have to do a request to this endpoint:
 PUT {provider.url}/api/v1/provider/assets/metadata
-This method is expecting a json object that contains the following structure: 
+This method is expecting a json object that contains the following structure:
  ```   {"assetId": ,
         "publisherId":,
         "base":{
@@ -305,7 +315,7 @@ In the base object there are more optional fields that you can check in the [pro
 metadata= ocean.asset.getMetadata()
 ```
 You have to do a request to this endpoint:
-GET {provider.url}/api/v1/provider/assets/metadata/<asset_id> 
+GET {provider.url}/api/v1/provider/assets/metadata/<asset_id>
 
 * **getPrice** - SYNC. Given a service agreement id, get's the asset price information existing on-chain.
 ```
@@ -450,9 +460,9 @@ Public API
 | Order                     | getStatus                          | Status                  | High   | Not Implemented         | Not Implemented             | Not Implemented       |
 | Order                     | verifyPayment                      | boolean                 | Low    | Not Implemented         | Not Implemented             | Not Implemented       |
 | Order                     | consume                            | blob                    | High   | Not Implemented         | Not Implemented             | Not Implemented       |
-                                                                                 
+
 Private API                                                                                 
-                                                                                 
+
 | Class                     | Method                             | Return Value            | Prio   | Python Implementation   | Javascript Implementation   | Java Implementation   |
 |:--------------------------|:-----------------------------------|:------------------------|:-------|:------------------------|:----------------------------|:----------------------|
 | SecretStore               | encryptDocument                    | string                  | High   | Not Implemented         | Not Implemented             | Not Implemented       |
