@@ -144,20 +144,21 @@ const ocean = await Ocean.getInstance({...})
 
 Interface with core Ocean functions
 
-#### Functions
+#### Methods
 
-* **getAccounts** - Returns all avalible accounts loaded via a wallet, or by Web3.
+* **getAccounts** - Returns all available accounts loaded via a wallet, or by Web3.
 ```
-array[address]= ocean.getAccounts()
+array[Account] = ocean.getAccounts()
 ```
 
-* **searchAssets** - SYNC. Given a search query, returns a list of the DDO's matching with that query
+* **searchAssets** - SYNC. Given a search query, returns a list of the Asset objects matching with that query. 
 ```
-array[asset]= ocean.searchAssets(searchQuery)
+array[Asset] = ocean.searchAssets(searchQuery)
 ```
 You have to do a request to this endpoint:
 POST {provider.url}/api/v1/provider/assets/metadata/query
 This method is expecting a json object that contains the following structure:
+
  ```  {
         "offset": 100,
         "page": 0,
@@ -169,44 +170,34 @@ This method is expecting a json object that contains the following structure:
         },
         "text": "Office"
 }
-```
-The only mandatory argument is query or text, but you have to use only one of them. The other fields are optionals.
+ ```
+The only mandatory argument is query or text, but you have to use only one of them. The other fields are optional.
 
-* **searchOrders** - SYNC. Return a list of orders by search query. **Nice to Have**.
+* **searchOrders** - (*TBD*) SYNC. Return a list of orders by search query. **Nice to Have**.
 ```
-array[order]= ocean.searchOrders(searchQuery)
-```
-
-* **generateDID** - SYNC. Generates a specific DID with a random id based on the given.
-```
-did= ocean.generateDID(seed)
+array[Order] = ocean.searchOrders(searchQuery)
 ```
 
-* **resolveDID** - SYNC. Given a DID the method returns the DDO associated to it.
+* **register** - ASYNC. High-level method publishing the metadata off-chain and registering the Service Agreement on-chain. It orchestrate the publishAssetMetadata and publishServiceAgreement, and creating a DDO methods.
 ```
-ddo= ocean.resolveDID(did)
-```
-
-* **getAsset** - ASYNC. Get an asset based on it's DID or assetId
-```
-Asset= ocean.getAsset(assetDID | assetId )
+asset_id = ocean.register(metadata, services)
 ```
 
-* **getServiceAgreement** - SYNC. Returns as serviceAgreement object based from the service agreement id (Publisher). **Nice to Have**.
+* **generateDID** - SYNC. Generates a random DID string.
 ```
-serviceAgreement= ocean.getServiceAgreement(serviceAgreementId)
-```
-
-* **getOrder** - ASYNC. Get an order based on a orderId
-```
-Order= ocean.getOrder(orderId)
+did = ocean.generateDID(seed)
 ```
 
-### Account
+* **resolveDID** - SYNC. Given a DID the method, return the associated DDO. 
+```
+DDO = ocean.resolveDID(did)
+```
+
+## Account
 
 Ocean Account object
 
-#### Functions
+#### Methods
 
 * **getOceanBalance** - SYNC. Returns the Ocean Tokens balance for that account.
 ```
@@ -228,7 +219,7 @@ balance= account.getBalance()
 amount= account.requestTokens(amountTokens)
 ```
 
-### Asset
+## Asset
 
 Interface provides access to asset functions
 
@@ -255,9 +246,9 @@ Asset= ocean.asset.register(metadata, services)
 ```
 
 Functions beeing called:
-    * publishMetadata
-    * publishServiceAgreement (from ServiceAgreement)
-    * encryptDocument (from SecretStore)
+​    * publishMetadata
+​    * publishServiceAgreement (from ServiceAgreement)
+​    * encryptDocument (from SecretStore)
 
 * **publishMetadata** - SYNC. Given an asset metadata, register this metadata using the assets DDO off-chain. It returns a boolean with the result of the operation.
 ```
@@ -279,7 +270,7 @@ This method is expecting a json object that contains the following structure:
             "type":
         }
        }
-```
+ ```
 
 In the base object there are more optional fields that you can check in the [provider API](https://github.com/oceanprotocol/provider/blob/develop/provider/app/assets.py).
 
@@ -307,7 +298,7 @@ This method is expecting a json object that contains the following structure:
             "numVotes":
         }
        }
-```
+ ```
 In the base object there are more optional fields that you can check in the [provider API](https://github.com/oceanprotocol/provider/blob/develop/provider/app/assets.py).
 
 * **getMetadata** - SYNC. returns the metadata stored off chanin by using the asset DDO. Internally calls Ocean.resolveDID(did).
@@ -339,7 +330,7 @@ serviceAgreement= ocean.asset.publishServiceAgreement(providerId, price, ..)
 [serviceAgreementIds]= ocean.asset.getServiceAgreements(providerId)
 ```
 
-### ServiceAgreement
+## ServiceAgreement
 
 Interface provides access to ServiceAgreement functions
 
@@ -366,7 +357,7 @@ result= ocean.serviceAgreement.retire()
 access= ocean.serviceAgreement.getAccess()
 ```
 
-### Trader
+## Trader
 
 Interface provides access to Trader functions
 
@@ -377,7 +368,7 @@ Interface provides access to Trader functions
 order= ocean.trader.purchaseAsset(Asset or assetId or assetDID, serviceAgreementId or ServiceAgreement, timeout)
 ```
 
-### Order
+## Order
 
 Interface provides access to Order functions
 
@@ -403,7 +394,7 @@ status= order.verifyPayment()
 url= ocean.consume()
 ```
 
-#### SecretStore
+## SecretStore
 
 Interface provides access to SecretStore functions
 
@@ -420,6 +411,32 @@ Given by a **Consumer** an unique resource id (did) and the document encrypted, 
 ```
 document= ocean.secretStore.decryptDocument(did, encryptedDocument)
 ```
+
+
+
+## OLD TO MOVE 
+
+- **getAsset** - ASYNC. Get an asset based on it's DID or assetId
+
+```
+Asset = ocean.getAsset(assetDID | assetId )
+```
+
+- **getServiceAgreement** - SYNC. Returns as serviceAgreement object based from the service agreement id (Publisher). **Nice to Have**.
+
+```
+serviceAgreement = ocean.getServiceAgreement(serviceAgreementId)
+```
+
+- **getOrder** - ASYNC. Get an order based on a orderId
+
+```
+Order= ocean.getOrder(orderId)
+```
+
+### 
+
+
 
 ## Squid API Implementation state
 
