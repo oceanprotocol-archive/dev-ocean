@@ -5,30 +5,36 @@ The Squid API is a Level-2 API built on top of core Ocean components. It's a fac
 The goal of this doc is to help a developer develop a version of the Squid API in any programming language.
 Currently, the Squid API is defined for Object-Oriented languages such as JavaScript, Java, and Python (which are the three initial implementation languages).
 
-Table of Contents
-=================
+**Table of Contents**
 
-* [Common](#common)
-  * [Getting an instance](#getting-an-instance)
-    * [Functions](#functions)
-* [Ocean](#ocean)
-  * [Functions](#functions-1)
-  * [Account](#account)
-     - [Functions](#functions-2)
-  * [Asset](#asset)
-     - [Functions](#functions-3)
-  * [ServiceAgreement](#serviceagreement)
-      - [Functions](#functions-4)
-  * [Trader](#trader)
-      - [Functions](#functions-5)
-  * [Order](#order)
-      - [Functions](#functions-6)
-  * [Secret Store](#secret-store)
-      - [Functions](#functions-7)
-* [Squid API Implementation state](#squid-api-implementation-state)
-  * [Deleted](#deleted)
-    + [Provider Functions (Nice to Have)](#provider-functions--nice-to-have-)
-- [Examples](#examples)
+<!--ts--> <!-- Keep this line so gh-md-toc can auto-generate the TOC below-->
+   * [Squid API](#squid-api)
+      * [Common](#common)
+         * [Getting an instance](#getting-an-instance)
+            * [Functions](#functions)
+      * [Ocean](#ocean)
+         * [Methods](#methods)
+      * [Account](#account)
+         * [Methods](#methods-1)
+      * [Asset](#asset)
+         * [Functions](#functions-1)
+      * [ServiceAgreement](#serviceagreement)
+         * [Functions](#functions-2)
+      * [Trader](#trader)
+         * [Functions](#functions-3)
+      * [Order](#order)
+         * [Functions](#functions-4)
+      * [SecretStore](#secretstore)
+         * [Functions](#functions-5)
+      * [OLD TO MOVE](#old-to-move)
+      * [Squid API Implementation state](#squid-api-implementation-state)
+         * [Deleted](#deleted)
+            * [Provider Functions (Nice to Have)](#provider-functions-nice-to-have)
+      * [Examples](#examples)
+
+<!-- Added by: troy, at: 2018-10-17T12:56+02:00 -->
+
+<!--te--> <!-- Keep this line for gh-md-toc -->
 
 ---
 
@@ -149,7 +155,7 @@ const ocean = await Ocean.getInstance({...})
 
 Interface with core Ocean functions
 
-#### Methods
+### Methods
 
 * **getAccounts** - Returns all available accounts loaded via a wallet, or by Web3.
 ```
@@ -202,7 +208,7 @@ DDO = ocean.resolveDID(did)
 
 Ocean Account object
 
-#### Methods
+### Methods
 
 * **getOceanBalance** - SYNC. Returns the Ocean Tokens balance for that account.
 ```
@@ -228,7 +234,7 @@ amount= account.requestTokens(amountTokens)
 
 Interface provides access to asset functions
 
-#### Functions
+### Functions
 
 * **getId** - SYNC. Return the Id used by this asset.
 ```
@@ -339,7 +345,7 @@ serviceAgreement= ocean.asset.publishServiceAgreement(providerId, price, ..)
 
 Interface provides access to ServiceAgreement functions
 
-#### Functions
+### Functions
 
 * **getId** - SYNC. Return the Id used by this serviceAgreement.
 ```
@@ -366,7 +372,7 @@ access= ocean.serviceAgreement.getAccess()
 
 Interface provides access to Trader functions
 
-##### Functions
+### Functions
 
 * **purchaseAsset** - ASYNC. Given an Asset id/did or Asset object and Service Agreement, the Consumer created for the trader class purchases an asset
 ```
@@ -377,7 +383,7 @@ order= ocean.trader.purchaseAsset(Asset or assetId or assetDID, serviceAgreement
 
 Interface provides access to Order functions
 
-##### Functions
+### Functions
 
 * **getId** - SYNC. Return the Id used by this order.
 ```
@@ -403,7 +409,7 @@ url= ocean.consume()
 
 Interface provides access to SecretStore functions
 
-##### Functions
+### Functions
 
 * **encryptDocument** - SYNC. **Private function** encapsulated as part of the **register** function. It integrates the Parity Ethereum & Secret Store API allowing to encrypt a document.
 Given by a **Publisher** an unique resource id (did), the document to encrypt and the Secret Store cluster threshold (could be pre-defined to a fixed number), integrate the Secret Store API's to encrypt the document.
