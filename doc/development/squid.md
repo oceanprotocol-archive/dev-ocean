@@ -238,32 +238,21 @@ Interface provides access to assets.
 
 #### Methods
 
-* **purchase** ASYNC. Given an Asset id/did or Asset object and Service Agreement, the Consumer created for the trader class purchases an asset
+* **purchase** ASYNC. Given an Asset id/did or Asset object and Service Agreement, the Consumer created for the  class purchases an asset
 
   ```
   order = asset.purchase(assetDID, serviceAgreementId, timeout)
   ```
-
-* **getDID** - SYNC. Return the DID used by this asset.
-```
-did = asset.getDID()
-```
-
-- **getDDO** - SYNC. Return the created DDO used by this asset.
-
+* **getDDO** - SYNC. Return the created DDO used by this asset.
 ```
 ddo = ocean.asset.getDDO()
 ```
 
-* **register** - ASYNC. High-level method publishing the metadata off-chain and registering the Service Agreement on-chain. It orchestrate the `publishAssetMetadata` and `publishServiceAgreement`, and creating a `DDO` methods.
-```
-Asset= ocean.asset.register(metadata, services)
-```
+- **getDID** - SYNC. Return the DID used by this asset.
 
-Functions beeing called:
-​    * publishMetadata
-​    * publishServiceAgreement (from ServiceAgreement)
-​    * encryptDocument (from SecretStore)
+```
+did = asset.getDID()
+```
 
 * **publishMetadata** - SYNC. Given an asset metadata, register this metadata using the assets DDO off-chain. It returns a boolean with the result of the operation.
 ```
@@ -288,6 +277,15 @@ This method is expecting a json object that contains the following structure:
  ```
 
 In the base object there are more optional fields that you can check in the [provider API](https://github.com/oceanprotocol/provider/blob/develop/provider/app/assets.py).
+
+- **getMetadata** - SYNC. returns the metadata stored off chanin by using the asset DDO. Internally calls Ocean.resolveDID(did).
+
+```
+metadata= ocean.asset.getMetadata()
+```
+
+You have to do a request to this endpoint:
+GET {provider.url}/api/v1/provider/assets/metadata/<asset_id>
 
 * **updateMetadata** - SYNC. Given an asset metadata, update the metadata using the asset DDO off-chain. This method replace the complete existing DDO by the DDO provided. It returns a boolean with the result of the operation.
 ```
@@ -316,33 +314,14 @@ This method is expecting a json object that contains the following structure:
  ```
 In the base object there are more optional fields that you can check in the [provider API](https://github.com/oceanprotocol/provider/blob/develop/provider/app/assets.py).
 
-* **getMetadata** - SYNC. returns the metadata stored off chanin by using the asset DDO. Internally calls Ocean.resolveDID(did).
-```
-metadata= ocean.asset.getMetadata()
-```
-You have to do a request to this endpoint:
-GET {provider.url}/api/v1/provider/assets/metadata/<asset_id>
-
-* **getPrice** - SYNC. Given a service agreement id, get's the asset price information existing on-chain.
-```
-price= ocean.asset.getPrice(serviceAgreementId)
-```
-
-`tbd`
-
 * **retireMetadata** - ASYNC. Given an Asset metadata, this method delete logically the Asset Metadata. **Nice to Have**
 ```
 ocean.asset.retireMetadata(metadata)
 ```
 
-* **publishServiceAgreement** -  ASYNC. The Publisher register a Service Agreement related with the Asset, returns a ServiceAgreement object
-```
-serviceAgreement= ocean.asset.publishServiceAgreement(providerId, price, ..)
-```
-
 * **getServiceAgreements** - SYNC. Get a list of the service agreements published for this asset. providerId could be optional. **Nice to Have**
 ```
-[serviceAgreementIds]= ocean.asset.getServiceAgreements(providerId)
+[serviceAgreementIds] = ocean.asset.getServiceAgreements(providerId)
 ```
 
 ## ServiceAgreement
@@ -353,34 +332,36 @@ Interface provides access to ServiceAgreement functions
 
 * **getId** - SYNC. Return the Id used by this serviceAgreement.
 ```
-id= ocean.serviceAgreement.getId()
+id = ocean.serviceAgreement.getId()
+```
+
+- **getPrice** - SYNC. Given a service agreement id, get's the asset price information existing on-chain.
+
+```
+price = ocean.serviceAgreement.getPrice(serviceAgreementId)
+tbd
 ```
 
 * **getStatus** -  SYNC. Return's the status of a Service Agreement. Possible values are (0=> Pending, 1=> Enabled, 2=> Retired)
 
 ```
-status= ocean.serviceAgreement.getStatus()
+status = ocean.serviceAgreement.getStatus()
+```
+
+* **publish** - ASYNC. The Publisher register a Service Agreement related with the Asset, returns a ServiceAgreement object
+
+```
+serviceAgreement = ocean.serviceAgreement.publish(providerId, price, ..)
 ```
 
 * **retire** - ASYNC. Given a Service Agreement object, the Publisher retire a Service Agreement. It changes the status to the value 2=>Retired.
 ```
-result= ocean.serviceAgreement.retire()
+result = ocean.serviceAgreement.retire()
 ```
 
 * **getAccess** -  SYNC. Get all the information required to get access to an asset after the purchase process
 ```
-access= ocean.serviceAgreement.getAccess()
-```
-
-## Trader
-
-Interface provides access to Trader functions
-
-##### Functions
-
-* **purchaseAsset** - ASYNC. Given an Asset id/did or Asset object and Service Agreement, the Consumer created for the trader class purchases an asset
-```
-order= ocean.trader.purchaseAsset(Asset or assetId or assetDID, serviceAgreementId or ServiceAgreement, timeout)
+access = ocean.serviceAgreement.getAccess()
 ```
 
 ## Order
@@ -409,7 +390,7 @@ status= order.verifyPayment()
 url= ocean.consume()
 ```
 
-## SecretStore
+## SecretStore (Private)
 
 Interface provides access to SecretStore functions
 
@@ -427,13 +408,9 @@ Given by a **Consumer** an unique resource id (did) and the document encrypted, 
 document= ocean.secretStore.decryptDocument(did, encryptedDocument)
 ```
 
+## DID-DDO-Library (Private)
 
-
-## OLD TO MOVE 
-
-- ### 
-
-
+TBD
 
 ## Squid API Implementation state
 
@@ -459,7 +436,6 @@ Public API
 | Asset            | publishMetadata                    | string                  | High | Not Implemented       | Not Implemented           | Not Implemented     |
 | Asset            | getMetadata                        | Metadata                | High | Not Implemented       | Not Implemented           | Not Implemented     |
 | Asset            | updateMetadata                     | boolean                 | High | Not Implemented       | Not Implemented           | Not Implemented     |
-| Asset            | updateMetadata                     | boolean                 | High | Not Implemented       | Not Implemented           | Not Implemented     |
 | Asset            | retireMetadata                     | boolean                 | Low  | Not Implemented       | Not Implemented           | Not Implemented     |
 | Asset            | getServiceAgreements               | array[ServiceAgreement] | Low  | Not Implemented       | Not Implemented           | Not Implemented     |
 | ServiceAgreement | getId                              | string                  | High | Not Implemented       | Not Implemented           | Not Implemented     |
@@ -475,41 +451,12 @@ Public API
 
 Private API                                                                                 
 
-| Class                     | Method                             | Return Value            | Prio   | Python Implementation   | Javascript Implementation   | Java Implementation   |
-|:--------------------------|:-----------------------------------|:------------------------|:-------|:------------------------|:----------------------------|:----------------------|
-| SecretStore               | encryptDocument                    | string                  | High   | Not Implemented         | Not Implemented             | Not Implemented       |
-| SecretStore               | decryptDocument                    | string                  | Hight  | Not Implemented         | Not Implemented             | Not Implemented       |
-
-### Deleted
-
-- **generateDID** - SYNC. Generates a new DID string.
-
-```
-did = ocean.generateDID(seed)
-```
-
-This is moved to backend (called during .register())
-
-- Ocean(config(web3Provider, nodeURI, gas, network, providerURI))
-
-Constructor is private so only way to get an instance is using the `getInstance()` method.
-
-#### Provider Functions (Nice to Have)
-
-* **registerProvider** -
-```
-result= registerProvider(providerAddress, url)
-```
-
-* **getProviders** -
-```
-getProviders()
-```
-
-* **getAssetProviders** - Get the Providers giving access to an Asset
-```
-getAssetProviders(assetDID)
-```
+| Class       | Method          | Return Value | Prio  | Python Implementation | Javascript Implementation | Java Implementation |
+| :---------- | :-------------- | :----------- | :---- | :-------------------- | :------------------------ | :------------------ |
+| SecretStore | encryptDocument | string       | High  | Not Implemented       | Not Implemented           | Not Implemented     |
+| SecretStore | decryptDocument | string       | Hight | Not Implemented       | Not Implemented           | Not Implemented     |
+| DID-DDO-lib | TBD             |              |       |                       |                           |                     |
+| DID-DDO-lib | TBD ...         |              |       |                       |                           |                     |
 
 ## Examples
 
