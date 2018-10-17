@@ -1,29 +1,31 @@
 # Squid API
 
+<!--ts-->
+
 Table of Contents
 =================
 
-* [Common](#common)
-  * [Getting an instance](#getting-an-instance)
-    * [Functions](#functions)
-* [Ocean](#ocean)
-  * [Functions](#functions-1)
-  * [Account](#account)
-     - [Functions](#functions-2)
-  * [Asset](#asset)
-     - [Functions](#functions-3)
-  * [ServiceAgreement](#serviceagreement)
-      - [Functions](#functions-4)
-  * [Trader](#trader)
-      - [Functions](#functions-5)
-  * [Order](#order)
-      - [Functions](#functions-6)
-  * [Secret Store](#secret-store)
-      - [Functions](#functions-7)
-* [Squid API Implementation state](#squid-api-implementation-state)
-  * [Deleted](#deleted)
-    + [Provider Functions (Nice to Have)](#provider-functions--nice-to-have-)
-- [Examples](#examples)
+   * [Squid API](#squid-api)
+      * [Common](#common)
+         * [Getting an instance](#getting-an-instance)
+            * [Functions](#functions)
+      * [Ocean](#ocean)
+            * [Methods](#methods)
+      * [Account](#account)
+            * [Methods](#methods-1)
+      * [Asset](#asset)
+            * [Methods](#methods-2)
+      * [ServiceAgreement](#serviceagreement)
+            * [Methods](#methods-3)
+      * [Order](#order)
+               * [Methods](#methods-4)
+      * [SecretStore (Private)](#secretstore-private)
+               * [Methods](#methods-5)
+      * [DID-DDO-Library (Private)](#did-ddo-library-private)
+      * [Squid API Implementation state](#squid-api-implementation-state)
+      * [Examples](#examples)
+
+<!--te-->
 
 ---
 
