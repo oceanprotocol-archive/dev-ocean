@@ -183,9 +183,27 @@ array[Order] = ocean.searchOrders(searchQuery)
 asset_did = ocean.register(metadata, services)
 ```
 
-* resolveDID** - SYNC. Given a DID, return the associated DID Document (DDO). The DDO is resolved by directly interacting with the keeper node. 
+* **resolveDID** - SYNC. Given a DID, return the associated DID Document (DDO). The DDO is resolved by directly interacting with the keeper node. 
 ```
 DDO = ocean.resolveDID(did)
+```
+
+- **getOrder** - ASYNC. Get an order from the given orderId.
+
+```
+Order = ocean.getOrder(orderId)
+```
+
+* **getAsset** - ASYNC. Get an asset based on its identifier, in the form of a DID. 
+
+```
+Asset = ocean.getAsset(asset_DID)
+```
+
+- **getServiceAgreement** - SYNC. Returns as serviceAgreement object based from the service agreement id (Publisher). **Nice to Have**.
+
+```
+serviceAgreement = ocean.getServiceAgreement(serviceAgreementId)
 ```
 
 ## Account
@@ -216,23 +234,25 @@ amount= account.requestTokens(amountTokens)
 
 ## Asset
 
-Interface provides access to asset functions
+Interface provides access to assets. 
 
 #### Methods
 
-* **getId** - SYNC. Return the Id used by this asset.
-```
-id= asset.getId()
-```
+* **purchase** ASYNC. Given an Asset id/did or Asset object and Service Agreement, the Consumer created for the trader class purchases an asset
 
-* **getDDO** - SYNC. Return the created DDO used by this asset.
-```
-ddo= ocean.asset.getDDO()
-```
+  ```
+  order = asset.purchase(assetDID, serviceAgreementId, timeout)
+  ```
 
 * **getDID** - SYNC. Return the DID used by this asset.
 ```
-did= ocean.asset.getDID()
+did = asset.getDID()
+```
+
+- **getDDO** - SYNC. Return the created DDO used by this asset.
+
+```
+ddo = ocean.asset.getDDO()
 ```
 
 * **register** - ASYNC. High-level method publishing the metadata off-chain and registering the Service Agreement on-chain. It orchestrate the `publishAssetMetadata` and `publishServiceAgreement`, and creating a `DDO` methods.
@@ -411,25 +431,7 @@ document= ocean.secretStore.decryptDocument(did, encryptedDocument)
 
 ## OLD TO MOVE 
 
-- **getAsset** - ASYNC. Get an asset based on it's DID or assetId
-
-```
-Asset = ocean.getAsset(assetDID | assetId )
-```
-
-- **getServiceAgreement** - SYNC. Returns as serviceAgreement object based from the service agreement id (Publisher). **Nice to Have**.
-
-```
-serviceAgreement = ocean.getServiceAgreement(serviceAgreementId)
-```
-
-- **getOrder** - ASYNC. Get an order based on a orderId
-
-```
-Order= ocean.getOrder(orderId)
-```
-
-### 
+- ### 
 
 
 
