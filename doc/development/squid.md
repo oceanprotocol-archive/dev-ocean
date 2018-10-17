@@ -431,7 +431,7 @@ Public API
 | Ocean                     | getAccounts                        | array[Account]          | High   | Not Implemented         | x                           | Not Implemented       |
 | Ocean                     | searchAssets                       | array[Asset]            | High   | Not Implemented         | Not Implemented             | Not Implemented       |
 | Ocean                     | searchOrders `tbd`                 | array[Order]            | Low    | Not Implemented         | Not Implemented             | Not Implemented       |
-| Ocean                     | register                           | Asset                   | High   | Not Implemented         | Not Implemented             | Not Implemented       |
+| Ocean                     | register                           | string                  | High   | Not Implemented         | Not Implemented             | Not Implemented       |
 | Ocean                     | generateDID                        | string                  | High   | Not Implemented         | Not Implemented             | Not Implemented       |
 | Ocean                     | resolveDID                         | ddo                     | High   | Not Implemented         | Not Implemented             | Not Implemented       |
 | Ocean                     | getOrder                           | Order                   | High   | Not Implemented         | Not Implemented             | Not Implemented       |
