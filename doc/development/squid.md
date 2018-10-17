@@ -1,5 +1,10 @@
 # Squid API
 
+The Squid API is a Level-2 API built on top of core Ocean components. It's a facilitator or enabler, but it's not the only way to interact with Ocean.
+
+The goal of this doc is to help a developer develop a version of the Squid API in any programming language.
+Currently, the Squid API is defined for Object-Oriented languages such as JavaScript, Java, and Python (which are the three initial implementation languages).
+
 Table of Contents
 =================
 
