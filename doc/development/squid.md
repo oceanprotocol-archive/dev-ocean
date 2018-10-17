@@ -188,7 +188,7 @@ asset_id = ocean.register(metadata, services)
 did = ocean.generateDID(seed)
 ```
 
-* **resolveDID** - SYNC. Given a DID the method, return the associated DDO. 
+* **resolveDID** - SYNC. Given a DID the method, return the associated DID Document (DDO). The DDO is resolved by directly interacting with the KEEPER
 ```
 DDO = ocean.resolveDID(did)
 ```
