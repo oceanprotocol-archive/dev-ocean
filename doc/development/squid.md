@@ -454,9 +454,8 @@ Public API
 | Account          | getBalance                         | Balance                 | High | Not Implemented       | x                         | Not Implemented     |
 | Account          | requestTokens                      | number/integer          | High | Not Implemented       | x                         | Not Implemented     |
 | Asset            | purchase                           | Order                   | High | Not Implemented       | Not Implemented           | Not Implemented     |
-| Asset            | getId                              | string                  | High | Not Implemented       | Not Implemented           | Not Implemented     |
-| Asset            | getDDO                             | ddo                     | High | Not Implemented       | Not Implemented           | Not Implemented     |
 | Asset            | getDID                             | string                  | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| Asset            | getDDO                             | ddo                     | High | Not Implemented       | Not Implemented           | Not Implemented     |
 | Asset            | publishMetadata                    | string                  | High | Not Implemented       | Not Implemented           | Not Implemented     |
 | Asset            | getMetadata                        | Metadata                | High | Not Implemented       | Not Implemented           | Not Implemented     |
 | Asset            | updateMetadata                     | boolean                 | High | Not Implemented       | Not Implemented           | Not Implemented     |
