@@ -3,6 +3,10 @@
 Table of Contents
 =================
 
+[TOC]
+
+
+
 * [Common](#common)
   * [Getting an instance](#getting-an-instance)
     * [Functions](#functions)
@@ -223,7 +227,7 @@ amount= account.requestTokens(amountTokens)
 
 Interface provides access to asset functions
 
-#### Functions
+#### Methods
 
 * **getId** - SYNC. Return the Id used by this asset.
 ```
@@ -334,7 +338,7 @@ serviceAgreement= ocean.asset.publishServiceAgreement(providerId, price, ..)
 
 Interface provides access to ServiceAgreement functions
 
-#### Functions
+#### Methods
 
 * **getId** - SYNC. Return the Id used by this serviceAgreement.
 ```
@@ -372,7 +376,7 @@ order= ocean.trader.purchaseAsset(Asset or assetId or assetDID, serviceAgreement
 
 Interface provides access to Order functions
 
-##### Functions
+##### Methods
 
 * **getId** - SYNC. Return the Id used by this order.
 ```
@@ -398,7 +402,7 @@ url= ocean.consume()
 
 Interface provides access to SecretStore functions
 
-##### Functions
+##### Methods
 
 * **encryptDocument** - SYNC. **Private function** encapsulated as part of the **register** function. It integrates the Parity Ethereum & Secret Store API allowing to encrypt a document.
 Given by a **Publisher** an unique resource id (did), the document to encrypt and the Secret Store cluster threshold (could be pre-defined to a fixed number), integrate the Secret Store API's to encrypt the document.
