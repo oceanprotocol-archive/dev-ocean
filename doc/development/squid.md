@@ -2,27 +2,26 @@
 
 <!--ts-->
    * [Squid API](#squid-api)
-   * [Table of Contents](#table-of-contents)
       * [Common](#common)
          * [Getting an instance](#getting-an-instance)
             * [Functions](#functions)
       * [Ocean](#ocean)
-            * [Methods](#methods)
+         * [Methods](#methods)
       * [Account](#account)
-            * [Methods](#methods-1)
+         * [Methods](#methods-1)
       * [Asset](#asset)
-            * [Methods](#methods-2)
+         * [Methods](#methods-2)
       * [ServiceAgreement](#serviceagreement)
-            * [Methods](#methods-3)
+         * [Methods](#methods-3)
       * [Order](#order)
-               * [Methods](#methods-4)
+         * [Methods](#methods-4)
       * [SecretStore (Private)](#secretstore-private)
-               * [Methods](#methods-5)
+         * [Methods](#methods-5)
       * [DID-DDO-Library (Private)](#did-ddo-library-private)
       * [Squid API Implementation state](#squid-api-implementation-state)
       * [Examples](#examples)
 
-<!-- Added by: batman, at: 2018-10-17T17:16+02:00 -->
+<!-- Added by: batman, at: 2018-10-18T09:08+02:00 -->
 
 <!--te-->
 
@@ -145,7 +144,7 @@ const ocean = await Ocean.getInstance({...})
 
 This class serves as the interface with Ocean Protocol. The Ocean class aggregates the list of **Account**s (ethereum accounts), list of **Asset**s, and a list of **Order** objects. 
 
-#### Methods
+### Methods
 
 * **getAccounts** - Returns all available accounts loaded via a wallet, or by Web3.
 ```
@@ -211,7 +210,7 @@ serviceAgreement = ocean.getServiceAgreement(serviceAgreementId)
 
 Ocean Account object
 
-#### Methods
+### Methods
 
 * **getOceanBalance** - SYNC. Returns the Ocean Tokens balance for that account.
 ```
@@ -237,7 +236,7 @@ amount= account.requestTokens(amountTokens)
 
 Interface provides access to assets. 
 
-#### Methods
+### Methods
 
 * **purchase** ASYNC. Given an Asset id/did or Asset object and Service Agreement, the Consumer created for the  class purchases an asset
 
@@ -329,7 +328,7 @@ ocean.asset.retireMetadata(metadata)
 
 Interface provides access to ServiceAgreement functions
 
-#### Methods
+### Methods
 
 * **getId** - SYNC. Return the Id used by this serviceAgreement.
 ```
@@ -369,7 +368,7 @@ access = ocean.serviceAgreement.getAccess()
 
 Interface provides access to Order functions
 
-##### Methods
+### Methods
 
 * **getId** - SYNC. Return the Id used by this order.
 ```
@@ -395,7 +394,7 @@ url= ocean.consume()
 
 Interface provides access to SecretStore functions
 
-##### Methods
+### Methods
 
 * **encryptDocument** - SYNC. **Private function** encapsulated as part of the **register** function. It integrates the Parity Ethereum & Secret Store API allowing to encrypt a document.
 Given by a **Publisher** an unique resource id (did), the document to encrypt and the Secret Store cluster threshold (could be pre-defined to a fixed number), integrate the Secret Store API's to encrypt the document.
