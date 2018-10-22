@@ -1,66 +1,112 @@
 # Squid API
 
-Table of Contents
-=================
+The Squid API is a Level-2 API built on top of core Ocean components. It's a facilitator or enabler, but it's not the only way to interact with Ocean.
 
+The goal of this doc is to help a developer develop a version of the Squid API in any programming language. Currently, the Squid API is defined for Object-Oriented languages such as JavaScript, Java, and Python (which are the three initial implementation languages).
+
+<!--ts-->
    * [Squid API](#squid-api)
-   * [Table of Contents](#table-of-contents)
       * [Common](#common)
          * [Getting an instance](#getting-an-instance)
-            * [Functions](#functions)
+            * [Methods](#methods)
       * [Ocean](#ocean)
-         * [Balance](#balance)
-            * [Functions](#functions-1)
-         * [Tokens](#tokens)
-            * [Functions](#functions-2)
-         * [Decentralized Identifiers (DID)](#decentralized-identifiers-did)
-            * [Functions](#functions-3)
-      * [Assets](#assets)
-         * [Metadata](#metadata)
-            * [Functions](#functions-4)
-         * [Secret Store](#secret-store)
-            * [Functions](#functions-5)
-      * [Service Agreements and Orders](#service-agreements-and-orders)
-            * [Functions](#functions-6)
+         * [Methods](#methods-1)
+      * [Account](#account)
+         * [Methods](#methods-2)
+      * [Asset](#asset)
+         * [Methods](#methods-3)
+      * [ServiceAgreement](#serviceagreement)
+         * [Methods](#methods-4)
+      * [Order](#order)
+         * [Methods](#methods-5)
+      * [SecretStore (Private)](#secretstore-private)
+         * [Methods](#methods-6)
+      * [DID-DDO-Library (Private)](#did-ddo-library-private)
       * [Squid API Implementation state](#squid-api-implementation-state)
-         * [Deleted](#deleted)
-            * [Provider Functions (Nice to Have)](#provider-functions-nice-to-have)
-   * [Examples](#examples)
+      * [Examples](#examples)
 
+<!-- Added by: batman, at: 2018-10-18T09:08+02:00 -->
 
-**This is the New API, the old ones are listed at the bottom**
+<!--te-->
+
+---
+
+**🐲🦑 THERE BE DRAGONS AND SQUIDS. This is in alpha state and you can expect running into problems. If you run into them, please open up [a new issue](https://github.com/oceanprotocol/dev-ocean/issues). 🦑🐲**
+
+---
 
 ## Common
 
 Common functions exposed by an abstract class extended by all the other core classes
 
 ```java
-
 /**
  * Abstract class providing the common methods like initilizers and similar
 */
-abstract class SquidCommons {}
+abstract class OceanBase {}
 
 /**
- * Extends SquidCommons providing access to Ocean Core functionalities
+ * Access to Ocean functionalities
 */
-class OceanCore extends SquidCommons {}
+class Ocean {}
 
 /**
- * Extends SquidCommons providing Asset functionalities
+ * Extends OceanBase providing Asset functionalities
 */
-class Assets extends SquidCommons {}
+class Asset extends OceanBase {
+    id: string
+    publisherId: string
+    price: number
+}
 
 /**
- * Extends SquidCommons providing ServiceAgreements functionalities
+ * Extends OceanBase providing Account functionalities
 */
-class ServiceAgreements extends SquidCommons {}
+class Account extends OceanBase  {
+    name: string
+    balance: Balance
+}
+
+/**
+ * Extends OceanBase providing Service Agreement functionalities
+*/
+class ServiceAgreement extends OceanBase {
+    tbd
+}
+
+/**
+ * Extends OceanBase providing Order functionalities
+*/
+class Order extends OceanBase {
+    id: string
+    asset: Asset
+    assetId: string
+    timeout: number
+    pubkey: string
+    key: any
+    paid: boolean
+    status: number
+}
+
+/**
+ * Extends OceanBase providing SecretStore functionalities
+*/
+class SecretStore extends OceanBase {
+}
+
+/**
+ * Balance Model
+*/
+class Balance {
+    eth: number
+    ocn: number
+}
 
 ```
 
 ### Getting an instance
 
-#### Functions
+#### Methods
 
 ```
 getInstance(web3Dto, providerDto)
@@ -71,347 +117,382 @@ Parameters:
 * web3Dto - Web3 client wrapped in a DTO object to avoid coupling with specific web3 specific libraries
 * providerDto - Ocean Provider client wrapped in a DTO object
 
-This method returns an instance of the **OceanManager** class. It allows to get access to the other Ocean core methods
+This method returns an instance of the **Ocean** class. It allows to get access to the other Ocean core methods
+
+In Python
+Instantiate an ocean object
+
+```python
+ocean = Ocean(web3Dto, providerDto)
+
+# for comaptability use get_instance to return an Ocean object
+ocean = Ocean.get_instance(web3Dto, providerDto)
+
+class Ocean:
+  ...
+  @staticmethod
+  def getInstance(web3Dto, providerDto):
+    return Ocean(web3Dto, providerDto)
+```
+
+In JavaScript
+
+```javascript
+import { Ocean } from '@oceanprotocol/squid'
+
+const ocean = await Ocean.getInstance({...})
+```
 
 ## Ocean
 
-Interface with core Ocean functions
+This class serves as the interface with Ocean Protocol. The Ocean class aggregates the list of **Account**s (ethereum accounts), list of **Asset**s, and a list of **Order** objects. The Ocean class aggregates the Keeper class, which in turn interfaces with the running Smart Contracts: Market, Token, and Auth. 
 
-### Balance
+### Methods
 
-
-#### Functions
-
-* **getOceanBalance** - SYNC. The only parameter required is an account address (ie. 0x6309b5dd9245278a7fdfb2186dfb80583caeadc7). Returns the Ocean Tokens balance for that account.
+* **getAccounts** - ASYNC. Returns all available accounts loaded via a wallet, or by Web3.
 ```
-oceanBalance= getOceanBalance(address)
+array[Account] = ocean.getAccounts()
 ```
 
-* **getEtherBalance** - SYNC. The only parameter required is an account address. Returns the Ether balance for that account.
+* **searchAssets** - SYNC. Given a search query, returns a list of the Asset objects matching with that query. 
 ```
-ethBalance= getEtherBalance(address)
+array[Asset] = ocean.searchAssets(searchQuery)
 ```
+You have to do a request to this endpoint:
+POST {provider.url}/api/v1/provider/assets/metadata/query
+This method is expecting a json object that contains the following structure:
 
-* **getBalance** - SYNC. The only parameter required is an account address. Returns the Ocean tokens and Ether balance for that account.
+ ```  {
+        "offset": 100,
+        "page": 0,
+        "query": {
+          "value": 1
+        },
+        "sort": {
+          "value": 1
+        },
+        "text": "Office"
+}
+ ```
+
+The only mandatory argument is query or text, but you have to use only one of them. The other fields are optional.
+
+* **searchOrders** - (*TBD*) SYNC. Return a list of orders by search query. **Nice to Have**.
 ```
-balance= getBalance(address)
-```
-
-
-### Tokens
-
-#### Functions
-
-* **requestTokens** - SYNC. Request a number of Ocean Tokens. Returns a boolean to know if everything was right.
-
-```
-result= requestTokens(amountTokens)
-```
-
-
-### Decentralized Identifiers (DID)
-
-#### Functions
-
-* **generateDID** - SYNC. Generates a specific DID with a random id based on the given.
-
-```
-did= generateDID(seed)
+array[Order] = ocean.searchOrders(searchQuery)
 ```
 
-* **resolveDID** - SYNC. Given a DID the method returns the DDO associated to it.
+* **getOrdersByAccount** - ASYNC. Returns a list of orders by given account.
 ```
-ddo= resolveDID(did)
-```
-
-* **createDDO** - SYNC. Given the public keys, services and metadata information, creates a DDO and a DID.
-```
-ddo= createDDO(pubKeys, services, metadata)
+array[Order] = ocean.getOrdersByAccount(account)
 ```
 
-
-
-## Assets
-
-### Metadata
-
-#### Functions
-
-* **register** - ASYNC. High-level method publishing the metadata off-chain and registering the Service Agreement on-chain. It orchestrate the `publishMetadata` and `publishServiceAgreement` methods.
+* **register** - ASYNC. High-level method publishing the metadata off-chain and registering the Service Agreement on-chain. It orchestrate the publishAssetMetadata and publishServiceAgreement, and creating a DDO methods.
 ```
-status= register(assetDDO, price)
+asset_did = ocean.register(asset)
 ```
 
-* **publishMetadata** - SYNC. Given an asset DDO, register this DDO off-chain. It returns a boolean with the result of the operation.
+* **resolveDID** - SYNC. Given a DID, return the associated DID Document (DDO). The DDO is resolved by directly interacting with the keeper node. 
 ```
-status= publishMetadata(assetDDO)
-```
-
-* **updateMetadata** - SYNC. Given an asset DDO, update the DDO off-chain. This method replace the complete existing DDO by the DDO provided. It returns a boolean with the result of the operation.
-```
-status= updateMetadata(assetDDO)
+DDO = ocean.resolveDID(did)
 ```
 
-* **getAssetMetadata** - SYNC. Given a DID, returns the associated DDO. Internally calls Ocean.resolveDID(did).
+- **getOrder** - ASYNC. Get an order from the given orderId.
+
 ```
-ddo= getAssetMetadata(assetDID)
+Order = ocean.getOrder(orderId)
 ```
 
-* **getAssetPrice** - SYNC. Given a service agreement id, get's the asset price information existing on-chain.
+* **getAsset** - ASYNC. Get an asset based on its identifier, in the form of a DID. 
+
 ```
-getAssetPrice(serviceAgreementId)
+Asset = ocean.getAsset(asset_DID)
 ```
 
-* **search** - SYNC. Given a search query, returns a list of the DDO's matching with that query
+- **getServiceAgreement** - SYNC. Returns as serviceAgreement object based from the service agreement id (Publisher). **Nice to Have**.
+
 ```
-array[ddo]= search(searchQuery)
+serviceAgreement = ocean.getServiceAgreement(serviceAgreementId)
 ```
 
-* **retireMetadata** - SYNC. Given an Asset DID, this method delete logically the Asset Metadata. **Nice to Have**
+## Account
+
+Ocean Account object
+
+### Methods
+
+* **getId** - SYNC. Return the Id used by this account.
 ```
-retireMetadata(assetDID)
+id= account.getId()
 ```
 
-### Secret Store
+* **getOceanBalance** - ASYNC. Returns the Ocean Tokens balance for that account.
+```
+oceanBalance= account.getOceanBalance()
+```
 
-#### Functions
+* **getEtherBalance** - ASYNC. Returns the Ether balance for that account.
+```
+ethBalance= account.getEtherBalance()
+```
+
+* **getBalance** - ASYNC. Returns an instance of the Balance object for that account.
+```
+balance= account.getBalance()
+```
+
+* **requestTokens** - ASYNC. Request a number of Ocean Tokens. Returns the number of tokens accounted.
+```
+amount= account.requestTokens(amountTokens)
+```
+
+## Asset
+
+Interface provides access to assets. 
+
+### Methods
+
+* **getId** - SYNC. Return the Id used by this asset.
+```
+id= order.getId()
+```
+
+* **purchase** - ASYNC. Given an Asset id/did or Asset object and Service Agreement, the Consumer created for the  class purchases an asset
+```
+order = asset.purchase(assetDID, serviceAgreementId, timeout)
+```
+
+* **getDDO** - SYNC. Return the created DDO used by this asset.
+```
+ddo = asset.getDDO()
+```
+
+- **getDID** - SYNC. Return the DID used by this asset.
+```
+did = asset.getDID()
+```
+
+* **publishMetadata** - SYNC. Given an asset metadata, register this metadata using the assets DDO off-chain. It returns a boolean with the result of the operation.
+```
+status= asset.publishMetadata(metadata)
+```
+
+You have to do a request to this endpoint:
+POST {provider.url}/api/v1/provider/assets/metadata
+This method is expecting a json object that contains the following structure:
+ ```   {"assetId": ,
+        "publisherId":,
+        "base":{
+            "name":,
+            "size":,
+            "author":,
+            "license":,
+            "contentType":,
+            "contentUrls":,
+            "price":,
+            "type":
+        }
+       }
+ ```
+
+In the base object there are more optional fields that you can check in the [provider API](https://github.com/oceanprotocol/provider/blob/develop/provider/app/assets.py).
+
+- **getMetadata** - SYNC. returns the metadata stored off chanin by using the asset DDO. Internally calls Ocean.resolveDID(did).
+
+```
+metadata= asset.getMetadata()
+```
+
+You have to do a request to this endpoint:
+GET {provider.url}/api/v1/provider/assets/metadata/<asset_id>
+
+* **updateMetadata** - SYNC. Given an asset metadata, update the metadata using the asset DDO off-chain. This method replace the complete existing DDO by the DDO provided. It returns a boolean with the result of the operation.
+```
+status= asset.updateMetadata(metadata)
+```
+
+You have to do a request to this endpoint:
+PUT {provider.url}/api/v1/provider/assets/metadata
+This method is expecting a json object that contains the following structure:
+ ```   {"assetId": ,
+        "publisherId":,
+        "base":{
+            "name":,
+            "size":,
+            "author":,
+            "license":,
+            "contentType":,
+            "contentUrls":,
+            "price":,
+            "type":
+        },
+        "curation":{
+            "rating":
+            "numVotes":
+        }
+       }
+ ```
+In the base object there are more optional fields that you can check in the [provider API](https://github.com/oceanprotocol/provider/blob/develop/provider/app/assets.py).
+
+* **retireMetadata** - ASYNC. Given an Asset metadata, this method delete logically the Asset Metadata. **Nice to Have**
+```
+asset.retireMetadata(metadata)
+```
+
+* **getServiceAgreements** - SYNC. Get a list of the service agreements published for this asset. providerId could be optional. **Nice to Have**
+```
+[serviceAgreementIds] = asset.getServiceAgreements(providerId)
+```
+
+## ServiceAgreement
+
+Interface provides access to ServiceAgreement functions
+
+### Methods
+
+* **getId** - SYNC. Return the Id used by this serviceAgreement.
+```
+id = serviceAgreement.getId()
+```
+
+- **getPrice** - SYNC. Given a service agreement id, get's the asset price information existing on-chain.
+
+```
+price = serviceAgreement.getPrice(serviceAgreementId)
+tbd
+```
+
+* **getStatus** - SYNC. Return's the status of a Service Agreement. Possible values are (0=> Pending, 1=> Enabled, 2=> Retired)
+
+```
+status = serviceAgreement.getStatus()
+```
+
+* **publish** - ASYNC. The Publisher register a Service Agreement related with the Asset, returns a ServiceAgreement object
+
+```
+serviceAgreement = serviceAgreement.publish(providerId, price, ..)
+```
+
+* **retire** - ASYNC. Given a Service Agreement object, the Publisher retire a Service Agreement. It changes the status to the value 2=>Retired.
+```
+result = serviceAgreement.retire()
+```
+
+* **getAccess** - SYNC. Get all the information required to get access to an asset after the purchase process
+```
+access = serviceAgreement.getAccess()
+```
+
+## Order
+
+Interface provides access to Order functions
+
+### Methods
+
+* **getId** - SYNC. Return the Id used by this order.
+```
+id= order.getId()
+```
+
+* **getStatus** - ASYNC. Using an order object, returns an integer representing the order status as defined in the keeper. It is described as an Enum Possible values are (0=>Pending, 1=>Paid, 2=>Canceled)
+```
+status= order.getStatus()
+```
+
+* **commit** - ASYNC. Publisher commits this order with the access token.
+```
+isCommited= order.commit(accessToken)
+```
+
+* **pay** - ASYNC. Pay for this order with given account.
+```
+paymentId= order.pay(consumerAccount)
+```
+
+* **verifyPayment** - SYNC. Given an order object, verifies if the order was paid.
+```
+status= order.verifyPayment()
+```
+
+* **consume** - ASYNC. Get all the information required to get access to an asset after the purchase process, using the internal assetId and serviceAgreementId
+```
+url= order.consume(consumerAccount)
+```
+
+## SecretStore (Private)
+
+Interface provides access to SecretStore functions
+
+### Methods
 
 * **encryptDocument** - SYNC. **Private function** encapsulated as part of the **register** function. It integrates the Parity Ethereum & Secret Store API allowing to encrypt a document.
 Given by a **Publisher** an unique resource id (did), the document to encrypt and the Secret Store cluster threshold (could be pre-defined to a fixed number), integrate the Secret Store API's to encrypt the document.
 ```
-encryptedDocument= encryptDocument(did, document, threshold)
+encryptedDocument= secretStore.encryptDocument(did, document, threshold)
 ```
 
 * **decryptDocument** - SYNC.  **Private function** encapsulated as part of the **getAssetAccess** function. It integrates the Parity Ethereum & Secret Store API allowing to decrypt a document if the user executing this function is authorized by a Smart Contract.
 Given by a **Consumer** an unique resource id (did) and the document encrypted, this functions integrates the Secret Store API's to decrypt the document. The on-chain authorization phase is transparent for the user.
 ```
-document= decryptDocument(did, encryptedDocument)
+document= secretStore.decryptDocument(did, encryptedDocument)
 ```
 
-## Service Agreements and Orders
+## DID-DDO-Library (Private)
 
-#### Functions
-
-* **publishServiceAgreement** -  ASYNC. The Publisher register a Service Agreement related with a specific Asset
-
-```
-serviceAgreementId= publishServiceAgreement(assetDID, providerId, price, ..)
-```
-
-* **getServiceAgreementStatus** -  SYNC. Return's the status of a Service Agreement. Possible values are (0=> Pending, 1=> Enabled, 2=> Retired)
-
-```
-status= getServiceAgreementStatus(serviceAgreementId)
-```
-
-* **retireServiceAgreement** - ASYNC. Given a Service Agreement id, the Publisher retire a Service Agreement. It changes the status to the value 2=>Retired.
-```
-result= retireServiceAgreement(serviceAgreementId)
-```
-
-* **purchaseAsset** - ASYNC. Given a Service Agreement and Publisher Id, the Consumer purchase an asset
-```
-orderId= purchaseAsset(serviceAgreementId, publisherId , timeout)
-```
-
-* **getAssetAccess** -  SYNC. Get all the information required to get access to an asset after the purchase process
-```
-asset= getAssetAccess(serviceAgreementId)
-```
-
-* **getOrderStatus** - SYNC. Given an order id, returns an integer representing the order status as defined in the keeper. Possible values are (0=>Pending, 1=>Paid, 2=>Canceled)
-```
-status= getOrderStatus(orderId)
-```
-
-* **verifyOrderPayment** -  SYNC. Given an order id, verifies if the order was paid.
-```
-status= verifyOrderPayment(orderId)
-```
-
-* **getAssetsMetadata** - SYNC. Given an array of DID's, returns an array of the associated DDO's. Internally calls Ocean.resolveDID(did). **Nice to Have**.
-```
-array[ddo]= getAssetsMetadata(array[assetDID])
-```
-
-* **getAssetServiceAgreement** - SYNC. Get a list of the service agreements published for a specific asset. providerId could be optional. **Nice to Have**
-```
-getAssetServiceAgreement(assetDID, providerId)
-```
-
-* **getPurchasedOrders** - SYNC. Return a list of orders purchased by the user (Consumer). **Nice to Have**.
-```
-array[order]= getPurchasedOrders()
-```
-
-* **getServiceAgreements** - SYNC. Return a list of the Service agreements published by the user (Publisher). **Nice to Have**.
-```
-array[serviceAgreement]= getServiceAgreements()
-```
-
+TBD
 
 ## Squid API Implementation state
 
-Table not completed yet
+Public API
 
-| Category                  | Method                      | Python Implementation   | Javascript Implementation   | Java Implementation   |
-|:--------------------------|:----------------------------|-------------------------|-----------------------------|-----------------------|
-| Commons                   | getInstance                 | Not Implemented         | Not Implemented             | Not Implemented       |
-| Ocean                     | getOceanBalance             | Not Implemented         | Not Implemented             | Not Implemented       |
-| Ocean                     | getEtherBalance             | Not Implemented         | Not Implemented             | Not Implemented       |
-| Ocean                     | getBalance                  | Not Implemented         | Not Implemented             | Not Implemented       |
-| Ocean                     | requestTokens               | Not Implemented         | Not Implemented             | Not Implemented       |
-| Ocean                     | generateDID                 | Not Implemented         | Not Implemented             | Not Implemented       |
-| Ocean                     | resolveDID                  | Not Implemented         | Not Implemented             | Not Implemented       |
-| Ocean                     | createDDO                   | Not Implemented         | Not Implemented             | Not Implemented       |
-| Assets                    | register                    | Not Implemented         | Not Implemented             | Not Implemented       |
-| Assets                    | publishMetadata             | Not Implemented         | Not Implemented             | Not Implemented       |
-| Assets                    | updateMetadata              | Not Implemented         | Not Implemented             | Not Implemented       |
-| Assets                    | getAssetMetadata            | Not Implemented         | Not Implemented             | Not Implemented       |
-| Assets                    | getAssetPrice               | Not Implemented         | Not Implemented             | Not Implemented       |
-| Assets                    | search                      | Not Implemented         | Not Implemented             | Not Implemented       |
-| Assets.SecretStore        | encryptDocument             | Not Implemented         | Not Implemented             | Not Implemented       |
-| Assets.SecretStore        | decryptDocument             | Not Implemented         | Not Implemented             | Not Implemented       |
-| Service Agreements        | publishServiceAgreement     | Not Implemented         | Not Implemented             | Not Implemented       |
-| Service Agreements        | getServiceAgreementStatus   | Not Implemented         | Not Implemented             | Not Implemented       |
-| Service Agreements        | retireServiceAgreement      | Not Implemented         | Not Implemented             | Not Implemented       |
-| Service Agreements        | purchaseAsset               | Not Implemented         | Not Implemented             | Not Implemented       |
-| Service Agreements        | getAssetAccess              | Not Implemented         | Not Implemented             | Not Implemented       |
-| Service Agreements        | getOrderStatus              | Not Implemented         | Not Implemented             | Not Implemented       |
-| Service Agreements        | verifyOrderPayment          | Not Implemented         | Not Implemented             | Not Implemented       |
+| Class            | Method                             | Return Value            | Prio | Python Implementation | Javascript Implementation | Java Implementation |
+| :--------------- | :--------------------------------- | :---------------------- | :--- | :-------------------- | :------------------------ | :------------------ |
+| Ocean            | getInstance (js, java)/ Ocean (py) | Ocean                   | High | Not Implemented       | x                         | Not Implemented     |
+| Ocean            | getAccounts                        | array[Account]          | High | Not Implemented       | x                         | Not Implemented     |
+| Ocean            | searchAssets                       | array[Asset]            | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| Ocean            | searchOrders `tbd`                 | array[Order]            | Low  | Not Implemented       | Not Implemented           | Not Implemented     |
+| Ocean            | getOrdersByAccount                 | array[Order]            |      | Not Implemented       | x                         | Not Implemented     |
+| Ocean            | register                           | string                  | High | Not Implemented       | x                         | Not Implemented     |
+| Ocean            | resolveDID                         | ddo                     | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| Ocean            | getOrder                           | Order                   | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| Ocean            | getAsset                           | Asset                   | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| Account          | getId                              | string                  | High | Not Implemented       | x                         | Not Implemented     |
+| Account          | getOceanBalance                    | number/integer          | High | Not Implemented       | x                         | Not Implemented     |
+| Account          | getEtherBalance                    | number/integer          | High | Not Implemented       | x                         | Not Implemented     |
+| Account          | getBalance                         | Balance                 | High | Not Implemented       | x                         | Not Implemented     |
+| Account          | requestTokens                      | number/integer          | High | Not Implemented       | x                         | Not Implemented     |
+| Asset            | getId                              | string                  | High | Not Implemented       | x                         | Not Implemented     |
+| Asset            | purchase                           | Order                   | High | Not Implemented       | x                         | Not Implemented     |
+| Asset            | getDID                             | string                  | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| Asset            | getDDO                             | ddo                     | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| Asset            | publishMetadata                    | string                  | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| Asset            | getMetadata                        | Metadata                | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| Asset            | updateMetadata                     | boolean                 | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| Asset            | retireMetadata                     | boolean                 | Low  | Not Implemented       | Not Implemented           | Not Implemented     |
+| Asset            | getServiceAgreements               | array[ServiceAgreement] | Low  | Not Implemented       | Not Implemented           | Not Implemented     |
+| ServiceAgreement | getId                              | string                  | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| ServiceAgreement | getPrice                           | number/integer          | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| ServiceAgreement | getStatus                          | xxx                     | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| ServiceAgreement | publish                            | xxx                     | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| ServiceAgreement | retire                             | xxx                     | Low  | Not Implemented       | Not Implemented           | Not Implemented     |
+| ServiceAgreement | getAccess                          | xxx                     | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| Order            | getId                              | string                  | High | Not Implemented       | x                         | Not Implemented     |
+| Order            | getStatus                          | AccessStatus            | High | Not Implemented       | x                         | Not Implemented     |
+| Order            | verifyPayment                      | boolean                 | Low  | Not Implemented       | Not Implemented           | Not Implemented     |
+| Order            | pay                                | string                  | High | Not Implemented       | x                         | Not Implemented     |
+| Order            | commit                             | boolean                 | High | Not Implemented       | x                         | Not Implemented     |
+| Order            | consume                            | blob                    | High | Not Implemented       | x                         | Not Implemented     |
 
+Private API                                                                                 
 
+| Class       | Method          | Return Value | Prio  | Python Implementation | Javascript Implementation | Java Implementation |
+| :---------- | :-------------- | :----------- | :---- | :-------------------- | :------------------------ | :------------------ |
+| SecretStore | encryptDocument | string       | High  | Not Implemented       | Not Implemented           | Not Implemented     |
+| SecretStore | decryptDocument | string       | Hight | Not Implemented       | Not Implemented           | Not Implemented     |
+| DID-DDO-lib | TBD             |              |       |                       |                           |                     |
+| DID-DDO-lib | TBD ...         |              |       |                       |                           |                     |
 
-### Deleted
+## Examples
 
-- Ocean(config(web3Provider, nodeURI, gas, network, providerURI))
-
-Constructor is private so only way to get an instance is using the `getInstance()` method.
-
-- getAccounts() => list of accounts along with token and eth balances
-
-Not having an Actor registry make difficult to implement this. Maybe this business logic is not necessary.
-
-#### Provider Functions (Nice to Have)
-
-* **registerProvider** -
-```
-result= registerProvider(providerAddress, url)
-```
-
-* **getProviders** -
-```
-getProviders()
-```
-
-* **getAssetProviders** - Get the Providers giving access to an Asset
-```
-getAssetProviders(assetDID)
-```
-
-
-
-
-# Old squid API
-
-## Ocean
-- `js` getInstance(config(web3Provider, nodeUri, gas, network, providerUri))
-- `js` getAccounts()
-- `js` getOrdersByConsumer(consumerAddress)
-- `js` purchaseAsset(assetId, publisherId, price, privateKey, publicKey, timeout, senderAddress, initialRequestEventHandler, accessCommittedEventHandler, tokenPublishedEventHandler)
-
-### Token
-- `py` approve(address, resource_price)
-- `py` getBalance(account)
-- `js` getTokenBalance(accountAddress)
-- `js` getEthBalance(account)
-
-### Market
-- `py` generateID(content)
-- `py` verifyOrderPayment(orderId)
-- `js` verifyOrderPayment(orderId) 
-- `py` register(name, description, price, publisherAddress)
-- `js` registerAsset(name, description, price, publisherAddress)
-- `py` requestTokens(amount, address)
-- `js` requestTokens(amount, address)
-- `py` sendPayment(assetId, order, publisherAddress, senderAddress)
-- `js` payAsset(assetId, order, publisherAddress, senderAddress)
-- `py` checkAsset(assetId)
-- `js` checkAsset(assetId)
-- `py` getAssetPrice(assetId)
-- `js` getAssetPrice(assetId)
-
-### `py` Acl `js` Auth
-- `py` getOrderStatus(orderId)
-- `js` getOrderStatus(orderId) 
-- `py` initiateAccessRequest(resourceID, providerAddress, pubKey, timeout)
-- `py` commitAccessRequest(id, isAvailable,  expirationDate,  discovery,  permissions,  accessAgreementRef,   accessAgreementType)
-- `py` deliverAccess Token(id, encryptedAccessToken)
-- `py` getEncryptedAccessToken(orderId, senderAddress)
-- `js` getEncryptedAccessToken(orderId, senderAddress)
-- `py` cancelAccessRequest(orderId, senderAddress)
-- `js` cancelAccessRequest(orderId, senderAddress)
-
-### `py` Web3 `js` helper
-- `py` sign(accountAddress, message)
-- `js` sign(accountAddress, message)
-- `py` getMessageHash(message)
-- `py` toChecksumAddress(address)
-- `py` toHex()
-- `py` toBytes()
-- `js` getAccounts()
-
-### Metadata
-- `py `getAssetMetadata(assetId)
-- `py` getAssets()
-- `py` getAsstesMetadata()
-- `js` getAssetsMetadata()
-- `py` publishAsset(providerId, assetId, publisherId, name, size, author, license, contentType, contentUrls, price, *)
-- `js` publishDataAsset(asset)
-- `py` updateAsset(providerId, assetId, publisherId, name, size, author, license, contentType, contentUrls, price, *)
-- `py `retireAsset(providerId, assetId)
-
-### Providers
-- `py` registerProvider(url, provider_address)
-- `py` getProviders()
-- `py` getAssetProvider(assetId)
-
-# Examples
-
-List orders in JavaScript
-
-```javascript
-import { Ocean } from '@oceanprotocol/squid'
-
-const ocean = await Ocean.getInstance({
-    nodeUri: 'http://localhost:8545'
-})
-
-const orders = await ocean.order.getOrdersByConsumer('0x970e8f18ebfEa0B08810f33a5A40438b9530FBCF')
-
-console.log('Orders', JSON.stringify(orders, null, 2))
-```
-
-List accounts in JavaScript
-```javascript
-import { Ocean } from '@oceanprotocol/squid'
-
-const ocean = await Ocean.getInstance({
-    nodeUri: 'http://localhost:8545'
-})
-
-const accounts = await ocean.account.list()
-
-console.log(JSON.stringify(accounts, null, 2))
-```
-
-Access market functionality in JavaScript
-
-```javascript
-import { Ocean } from '@oceanprotocol/squid'
-
-const ocean = await new Ocean({network: 'kovan'})
-const { market } = ocean
-
-await market.verifyOrderPayment('0x970e8f18ebfEa0B08810f33a5A40438b9530FBCF')
-```
+For examples please see [Tuna](https://github.com/oceanprotocol/tuna)
