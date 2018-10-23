@@ -457,11 +457,18 @@ Public API
 | Ocean            | resolveDID                         | ddo                     | High | Not Implemented       | Not Implemented           | Not Implemented     |
 | Ocean            | getOrder                           | Order                   | High | Not Implemented       | Not Implemented           | Not Implemented     |
 | Ocean            | getAsset                           | Asset                   | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| Ocean            | getSLATemplates                    | array[SLATemplate]      | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| Ocean            | publishSLATemplate                 | string (slaTemplateId)  | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| Ocean            | getAvailableSLAConditions          | array[JSON]             | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| Ocean            | createServiceAgreement             | string                  | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| Ocean            | removeServiceAgreement             | bool                    | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| :--------------- | :--------------------------------- | :---------------------- | :--- | :-------------------- | :------------------------ | :------------------ |
 | Account          | getId                              | string                  | High | Not Implemented       | x                         | Not Implemented     |
 | Account          | getOceanBalance                    | number/integer          | High | Not Implemented       | x                         | Not Implemented     |
 | Account          | getEtherBalance                    | number/integer          | High | Not Implemented       | x                         | Not Implemented     |
 | Account          | getBalance                         | Balance                 | High | Not Implemented       | x                         | Not Implemented     |
 | Account          | requestTokens                      | number/integer          | High | Not Implemented       | x                         | Not Implemented     |
+| :--------------- | :--------------------------------- | :---------------------- | :--- | :-------------------- | :------------------------ | :------------------ |
 | Asset            | getId                              | string                  | High | Not Implemented       | x                         | Not Implemented     |
 | Asset            | purchase                           | Order                   | High | Not Implemented       | x                         | Not Implemented     |
 | Asset            | getDID                             | string                  | High | Not Implemented       | Not Implemented           | Not Implemented     |
@@ -470,18 +477,30 @@ Public API
 | Asset            | getMetadata                        | Metadata                | High | Not Implemented       | Not Implemented           | Not Implemented     |
 | Asset            | updateMetadata                     | boolean                 | High | Not Implemented       | Not Implemented           | Not Implemented     |
 | Asset            | retireMetadata                     | boolean                 | Low  | Not Implemented       | Not Implemented           | Not Implemented     |
+| Asset            | setServiceAgreement                | boolean                 | Low  | Not Implemented       | Not Implemented           | Not Implemented     |
 | Asset            | getServiceAgreements               | array[ServiceAgreement] | Low  | Not Implemented       | Not Implemented           | Not Implemented     |
+| :--------------- | :--------------------------------- | :---------------------- | :--- | :-------------------- | :------------------------ | :------------------ |
+| SLATemplate      | getId                              | string                  | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| SLATemplate      | getConditions                      | array[JSON]             | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| SLATemplate      | revoke                             | boolean                 | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| SLATemplate      | isRevoked                          | boolean                 | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| SLATemplate      | getOwner                           | string                  | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| :--------------- | :--------------------------------- | :---------------------- | :--- | :-------------------- | :------------------------ | :------------------ |
 | ServiceAgreement | getId                              | string                  | High | Not Implemented       | Not Implemented           | Not Implemented     |
 | ServiceAgreement | getPrice                           | number/integer          | High | Not Implemented       | Not Implemented           | Not Implemented     |
-| ServiceAgreement | getStatus                          | xxx                     | High | Not Implemented       | Not Implemented           | Not Implemented     |
-| ServiceAgreement | publish                            | xxx                     | High | Not Implemented       | Not Implemented           | Not Implemented     |
-| ServiceAgreement | retire                             | xxx                     | Low  | Not Implemented       | Not Implemented           | Not Implemented     |
-| ServiceAgreement | getAccess                          | xxx                     | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| ServiceAgreement | setPrice                           | bool                    | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| ServiceAgreement | purchase                           | Order                   | High | Not Implemented       | x                         | Not Implemented     |
+| ServiceAgreement | addAsset                           | bool                    | High | Not Implemented       | x                         | Not Implemented     |
+| ServiceAgreement | removeAsset                        | bool                    | High | Not Implemented       | x                         | Not Implemented     |
+| ServiceAgreement | getOwner                           | string                  | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| ServiceAgreement | getTermsAndConditionsText          | string                  | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| ServiceAgreement | setTermsAndConditionsText          | bool                    | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| :--------------- | :--------------------------------- | :---------------------- | :--- | :-------------------- | :------------------------ | :------------------ |
 | Order            | getId                              | string                  | High | Not Implemented       | x                         | Not Implemented     |
+| Order            | getSLATemplateId                   | string                  | High | Not Implemented       | x                         | Not Implemented     |
 | Order            | getStatus                          | AccessStatus            | High | Not Implemented       | x                         | Not Implemented     |
 | Order            | verifyPayment                      | boolean                 | Low  | Not Implemented       | Not Implemented           | Not Implemented     |
 | Order            | pay                                | string                  | High | Not Implemented       | x                         | Not Implemented     |
-| Order            | commit                             | boolean                 | High | Not Implemented       | x                         | Not Implemented     |
 | Order            | consume                            | blob                    | High | Not Implemented       | x                         | Not Implemented     |
 
 Private API                                                                                 
