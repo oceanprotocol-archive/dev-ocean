@@ -154,7 +154,7 @@ This class serves as the interface with Ocean Protocol. The Ocean class aggregat
 array[Account] = ocean.getAccounts()
 ```
 
-* **searchAssets** - SYNC. Given a search query, returns a list of the Asset objects matching with that query. 
+* **searchAssets** - ASYNC. Given a search query, returns a list of the Asset objects matching with that query. 
 ```
 array[Asset] = ocean.searchAssets(searchQuery)
 ```
@@ -162,7 +162,8 @@ You have to do a request to this endpoint:
 POST {provider.url}/api/v1/provider/assets/metadata/query
 This method is expecting a json object that contains the following structure:
 
- ```  {
+ ```
+{
         "offset": 100,
         "page": 0,
         "query": {
