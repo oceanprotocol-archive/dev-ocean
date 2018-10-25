@@ -2,12 +2,19 @@
 
 ## Table of Contents
 
+  - [Architecture](#architecture)
   - [Connection details](#connection-details)
+  - [Client details](#client-details)
   - [HTTP Interface](#http-interface)
 
 ---
 
 [Parity Secret Store](https://wiki.parity.io/Secret-Store-Configuration) is a (beta) feature provided by Parity ethereum client. To help with the development we have a public cluster that can be used by anyone.
+
+## Architecture
+
+The cluster is deployed using Packer (for generating the AMI base image) and Terraform for deploying. A general view about the architecture:
+![Secret store cluster architecture](../img/secret-store-cluster.png)
 
 ## Connection details
 
@@ -20,6 +27,18 @@ bootnodes = [
 ]
 ```
 
+
+## Client details
+
+The details about the client are:
+
+|          | Address                                    | Public IP      | Password     |
+|----------|--------------------------------------------|----------------|--------------|
+| Client 1 | 0xdd781df818094d1fc7b115e7c47b753c9656bbd1 | 52.1.94.55     | Fx3bS1ifHQAe |
+| Client 2 | 0xdcca2fbefa401bb63d29d3520ef733dc04844966 | 54.156.6.164   | xJ235B11OrVs |
+| Client 3 | 0x33b312915313db4449944e5b97f6101d0c3af331 | 100.24.158.252 | paJ38FiKamhU |
+
+
 ## HTTP Interface
 
-The secret store service offers an HTTP interface to communicate with the service. The service http interface is publicly exposed with an SSL proxy, and can be accessed using *`https://secret-store.dev-ocean.com`*.
+The secret store service offers an HTTP interface to communicate with the service. The service http interface is publicly exposed with an SSL proxy, and can be accessed using *`https://secret-store.dev-ocean.com`*. The DNS query will balance between the three secret store nodes.
