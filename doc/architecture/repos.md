@@ -11,9 +11,6 @@ This page is a central point for documenting the Ocean GitHub repositories in us
 ## Aquarius
 * [Ocean Backend Aquarius](https://github.com/oceanprotocol/aquarius)
 
-## Nautilina
-* [Ocean Data Science Tools Nautilina](https://github.com/oceanprotocol/nautilina)
-
 ## Libraries
 
 ### Squid
