@@ -1,8 +1,8 @@
-# Merkelized Service Level Agreement
+# Service Level Agreement
 
 ***DISCLAIMER: THIS IS A WORK IN PROGRESS***
 
-This document provides technical details and describes the design of `merkelized service level agreements` 
+This document provides technical details and describes the design of `service level agreements` 
 in ocean protocol.
 
 
@@ -739,6 +739,27 @@ unassociated components.
 The flow here relys on the actors actions. For instance, An actor triggers a transaction invocation
 on-chain, which in turn emits an event. In the meanwhile, another actor is subscribing to this event, once
 he/she catches this event he will take the associated action.
+
+
+## Security Threats
+
+There are a common threats and attacks which might affect the current implementation:
+
+1. Replay Attack
+
+This attack could be conducted using the following scenario. From the below figure, We
+can notice that, a malicious actor could submit invalid data in which set the state of `condition 5` to `false`. 
+Therefore, this will send a signal to `condition 2` to produce `True`. In the meanwhile, the malicious actor, 
+will manibulate `condition 5` value by sending valid data to `condition 5` again in which set it's state to `True`, 
+and triggers `condition 3` to perform different action.   
+
+
+![](img/SLA_ReplayAttack1.png)
+
+
+In order to resolve this ambiguity and avoid the replay attacks, SLA contract uses a condition lock, which
+restricts the access over a condition. Therefore, an actor has one chance to trigger the condition state. This lock 
+mitigates the risk of changing the state of any child where there is a parent/s depends on this child's state.
 
 ## References
 - [Event-Driven Architecture Design Pattern - Wikipedia](https://en.wikipedia.org/wiki/Event-driven_architecture)
