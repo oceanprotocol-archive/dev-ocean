@@ -745,7 +745,9 @@ he/she catches this event he will take the associated action.
 
 There are a common threats and attacks which might affect the current implementation:
 
-1. Replay Attack
+#### 1. Replay Attack
+
+**Condition-Level**
 
 This attack could be conducted using the following scenario. From the below figure, We
 can notice that, a malicious actor could submit invalid data in which set the state of `condition 5` to `false`. 
@@ -760,6 +762,11 @@ and triggers `condition 3` to perform different action.
 In order to resolve this ambiguity and avoid the replay attacks, SLA contract uses a condition lock, which
 restricts the access over a condition. Therefore, an actor has one chance to trigger the condition state. This lock 
 mitigates the risk of changing the state of any child where there is a parent/s depends on this child's state.
+
+**Agreement-Level**
+
+A malicious SLA provider can try to execute the service agreeement multiple times using the same consumer's signature. Therefore,
+Nonce based mechanism is used to avoid the replay-attack on the service agreement execution.
 
 ## References
 - [Event-Driven Architecture Design Pattern - Wikipedia](https://en.wikipedia.org/wiki/Event-driven_architecture)
