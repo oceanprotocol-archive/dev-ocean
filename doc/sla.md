@@ -749,10 +749,11 @@ There are a common threats and attacks which might affect the current implementa
 
 **Condition-Level**
 
-This attack could be conducted using the following scenario. From the below figure, We
-can notice that, a malicious actor could submit invalid data in which set the state of `condition 5` to `false`. 
+By design, the current implementation in `trilobite` release, as actor authorized to 
+change a condition state only from `false` to `true`. But in the future, an attack could be conducted using the following scenario. From the below figure, We
+can notice that, a malicious actor could submit invalid data in which sets the state of `condition 5` to `false`. 
 Therefore, this will send a signal to `condition 2` to produce `True`. In the meanwhile, the malicious actor, 
-will manibulate `condition 5` value by sending valid data to `condition 5` again in which set it's state to `True`, 
+will manipulate the result of SLA termination state by sending valid data to `condition 5` again in which set it's state to `True`, 
 and triggers `condition 3` to perform different action.   
 
 
@@ -765,7 +766,7 @@ mitigates the risk of changing the state of any child where there is a parent/s 
 
 **Agreement-Level**
 
-A malicious SLA provider can try to execute the service agreeement multiple times using the same consumer's signature. Therefore,
+A malicious SLA provider can try to execute the service agreement multiple times using the same consumer's signature. Therefore,
 Nonce based mechanism is used to avoid the replay-attack on the service agreement execution.
 
 ## References
