@@ -111,19 +111,19 @@ Please see [SLA.md](https://github.com/oceanprotocol/dev-ocean/blob/feature/SLA-
 
 **Some changes to be added:**
 
-1. Support `AND` and `OR` boolean logic; current prototype only support `AND` logic.
+1. **Support `AND` and `OR` boolean logic; current prototype only support `AND` logic.**
 <img src="img/refactoring/ORLogic.jpg" width="800" />
 
-2. `Time Lock` and `Time Out`:
+2. **`Time Lock` and `Time Out`:**
 <img src="img/refactoring/TimingCondition.jpg" width="800" />
 
-3. support Tri-State: Unknown, True, False
+3. **support Tri-State: Unknown, True, False**
 <img src="img/refactoring/triState.jpg" width="800" />
 
-4. New service agreement template must go through governance and TCR to be whitelisted. 
+4. **New service agreement template must go through governance and TCR to be whitelisted**. 
 <img src="img/refactoring/whitelistSAT.jpg" width="800" />
 
-5. Add current provider of data commons into block reward candidates if service agreement is fulfilled and verified.
+5. **Add current provider of data commons into block reward candidates if service agreement is fulfilled and verified.**
 
 
 The sample smart contract looks like below:
@@ -289,23 +289,7 @@ The example smart contract functions for curation are below:
 
 
 ```Solidity
-struct Curation {
-   // fixed bonding curve
-	BondingCurve private bondingCurve;
-	
-	// bonded token	
-	BondedToken private drops;
-}
-
-// each SA template has its own Bonding Curve and Bonded Token
-mapping(bytes32 => Curation) private curations;
-
-// create new curation market for a new service agreement template
-function createCurationMarket(bytes32 template_Id) public returns (bool);
-// buy bonded token from a specific bonding curve
-function buyDrops(bytes32 template_Id, uint256 numOceanToken) public returns (uint256 numDrops);
-// sell bonded token into a specific bonding curve
-function sellDrops(bytes32 template_Id, uint256 numDrops) public returns (uint256 numOceanToken);
+TODO: SA template inherits ERC721 standard and set its owner to be ERC20 bonded token contract.
 ```
 
 The Bonded tokens is fungible ERC20 token as following:
