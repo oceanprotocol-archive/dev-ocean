@@ -1,8 +1,8 @@
-# Design of Ocean Network for Tethys
+# Keeper Contract Design for Tethys
 
 ***DISCLAIMER: THIS IS A WORK IN PROGRESS***
 
-This document provides technical details and describes the overall high-level design including all necessary modules in ocean protocol.
+This document provides technical details and describes the high-level design of keeper contract in ocean protocol.
 
 ## 1. Overview
 
@@ -14,10 +14,11 @@ From the top-level point of view, there are total 9 moduels as shown in the belo
 
 * **Ocean Token**: the native ERC20 token in Ocean network
 * **Exchange**: Uniswap-like exchange built inside Ocean, where user can exchange between Ether and Ocean tokens.
-* **Service Agreement**: every service is modeled as a *service agreement*. Please see [SLA.md](https://github.com/oceanprotocol/dev-ocean/blob/feature/SLA-specs/doc/sla.md) and [smart contract prototype](https://github.com/oceanprotocol/keeper-contracts/blob/develop/contracts/SLA/ServiceAgreement.sol) for details. It needs *dispute resolution* to resolve the disputes between consumer and provider. 
+* **Service Agreement**: every service is modeled as a *service agreement*. Please see [SLA.md](https://github.com/oceanprotocol/dev-ocean/blob/feature/SLA-specs/doc/sla.md) and [smart contract prototype](https://github.com/oceanprotocol/keeper-contracts/blob/develop/contracts/SLA/ServiceAgreement.sol) for details.
 * **Tribe**: it controls the registry of membership for each service agreement template; defines TCR based registries for permission, which has whitelisted members who can provide or consume the service.
 * **Curation**: users can curate a registry of high-quality service agreement templates through staking on corresponding bonding curves. It helps consumers discover high-quality assets/services. 
 * **Governance**: it governs the available assets and services in Ocean network. For example, it whitelists new service agreement templates through TCR & Voting. 
+* **Dispute Resolution**: resolves the disputes between consumer and provider through voting or TCR. 
 * **Block Reward**: Ocean network will periodically release block reward (i.e., new minted ERC20 Ocean tokens) to reward the providers of data commons. Note provider of data commons must be randomly selected to fulfill the service requests so that they have the equal probability to receive block rewards.
 * **Access Control**: it is the controller contract which grant access to consumers after depended conditions are fulfilled. The access token can be delivered in two approaches: secret store and OEP10. 
 * **Payment**: it handles all payment processing, including lock payment, release payment and refund payment. 
@@ -64,7 +65,7 @@ function mintTokens() public returns (bool success);
 
 ### 2.2 Block Reward
 
-Block rewards are newly minted Ocean tokens which reward providers of data commons. The overall design is shown as below:
+Block rewards are newly minted Ocean tokens which reward providers of data commons. 
 
 <img src="img/refactoring/blockreward.jpg" width="1000" />
 
@@ -77,9 +78,13 @@ Block rewards are newly minted Ocean tokens which reward providers of data commo
 * This chosen provider receives all tokens in the reward pool;
 * The procedure will repeat for each block interval; if there is no winner, Ocean tokens in the reward pool will accumulate over time until a winner claims the reward.
 
+<img src="img/refactoring/rewardLogic.jpg" width="1000" />
+
 The process within one block interval can be illustrated as below:
 
 <img src="img/refactoring/distributeBR.jpg" width="800" />
+
+
 
 The sample smart contract looks like this:
 
@@ -109,21 +114,27 @@ function sendBlockReward() public returns (bool success){
 ### 2.3 Service Agreement
 Please see [SLA.md](https://github.com/oceanprotocol/dev-ocean/blob/feature/SLA-specs/doc/sla.md) and [smart contract prototype](https://github.com/oceanprotocol/keeper-contracts/blob/develop/contracts/SLA/ServiceAgreement.sol) for details. 
 
+The structre of a Serivce Agreement looks like below:
+
+<img src="img/refactoring/SAStructure.jpg" width="700" />
+
+The key point is to split up the conditions from reward payment as:
+<img src="img/refactoring/SAOverview.jpg" width="1000" />
+
+
 **Some changes to be added:**
 
-1. **Support `AND` and `OR` boolean logic; current prototype only support `AND` logic.**
-<img src="img/refactoring/ORLogic.jpg" width="800" />
 
-2. **`Time Lock` and `Time Out`:**
-<img src="img/refactoring/TimingCondition.jpg" width="800" />
+1. **`Time Lock` and `Time Out`:** Each service condition has `time-lock` and `time-out`. It can only be fulfilled within the time window defined by the starting time point (`time-lock`) and the ending time point (`time-out`).
+<img src="img/refactoring/lifecycle.jpg" width="800" />
 
-3. **support Tri-State: Unknown, True, False**
+2. **support Tri-State: Unknown, True, False**
 <img src="img/refactoring/triState.jpg" width="800" />
 
-4. **New service agreement template must go through governance and TCR to be whitelisted**. 
+3. **New service agreement template must go through governance and TCR to be whitelisted**. 
 <img src="img/refactoring/whitelistSAT.jpg" width="800" />
 
-5. **Add current provider of data commons into block reward candidates if service agreement is fulfilled and verified.**
+4. **Add current provider of data commons into block reward candidates if service agreement is fulfilled and verified.**
 
 
 The sample smart contract looks like below:
@@ -262,18 +273,18 @@ function addConsumer(bytes32 template_Id, address consumer) public returns (bool
 
 Curation is required in Ocean to generate a ranked list of SA sorted from high quality to low. In the decentralized settings, curation could be done with staking mechanism & bonding curves.
 
-A bonding curves is a fixed curve that bonds reserved token (i.e., Ether or Ocean token) with a local ERC20 boned token for a specific SA:
+A bonding curves is a fixed curve that bonds reserved token (i.e., Ether or Ocean token) with a local ERC20 boned token for an associated SA:
 
 <img src="img/refactoring/BC.jpg" width="1000" />
 
 The bonding curves determines the exchange ratio with an analytical formula, which models the price of bonded token as a function of its total supply. Usually price goes up when total supply increases, which indicates strong demand of bonded tokens.
 
-**(1) SA as refungible NFTs**
+**(1) Curation for SA template**
 
-* Each service agreement template is unique in Ocean that can be represented as a unique `ERC721 token`;
 * Each service agreement template has its own fixed bonding curve along with ERC20 bonded tokens;
-* The ERC20 bonded token contract is the owner of ERC721 token (SA template);
-* The mining and burning of ERC20 bonded token is bonded to the fixed bonding curve.
+* Whenever the ERC20 bonded token is minted or burnt, the fixed bonding curve is used to calculate the price of bonded tokens:
+	* calculates how many bonded tokens should be minted for a given amount of Ocean tokens;
+	* calculates how many Ocean tokens should be returned when a given amount of bonded tokens are burnt.
 
 **(2) The design structure**:
 
@@ -289,7 +300,24 @@ The example smart contract functions for curation are below:
 
 
 ```Solidity
-TODO: SA template inherits ERC721 standard and set its owner to be ERC20 bonded token contract.
+struct Curation {
+   // fixed bonding curve
+	BondingCurve private bondingCurve;
+	// bonded token	
+	BondedToken private bondedToken;
+}
+
+// each SA template has its own Bonding Curve and Bonded Token
+mapping(bytes32 => Curation) private curations;
+
+// create new curation market for a new service agreement template
+function createCurationMarket(bytes32 template_Id) public returns (bool);
+
+// buy bonded token from a specific bonding curve
+function mintBondedToken(bytes32 template_Id, uint256 numOceanToken) public returns (uint256 numBondedToken);
+
+// sell bonded token into a specific bonding curve
+function burnBondedToken(bytes32 template_Id, uint256 numBondedToken) public returns (uint256 numOceanToken);
 ```
 
 The Bonded tokens is fungible ERC20 token as following:
