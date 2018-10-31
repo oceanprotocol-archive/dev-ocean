@@ -203,11 +203,12 @@ function refundPayment(bytes32 serviceId, bytes32 assetId, uint256 price) public
 
 This module grant consumer with the access to assets. Consumer has two options to receive the access token:
 
-* **Secret Store**: provider keeps the access token inside Secret Store (SS) and adds consumer into permission contract. As such, consumer has no direct access to the access token, which is securely stored in SS. 
+* **Secret Store**: Secret Store is used to encrypt/decrypt a URL, which can only be decrypted by the authorized consumer. The secret store integrates the Service Agreements Smart contracts to authorize the consumer.
 
-	Javascript implementation of the parity secret store for use in Ocean is [here](https://github.com/oceanprotocol/secret-store-client-js).
+	* [Javascript Secret Store Driver](https://github.com/oceanprotocol/secret-store-client-java).
+	* [Python Secret Store Driver](https://github.com/oceanprotocol/secret-store-client-py)
 
-* **OEP10 authorization**: provider delivers the encrypted access token through on-chain smart contract.
+* **On-Chain authorization**: provider delivers the encrypted access token through on-chain smart contract using service agreement. Details in [OEP-11 On-Chain Access Control using Service Agreements](https://github.com/oceanprotocol/OEPs/tree/feature/OEP-11_acl_sa/11)
 
 ```Solidity
 // grant access to the consumer in given service agreement
