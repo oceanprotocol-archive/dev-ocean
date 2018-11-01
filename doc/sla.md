@@ -775,13 +775,21 @@ Nonce based mechanism is used to avoid the replay-attack on the service agreemen
 
 TBC
 
-#### 3. N-of-Party contracts
+#### 3. N-of-M-Parties contracts
 
 TBC
 
 #### 4. DoS with Block Gas Limit
 
 TBC (Abusing Execute agreement with infinit number of conditions - higher than gaslimit)
+
+#### 5. External Call Failures 
+
+- Including Race-conditions
+- Accidentally (SLA Storage <-- Controller call failure) 
+
+
+
 
 ## References
 - [Event-Driven Architecture Design Pattern - Wikipedia](https://en.wikipedia.org/wiki/Event-driven_architecture)
