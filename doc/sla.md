@@ -788,8 +788,17 @@ TBC (Abusing Execute agreement with infinit number of conditions - higher than g
 - Including Race-conditions
 - Accidentally (SLA Storage <-- Controller call failure) 
 
+TBC
 
+#### 6. Non-Zero Balance Contracts
 
+TBC
+
+#### 7. Zombie Agreements
+
+Discussing Non-Terminating Agreements 
+
+TBC
 
 ## References
 - [Event-Driven Architecture Design Pattern - Wikipedia](https://en.wikipedia.org/wiki/Event-driven_architecture)
