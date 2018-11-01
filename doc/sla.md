@@ -743,7 +743,9 @@ he/she catches this event he will take the associated action.
 
 ## Security Threats
 
-There are a common threats and attacks which might affect the current implementation:
+This section is addressing a list of common vector attacks on service agreement and 
+controller contracts which might have some threats on the current architecture. It also provides
+possible solutions for these threats in order to mitigate the risk of having one of them in the future.
 
 #### 1. Replay Attack
 
@@ -768,6 +770,18 @@ mitigates the risk of changing the state of any child where there is a parent/s 
 
 A malicious SLA provider can try to execute the service agreement multiple times using the same consumer's signature. Therefore,
 Nonce based mechanism is used to avoid the replay-attack on the service agreement execution.
+
+#### 2.  Reentrancy Attack
+
+TBC
+
+#### 3. N-of-Party contracts
+
+TBC
+
+#### 4. DoS with Block Gas Limit
+
+TBC (Abusing Execute agreement with infinit number of conditions - higher than gaslimit)
 
 ## References
 - [Event-Driven Architecture Design Pattern - Wikipedia](https://en.wikipedia.org/wiki/Event-driven_architecture)
