@@ -129,6 +129,18 @@ setup(
 
 ```
 
+
+### Upload to PyPI
+
+Ensure that setuptools is installed in the active environment. 
+
+Build the package, check the /dist directory, and upload to PyPI using the relevant user account. 
+
+```
+python setup.py sdist bdist_wheel  
+twine upload dist/*   
+```
+
 ## Logging
 
 Python `logging` should be employed generously. In the root calling
