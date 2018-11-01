@@ -28,7 +28,39 @@ From the top-level point of view, there are total 9 moduels as shown in the belo
 
 The core modules have dependence on each other, which can be illustrated as following. Clearly, the `service agreement` module is the fundamental building block, where many other modules depends on it.  
 
+The same diagram can be found in [research slides](https://docs.google.com/presentation/d/1Z6Acq2LD3eHPD1SoH_bxHH-XaOKLWemgFiKgWICekys/edit#slide=id.g458a4e4ae3_0_7) page 73.
+
 <img src="img/refactoring/dependence.jpg" width="1000" />
+
+* **Basic Service Condition**
+	* **hash condition**: it provides the proof of hash to prove the secret was received. For example, the hash of votes in the commit stage are used to verify the voters indeed submit the same votes in the reveal stage.
+	* **signature condition**: it verifies the signature to prove the ownership of private key for a public key. For example, service agreement needs the signature to verify the service request is signed by the consumer.
+	* **threshold condition**: it verifies that the percentage of M-out-of-N is achieved such as multi-signature and public voting. For example, 50% of voters need to support the application in order to get it whitelisted. Similarly, M-out-of-N nodes in Secret Store must be available to decrypt the secret token.
+	* **ethereum state condition**: it queries the state of ethereum ledger to prove certain condition. For example, block reward needs to query the status of service agreement and only reward providers of *fulfilled* service agreements.
+
+* **Basic Reward**:
+	* **escrow account**: it holds the payment funds from consumer and only releases the payment to the provider when service agreement has been delivered.
+	* **network reward**: it mints new Ocean tokens every block interval and rewards providers of data commons.
+
+
+* **Dependence**:
+
+Module Name  |  Condition Dependence |  Reward Dependence | Contract Dependence
+--- | --- | ---| --- |
+Voting | hash, signature, threshold, state conditions | | Ocean Token |
+TCR | hash, signature, threshold, state conditions | | Voting |
+Tribe | hash, signature, threshold, state conditions | | TCR |
+Governance | hash, signature, threshold, state conditions | | TCR |
+Dispute Resolution | hash, signature, threshold, state conditions | | Voting, TCR |
+Block Reward | state condition | network reward | Ocean Token |
+Secret Store | signature, threshold, state conditions | | |
+Payment | state condition | escrow account | Ocean token |
+Exchange | | | Ocean Token |
+Access Control | signature, threshold, state conditions | | Secret Store |
+Curation | | | Bonding Curves, Bonded Token |
+Bonding Curves | | | Ocean Token, Bonded Token |
+Bonded Token | | | |
+
 
 
 ## 2. Module Design
