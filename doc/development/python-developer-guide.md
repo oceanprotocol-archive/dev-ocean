@@ -129,16 +129,47 @@ setup(
 
 ```
 
-
 ### Upload to PyPI
 
-Ensure that setuptools is installed in the active environment. 
+Ensure that `setuptools` is installed in the active environment.
 
-Build the package, check the /dist directory, and upload to PyPI using the relevant user account. 
+Go to the root directory of your project (i.e. the one containing `setup.py`).
 
+Clean out your project directory so you don't upload a bunch of chaff to PyPI:
+
+```bash
+# Remove build artifacts
+rm -fr build/
+rm -fr dist/
+rm -fr .eggs/
+find . -name '*.egg-info' -exec rm -fr {} +
+find . -name '*.egg' -exec rm -f {} +
+
+# Remove Python file artifacts
+find . -name '*.pyc' -exec rm -f {} +
+find . -name '*.pyo' -exec rm -f {} +
+find . -name '*~' -exec rm -f {} +
+find . -name '__pycache__' -exec rm -fr {} +
+
+# Remove test and coverage artifacts
+find . -name '.pytest_cache' -exec rm -fr {} +
+rm -fr .tox/
+rm -f .coverage
+rm -fr htmlcov/
 ```
-python setup.py sdist bdist_wheel  
-twine upload dist/*   
+
+Tip: If you get a permissions error, then give yourself the needed permissions using `sudo chown -R $(whoami):$(whoami) .`
+
+Build the package and the wheel:
+
+```bash
+python setup.py sdist bdist_wheel
+```
+
+Upload to PyPI:
+
+```bash
+twine upload dist/*
 ```
 
 ## Logging
