@@ -69,6 +69,8 @@ In this section, each module is designed with details (some materials comes from
 
 ### 2.1 Ocean Token 
 
+#### 2.1.1 Definition
+
 Ocean Token is the native and fungible tokens in Ocean network, which complies with the ERC20 Standard. 
 
 Its total supply of Ocean Token is 1.4 billion.
@@ -76,6 +78,8 @@ Its total supply of Ocean Token is 1.4 billion.
 45% of supply is reserved for block rewards, which will be minted according to schedule below:
 <img src="img/refactoring/schedule.jpg" width="500" />
 
+
+#### 2.1.2 Sample Code
 
 The key functions in Ocean token is similar to below:
 
@@ -94,8 +98,16 @@ function transfer(address _to, uint256 _value) public returns (bool);
 function mintTokens() public returns (bool success);
 ```
 
+#### 2.1.3 Task & Issue
+
+- [ ] mint new tokens as block rewards according to the releasing schedule;
+- [ ] transfer minted new tokens to block reward pool.
+
+----
 
 ### 2.2 Block Reward
+
+#### 2.2.1 Definition
 
 Block rewards are newly minted Ocean tokens which reward providers of data commons. 
 
@@ -105,18 +117,19 @@ Block rewards are newly minted Ocean tokens which reward providers of data commo
 
 * Block reward Ocean tokens will be minted and deposited into a reward pool;
 * In the same block interval, Ocean network randomly select a provider to serve the service agreement of data commons. Therefore, all providers have the equal probability to receive the block rewards.
-* When the service agreement is fulfilled and verified, provider receive a `lottery ticket` to win the block rewards;
-* In the end of current block interval, Ocean network randomly choose a winner from the providers who hold `lottery ticket`.
-* This chosen provider receives all tokens in the reward pool;
+* When the service agreement is fulfilled and verified, provider receive a `lottery ticket` to win the partial block rewards;
+* Stakeholders of data commons in the same block interval receive a `lottery ticket` to win the partial block rewards.
+* In the end of current block interval, Ocean network randomly choose a winner from the providers and a winner from the stakeholders who hold `lottery tickets`.
+* This chosen provider and stakeholder share all tokens in the reward pool (the reward percentage is pre-defined, such as provider takes 80% block rewards, while stakeholder takes 20%);
 * The procedure will repeat for each block interval; if there is no winner, Ocean tokens in the reward pool will accumulate over time until a winner claims the reward.
 
 <img src="img/refactoring/rewardLogic.jpg" width="1000" />
 
-The process within one block interval can be illustrated as below:
+The process for a service prodiver to receive block rewards in one block interval is below:
 
 <img src="img/refactoring/distributeBR.jpg" width="800" />
 
-
+#### 2.2.2 Sample Code
 
 The sample smart contract looks like this:
 
@@ -142,8 +155,23 @@ function sendBlockReward() public returns (bool success){
 };
 ```
 
+#### 2.2.3 Task & Issue
+
+- [ ] retrieve proofs of fulfilled service agreements for data commons;
+- [ ] add providers of these proofs to the winner candidate list;
+- [ ] retrieve list of stakeholders for data commons;
+- [ ] random number generator to have uniform-distributed random numbers;
+- [ ] detect the end of current block interval;
+- [ ] trigger the minting of new block rewards in Token contract;
+- [ ] choose a random provider and a random stakeholder;
+- [ ] split the current reward pool into token rewards for chosen provider and stakeholder.
+
+----
 
 ### 2.3 Service Agreement
+
+#### 2.3.1 Definition
+
 Please see [SLA.md](https://github.com/oceanprotocol/dev-ocean/blob/feature/SLA-specs/doc/sla.md) and [smart contract prototype](https://github.com/oceanprotocol/keeper-contracts/blob/develop/contracts/SLA/ServiceAgreement.sol) for details. 
 
 The structre of a Serivce Agreement looks like below:
@@ -168,6 +196,7 @@ The key point is to split up the conditions from reward payment as:
 
 4. **Add current provider of data commons into block reward candidates if service agreement is fulfilled and verified.**
 
+#### 2.3.2 Sample Code
 
 The sample smart contract looks like below:
 
@@ -215,10 +244,26 @@ function fulfillCondition(bytes32 serviceId, bytes4 fingerprint, bytes32 valueHa
 function calculatePayment(bytes32 serviceId) public returns(bool);
 ```
 
+#### 2.3.3 Task & Issue
+
+- [ ] add time-lock and time-out to each service condition and check its validity when needed;
+- [ ] add support of UNKNOWN status;
+- [ ] when create new SA template, the template must go through TCR to get whitelisted;
+- [ ] add new SA template into Tribe and Curation registry;
+- [ ] add permission checking with Tribe registry;
+- [ ] when SA is fulfilled, check whether it is needed to distribute block reward. If not, add provider of data commons to the winner candidate list.
+- [ ] In the end of block interval, trigger the distribution of block rewards.
+
+----
 
 ### 2.4 Payment
 
+#### 2.4.1 Definition
+
 Payment module handls all payment processing: lock payment, release payment and refund payment. It provides query functions for external function to check the payment status of a specific service agreement.
+
+
+#### 2.4.2 Sample Code
 
 ```Solidity
 // lock consumer payment
@@ -231,7 +276,17 @@ function releasePayment(bytes32 serviceId, bytes32 assetId, uint256 price) publi
 function refundPayment(bytes32 serviceId, bytes32 assetId, uint256 price) public returns (bool);
 ```
 
+#### 2.4.3 Task & Issue
+
+- [ ] add function to distribute block rewards with pre-defined percentage parameters;
+- [ ] add function to verify the status of payments.
+
+
+----
+
 ### 2.5 Access Control
+
+#### 2.5.1 Definition
 
 This module grant consumer with the access to assets. Consumer has two options to receive the access token:
 
@@ -242,13 +297,23 @@ This module grant consumer with the access to assets. Consumer has two options t
 
 * **On-Chain authorization**: provider delivers the encrypted access token through on-chain smart contract using service agreement. Details in [OEP-11 On-Chain Access Control using Service Agreements](https://github.com/oceanprotocol/OEPs/tree/feature/OEP-11_acl_sa/11)
 
+#### 2.5.2 Sample Code
+
 ```Solidity
 // grant access to the consumer in given service agreement
 function grantAccess(bytes32 serviceId, bytes32 assetId) public returns (bool);
 ```
 
+#### 2.5.3 Task & Issue
+
+- [ ] add support of data commons. 
+- [ ] grant access according to Tribe registry.
+
+----
 
 ### 2.6 Tribe
+
+#### 2.6.1 Definition
 
 Each service agreement template has its corresponding `Tribe` including:
 
@@ -274,6 +339,7 @@ Each service agreement template has its corresponding `Tribe` including:
 * *data commons*: Ocean network randomly choose a provider to fulfill the service agreement request of data commons;
 * *priced data*: Consumer chooses the provider to fulfill his service agreement request.
 
+#### 2.6.2 Sample Code
 
 ```Solidity
 struct Tribe{
@@ -300,9 +366,19 @@ function addProvider(bytes32 template_Id, address provider) public returns (bool
 function addConsumer(bytes32 template_Id, address consumer) public returns (bool);
 ```
 
+#### 2.6.3 Task & Issue
 
+- [ ] add data structures of permission registries for membership, provider and consumer;
+- [ ] user needs to go through TCR to be added into provider registry;
+- [ ] user needs to make payment or pre-vetted to be added into consumer registry;
+- [ ] members in the tribe have access to data commons; there is no need to have consumer registry;
+- [ ] add functions to remove user from provider registry or consumer registry;
+
+----
 
 ### 2.7 Curation
+
+#### 2.7.1 Definition
 
 Curation is required in Ocean to generate a ranked list of SA sorted from high quality to low. In the decentralized settings, curation could be done with staking mechanism & bonding curves.
 
@@ -328,6 +404,9 @@ The bonding curves determines the exchange ratio with an analytical formula, whi
 
 **(4) Unstaking and burn bonded token**:
 <img src="img/refactoring/BCunstaking.jpg" width="1100" />
+
+
+#### 2.7.2 Sample Code
 
 The example smart contract functions for curation are below:
 
@@ -366,8 +445,19 @@ function mintTokens() public returns (bool success);
 function burnTokens() public returns (bool success);
 ```
 
+#### 2.7.3 Task & Issue
+
+- [ ] add bonded token contract to support mint bonded token and burn bonded token;
+- [ ] deploy a new bonded token contract for each SA template so users can stake;
+- [ ] add curation contract to manage the curation markets for SA templates;
+- [ ] users can stake reserved token for bonded token and sell bonded tokens back with curation contract;
+- [ ] curation contract use pre-defined bonding curves contract to determine the exchange rate.
+
+---
 
 ### 2.8 Dispute Resolution
+
+#### 2.8.1 Definition
 
 Consumer can raise dispute before *TIME-OUT* and *PAYMENT-RELEASED* in the service agreement. 
 
@@ -378,6 +468,7 @@ To resolve the dispute, there are two approaches:
 * **Voting based resolution**: it enables expert verification (or arbitration) with permissioned voting on the disputes. 
 * **TCR based resolution**: it enables community opinion since all community members can vote on the disputes, which will be resolved based on TCR results.
 
+#### 2.8.2 Sample Code
 
 ```Solidity
 struct Dispute {
@@ -406,8 +497,20 @@ function addDispute(bytes32 serviceId) public returns (bool){
 function resolveDispute(bytes32 serviceId) public returns (bool);
 ```
 
+#### 2.8.3 Task & Issue
+
+- [ ] add dispute resolution contract to manage all disputes;
+- [ ] enable consumers to raise dispute for a specific SA;
+- [ ] disable processing of payment if dispute exists;
+- [ ] resolve dispute with voting or TCR;
+- [ ] update the SA status according to dispute resolution result.
+
+---
 
 ### 2.9 TCR (Token Curated Registry)
+
+#### 2.9.1 Definition
+
 **1. Concept**
 
 TCR is a common module that can be used by many different components. Our TCR is derived from Mike Goldin's prototype of TCR. 
@@ -426,6 +529,9 @@ Similar to SA event triggering design, the various actions are triggered by even
 * When received the message, the controller contract can trigger the action such as add new SA template into the registry. 
 
 <img src="img/refactoring/tcrAction.jpg" width="500" />
+
+
+#### 2.9.2 Sample Code
 
 The sample smart contract is below:
 
@@ -454,14 +560,23 @@ function updateRegistry(bytes32 listingHash) public {
 }
 ```
 
+#### 2.9.3 Task & Issue
+
+- [ ] add functions to emit event message when a challenge is resolved by voting;
+- [ ] implement an external event message listener which keeps listening to events;
+- [ ] the external listner triggers event to update the corresponding registry.
+
+---
 
 ### 2.10 Voting 
+
+#### 2.10.1 Definition
 
 Voting module is based on PLCRVoting implementation. 
 
 One change to be added is to enable **permissioned voting**, where only voters on the whitelist/registry can participate in the voting.
 
-
+#### 2.10.2 Sample Code
 
 
 ```Solidity
@@ -488,6 +603,12 @@ function commitVote(bytes32 id) public returns (bool){
 	
 };
 ```
+
+#### 2.10.3 Task & Issue
+
+- [ ] add voter list for each voting;
+- [ ] if enabled, voter must be on the list in order to participate the voting;
+- [ ] the commitVote function adds permission check for voters if needed.
 
 ## 3. Integration of Ocean Modules
 
