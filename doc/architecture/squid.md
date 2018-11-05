@@ -145,7 +145,7 @@ const ocean = await Ocean.getInstance({...})
 
 ## Ocean
 
-This class serves as the interface with Ocean Protocol. The Ocean class aggregates the list of **Account**s (ethereum accounts), list of **Asset**s, and a list of **Order** objects. The Ocean class aggregates the Keeper class, which in turn interfaces with the running Smart Contracts: Market, Token, and Auth. 
+This class serves as the interface with Ocean Protocol. The Ocean class aggregates the list of **Account**s (ethereum accounts), list of **Asset**s, and a list of **Order** objects. The Ocean class aggregates the Keeper class, which in turn interfaces with the running Smart Contracts: Market, Token, and Auth.
 
 ### Methods
 
@@ -154,12 +154,12 @@ This class serves as the interface with Ocean Protocol. The Ocean class aggregat
 array[Account] = ocean.getAccounts()
 ```
 
-* **searchAssets** - ASYNC. Given a search query, returns a list of the Asset objects matching with that query. 
+* **searchAssets** - ASYNC. Given a search query, returns a list of the Asset objects matching with that query.
 ```
 array[Asset] = ocean.searchAssets(searchQuery)
 ```
 You have to do a request to this endpoint:
-POST {provider.url}/api/v1/provider/assets/metadata/query
+POST {provider.url}/api/v1/aquarius/assets/ddo/query
 This method is expecting a json object that contains the following structure:
 
  ```
@@ -171,12 +171,28 @@ This method is expecting a json object that contains the following structure:
         },
         "sort": {
           "value": 1
+        }
+}
+ ```
+
+* **searchAssetsByText** - ASYNC. Given a search text query, returns a list of the Asset objects matching with that text query.
+```
+array[Asset] = ocean.searchAssetsByText(searchQuery)
+```
+You have to do a request to this endpoint:
+GET {provider.url}/api/v1/aquarius/assets/ddo/query
+This method is expecting a json object that contains the following structure:
+
+ ```
+{
+        "offset": 100,
+        "page": 0,
+        "sort": {
+          "value": 1
         },
         "text": "Office"
 }
  ```
-
-The only mandatory argument is query or text, but you have to use only one of them. The other fields are optional.
 
 * **searchOrders** - (*TBD*) SYNC. Return a list of orders by search query. **Nice to Have**.
 ```
@@ -193,7 +209,7 @@ array[Order] = ocean.getOrdersByAccount(account)
 asset_did = ocean.register(asset)
 ```
 
-* **resolveDID** - SYNC. Given a DID, return the associated DID Document (DDO). The DDO is resolved by directly interacting with the keeper node. 
+* **resolveDID** - SYNC. Given a DID, return the associated DID Document (DDO). The DDO is resolved by directly interacting with the keeper node.
 ```
 DDO = ocean.resolveDID(did)
 ```
@@ -204,7 +220,7 @@ DDO = ocean.resolveDID(did)
 Order = ocean.getOrder(orderId)
 ```
 
-* **getAsset** - ASYNC. Get an asset based on its identifier, in the form of a DID. 
+* **getAsset** - ASYNC. Get an asset based on its identifier, in the form of a DID.
 
 ```
 Asset = ocean.getAsset(asset_DID)
@@ -249,7 +265,7 @@ amount= account.requestTokens(amountTokens)
 
 ## Asset
 
-Interface provides access to assets. 
+Interface provides access to assets.
 
 ### Methods
 
@@ -451,7 +467,8 @@ Public API
 | :--------------- | :--------------------------------- | :---------------------- | :--- | :-------------------- | :------------------------ | :------------------ |
 | Ocean            | getInstance (js, java)/ Ocean (py) | Ocean                   | High | Not Implemented       | x                         | Not Implemented     |
 | Ocean            | getAccounts                        | array[Account]          | High | Not Implemented       | x                         | Not Implemented     |
-| Ocean            | searchAssets                       | array[Asset]            | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| Ocean            | searchAssets                       | array[Asset]            | High | Not Implemented       | x                         | Not Implemented     |
+| Ocean            | searchAssetsByText                 | array[Asset]            | High | Not Implemented       | x                         | Not Implemented     |
 | Ocean            | searchOrders `tbd`                 | array[Order]            | Low  | Not Implemented       | Not Implemented           | Not Implemented     |
 | Ocean            | getOrdersByAccount                 | array[Order]            |      | Not Implemented       | x                         | Not Implemented     |
 | Ocean            | register                           | string                  | High | Not Implemented       | x                         | Not Implemented     |
