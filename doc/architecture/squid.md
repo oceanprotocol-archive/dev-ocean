@@ -154,7 +154,7 @@ This class serves as the interface with Ocean Protocol. The Ocean class aggregat
 array[Account] = ocean.getAccounts()
 ```
 
-* **searchAssets** - SYNC. Given a search query, returns a list of the Asset objects matching with that query. 
+* **searchAssets** - ASYNC. Given a search query, returns a list of the Asset objects matching with that query. 
 ```
 array[Asset] = ocean.searchAssets(searchQuery)
 ```
@@ -173,6 +173,11 @@ This method is expecting a json object that contains the following structure:
         },
         "text": "Office"
 }
+ ```
+ 
+ * **searchAssetsByText** - ASYNC. Given a search query, returns a list of the Asset objects matching with that query. 
+ ```
+ array[Asset] = ocean.searchAssetsByText("office")
  ```
 
 The only mandatory argument is query or text, but you have to use only one of them. The other fields are optional.
@@ -450,9 +455,10 @@ Public API
 | :--------------- | :--------------------------------- | :---------------------- | :--- | :-------------------- | :------------------------ | :------------------ |
 | Ocean            | getInstance (js, java)/ Ocean (py) | Ocean                   | High | Not Implemented       | x                         | Not Implemented     |
 | Ocean            | getAccounts                        | array[Account]          | High | Not Implemented       | x                         | Not Implemented     |
-| Ocean            | searchAssets                       | array[Asset]            | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| Ocean            | searchAssets                       | array[Asset]            | High | Not Implemented       | x                         | Not Implemented     |
+| Ocean            | searchAssetsByText                 | array[Asset]            | Low  | Not Implemented       | x                         | Not Implemented     |
 | Ocean            | searchOrders `tbd`                 | array[Order]            | Low  | Not Implemented       | Not Implemented           | Not Implemented     |
-| Ocean            | getOrdersByAccount                 | array[Order]            |      | Not Implemented       | x                         | Not Implemented     |
+| Ocean            | getOrdersByAccount                 | array[Order]            |      | Not Implemented       | Not Implemented           | Not Implemented     |
 | Ocean            | register                           | string                  | High | Not Implemented       | x                         | Not Implemented     |
 | Ocean            | resolveDID                         | ddo                     | High | Not Implemented       | Not Implemented           | Not Implemented     |
 | Ocean            | getOrder                           | Order                   | High | Not Implemented       | Not Implemented           | Not Implemented     |
