@@ -449,7 +449,7 @@ Public API
 | Class            | Method                             | Return Value            | Prio | Python Implementation | Javascript Implementation | Java Implementation |
 | :--------------- | :--------------------------------- | :---------------------- | :--- | :-------------------- | :------------------------ | :------------------ |
 | Ocean            | getInstance (js, java)/ Ocean (py) | Ocean                   | High | Not Implemented       | x                         | Not Implemented     |
-| Ocean            | getAccounts                        | array[Account]          | High | Not Implemented       | x                         | Not Implemented     |
+| Ocean            | getAccounts                        | array[Account]          | High | x                     | x                         | Not Implemented     |
 | Ocean            | searchAssets                       | array[Asset]            | High | Not Implemented       | Not Implemented           | Not Implemented     |
 | Ocean            | searchOrders `tbd`                 | array[Order]            | Low  | Not Implemented       | Not Implemented           | Not Implemented     |
 | Ocean            | getOrdersByAccount                 | array[Order]            |      | Not Implemented       | x                         | Not Implemented     |
@@ -458,18 +458,18 @@ Public API
 | Ocean            | getOrder                           | Order                   | High | Not Implemented       | Not Implemented           | Not Implemented     |
 | Ocean            | getAsset                           | Asset                   | High | Not Implemented       | Not Implemented           | Not Implemented     |
 | Account          | getId                              | string                  | High | Not Implemented       | x                         | Not Implemented     |
-| Account          | getOceanBalance                    | number/integer          | High | Not Implemented       | x                         | Not Implemented     |
-| Account          | getEtherBalance                    | number/integer          | High | Not Implemented       | x                         | Not Implemented     |
-| Account          | getBalance                         | Balance                 | High | Not Implemented       | x                         | Not Implemented     |
-| Account          | requestTokens                      | number/integer          | High | Not Implemented       | x                         | Not Implemented     |
-| Asset            | getId                              | string                  | High | Not Implemented       | x                         | Not Implemented     |
+| Account          | getOceanBalance                    | number/integer          | High | x                     | x                         | Not Implemented     |
+| Account          | getEtherBalance                    | number/integer          | High | x                     | x                         | Not Implemented     |
+| Account          | getBalance                         | Balance                 | High | x                     | x                         | Not Implemented     |
+| Account          | requestTokens                      | number/integer          | High | x                     | x                         | Not Implemented     |
+| Asset            | getId                              | string                  | High | x                     | x                         | Not Implemented     |
 | Asset            | purchase                           | Order                   | High | Not Implemented       | x                         | Not Implemented     |
 | Asset            | getDID                             | string                  | High | Not Implemented       | Not Implemented           | Not Implemented     |
 | Asset            | getDDO                             | ddo                     | High | Not Implemented       | Not Implemented           | Not Implemented     |
-| Asset            | publishMetadata                    | string                  | High | Not Implemented       | Not Implemented           | Not Implemented     |
-| Asset            | getMetadata                        | Metadata                | High | Not Implemented       | Not Implemented           | Not Implemented     |
-| Asset            | updateMetadata                     | boolean                 | High | Not Implemented       | Not Implemented           | Not Implemented     |
-| Asset            | retireMetadata                     | boolean                 | Low  | Not Implemented       | Not Implemented           | Not Implemented     |
+| Asset            | publishMetadata                    | string                  | High | x                     | Not Implemented           | Not Implemented     |
+| Asset            | getMetadata                        | Metadata                | High | x                     | Not Implemented           | Not Implemented     |
+| Asset            | updateMetadata                     | boolean                 | High | x                     | Not Implemented           | Not Implemented     |
+| Asset            | retireMetadata                     | boolean                 | Low  | x                     | Not Implemented           | Not Implemented     |
 | Asset            | getServiceAgreements               | array[ServiceAgreement] | Low  | Not Implemented       | Not Implemented           | Not Implemented     |
 | ServiceAgreement | getId                              | string                  | High | Not Implemented       | Not Implemented           | Not Implemented     |
 | ServiceAgreement | getPrice                           | number/integer          | High | Not Implemented       | Not Implemented           | Not Implemented     |
