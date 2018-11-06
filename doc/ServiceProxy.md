@@ -102,7 +102,7 @@ The first is synchronous (e.g. a request to get the current weather), and the se
 
 ## Sequence Diagram
 
-
+[Image of Sequence diagram](https://github.com/oceanprotocol/dev-ocean/blob/feature/service-proxy/doc/img/Service_proxy.png)
 
 
 
