@@ -14,13 +14,13 @@ From the top-level point of view, there are total 9 moduels as shown in the belo
 
 * **Ocean Token**: the native ERC20 token in Ocean network
 * **Exchange**: Uniswap-like exchange built inside Ocean, where user can exchange between Ether and Ocean tokens.
-* **Service Agreement**: every service is modeled as a *service agreement*. Please see [SLA.md](https://github.com/oceanprotocol/dev-ocean/blob/feature/SLA-specs/doc/sla.md) and [smart contract prototype](https://github.com/oceanprotocol/keeper-contracts/blob/develop/contracts/SLA/ServiceAgreement.sol) for details.
-* **Tribe**: it controls the registry of membership for each service agreement template; defines TCR based registries for permission, which has whitelisted members who can provide or consume the service.
+* **Service Agreement**: A service agreement is defined by a set of service conditions describing the service agreement template. Please see [SLA.md](https://github.com/oceanprotocol/dev-ocean/blob/feature/SLA-specs/doc/sla.md) and [Service Agreement implementation in Trilobite](https://github.com/oceanprotocol/keeper-contracts/blob/develop/contracts/SLA/ServiceAgreement.sol) for details.
 * **Curation**: users can curate a registry of high-quality service agreement templates through staking on corresponding bonding curves. It helps consumers discover high-quality assets/services. 
 * **Governance**: it governs the available assets and services in Ocean network. For example, it whitelists new service agreement templates through TCR & Voting. 
+* **Tribe**: it controls the registry of membership for each service agreement template; defines TCR based registries for permission, which has whitelisted members who can provide or consume the service. Tribe is part of Governance module.
 * **Dispute Resolution**: resolves the disputes between consumer and provider through voting or TCR. 
 * **Block Reward**: Ocean network will periodically release block reward (i.e., new minted ERC20 Ocean tokens) to reward the providers of data commons. Note provider of data commons must be randomly selected to fulfill the service requests so that they have the equal probability to receive block rewards.
-* **Access Control**: it is the controller contract which grant access to consumers after depended conditions are fulfilled. The access token can be delivered in two approaches: secret store and OEP10. 
+* **Access Control**: it is the controller contract which grant access to actors after depended conditions are fulfilled. The access token can be delivered in two approaches: secret store and OEP10. 
 * **Payment**: it handles all payment processing, including lock payment, release payment and refund payment. 
 
 
@@ -619,17 +619,180 @@ It illustrates the interaction between contracts.
 <img src="img/refactoring/refactoring.jpg" width="1000" />
 
 
+## 4. Priority List
+
+### 4.1 Sorted by Criticality (High to Low)
+
+* Service Agreement
+* Access Control
+* Payment
+* TCR
+* Curation
+* Tribe
+* Block Reward
+* Dispute Resolution
+* Voting
+* Ocean Token 
+
+### 4.2 Sorted by Implementation Difficulty (Low to High)
+
+* Ocean Token
+* Voting
+* Payment
+* TCR
+* Dispute Resolution
+* Access Control
+* Block Reward
+* Tribe
+* Curation
+* Service Agreement
+
+
+## 5. Functionality Categories
+
+The categories come from Dimi's email thread. 
+
+**bold**: already have in Trilobyte  
+regular: must to have for Tethys  
+*italic*: nice to have depending on research and PoC
 
 
 
+### 5.1 Service Agreements
+
+1. **ACCESS conditions as a fundamental service agreement**  
+	* **access POLICY delivery with on-chain encryption**  
+	* **access POLICY delivery with secret store**
+	* **open policy AUTHORIZATION at PROVIDER side (enables: public Azure, S3, ...)**  
+	* contextual policy AUTHORIZATION at PROVIDER side (enables: private/permissioned cloud & on-prem)  
+	* *market-makers for ERC20 service tokens (enables: decentralized services on ETH like truebit, enigma)*
+
+2. **PAYMENT conditions**  
+	* **COMMONS: PAYMENT == free**  
+	* **FIX price in OCEAN token**  
+	* MARKET price in OCEAN token (enables: market with simple order book)  
+	* DROP token (enables: signalling and governance)  
+	* *Consumer ASK instead of Provider BID (enables: simple bounty and competition)*
+
+3. **STATE conditions (verification, ...)**  
+	* **resolve ETH proof validations (enables: fitchain**, *truebit, enigma*)  
+	* *resolve non-ETH proof validations (enables: polkadot)  
+	* oraclize web2.0 log validations (enables: verified cloud services)*
+
+
+4. DISPUTE RESOLUTION conditions  
+	* voting based resolution (enables: human verification)  
+	* *TCR based resolution (enables: community opinion)* 
+
+5. **TEMPLATE contract for service agreement**  
+	* **simple list of conditions with AND logic**  
+	* **linear dependency graph (enables: simple service flows)**
+	* **simple escrow payment with EXECUTE and ABORT (enables: secure payment)**
+	* combinatorial logic with conditions (enables: complex service flows)
+	* *advanced payment logic with chunked or continuous outputs (enables: stream services)*
+
+6. **NETWORK**
+	* **Ethereum network management like ganache, ropsten, kubernetes, ...**
+	* Verifier network management (enables: fitchain)
 
 
 
+### 5.2 Discovery
+
+1. **IDENTITY format and service**  
+	* **simple DID/DDO for users, assets** and tribes  
+	* *integrity check DID/DDO for users, assets and tribes (enables: secure content-addressed discovery)*  
+	* simple resolver for MongoDB- and BigchainDB-based identity providers
+	* *universal resolver for multiple identity hubs (enables: user account interoperabilty)*
+
+	
+2. **METADATA format and service**
+	* **DID template for Metadata wrapper**
+	* **simple CRUD & query for MongoDB- and BigchainDB-based backends (enables: basic discovery service)**
+	* *provenance query combining metadata and service (agreement) transactions (enables: provenance analysis)*
+	* *multi-query for multiple metadata providers (enables: cross-tribe asset discovery)*
+	* *simple service agreement for metadata providers (enables: metadata as a service)*
 
 
+3. **NETWORK**  
+	* **Centralized discovery service like MongoDB and Swagger**  
+	* *Decentralized discovery service like BigchainDB*  
+	* *Multiple discovery providers (enables: permissioned discovery for tribes)*  
+	
+	
+4. *SIGNALLING*
+	* *TCR-based quality list for assets (enables: basic curation)*
+
+### 5.3 Governance
+
+1. *ASSET governance*
+	* *providers stake on their assets (enables: Sybil resistance on assets)*
+
+2. *TRIBE governance*
+	* *open registry (enables: tribes)*
+	* *TCR based registry (enables: MOBI)*
+	* *tribe-imposed service conditions (enables: MOBI, HEALTH, commons)*
+	* *Aragon-based governance (enables: DAOs)*
 
 
+### 5.4 Incentives
+
+1. Virtual Block Reward  
+	* simple treasure chest for holding the mineable tokens  
+	* periodical release of rewards (enables: simple reward)  
+	* *conversion of service condition to reward (enables: selected reward)*  
+	* *governance of rewards (enables: dynamic rewards)*  
+	
+2.  *Mechanism Designs:*
+	* assets with fixed bonding curve (enables: complex curation)
 
 
+## 6. Open Questions
+
+### 6.1 Tradeoff considering Gas Consumption 
+
+In many places, we need to make a choice during implementation considering the huge amount of gas consumption in the straightforward way:
+
+* each registry has its own TCR contract instance **OR** all registries share the same TCR contract instance;
+* each SA template has its own bonding curve contract instance **OR** all SA templates share the same bonding curve contract instance (each SA template only maintains its own state of bonding curve);
+* each curation has its own bonded token contract instance **OR** each curation only maintains a *balance sheet* of bonded token for token holders.
+* more ...
+
+
+Let us take a look at the bonded token contract case:
+
+* **The most straightforward implementation**: 
+	* each SA template has its own local bonded tokens;
+	* users can stake on the SA template by buying the bonded tokens with Ocean tokens;
+	* **PRO**: user own the ERC20 tokens and transfer tokens as they wish;
+	* **CON**: it costs large amount of gas to deploy bonded token contracts.
+
+<img src="img/refactoring/straightforward.jpg" width="600" />
+
+* **The other gas-efficient implementation is**:
+	* each SA template has its own 'virtual' bonded tokens;
+	* these tokens only exist on the balance sheet for token holders;
+	* curation contract will maintain the balance sheet for `virtual` bonded tokens.
+	* **PRO**: gas consumption to change numbers in the balance sheet is negligible;
+	* **CON**: users cannot transfer those tokens to their own wallets.
+	
+
+<img src="img/refactoring/gasefficient.jpg" width="1000" />
+
+### 6.2 Random Number Generator
+
+The random number generation is very important in Ocean, which is required in many places such as selecting winner of block rewards and etc.
+
+The most famous one is RANDAO as shown in the diagram below. It needs three stages and two interactions with users to generate a truly random number. 
+
+Similar to PLCRVoting approach, RANDAO suffers from the `withdrawal` attack when any user participates in Commit Stage but not Reveal Stage. 
+
+<img src="img/refactoring/randao.jpg" width="600" />
+
+Another more straightforward way is **Oraclize**, which imports external random source (i.e., random.org) into the smart contract. 
+
+In addition, decentralized Oraclize like **chainlink** can be explored. 
+
+We need to carefully choose the approach to generate random number, because many projects had been hacked due to their designs of RNG and lose many tokens.
 
 
