@@ -8,6 +8,7 @@ Table of Contents
          * [Python](#python)
          * [Javascript](#javascript)
          * [Solidity](#solidity)
+      * [Documentation Strategy](#documentation-strategy)
       * [Boards](#boards)
    * [Source Control Management](#source-control-management)
       * [Branching Model](#branching-model)
@@ -41,6 +42,10 @@ We use consistent code styles at Ocean Protocol and enforce them through various
 * [How to publish JavaScript projects as npm packages](development/libraries-npm.md)
 
 ### Solidity
+
+## Documentation Strategy
+
+See [the page about the documentation strategy](development/documentation-strategy.md).
 
 ## Boards
 
