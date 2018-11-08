@@ -19,7 +19,7 @@ From the top-level point of view, there are total 9 moduels as shown in the belo
 * **Governance**: it governs the available assets and services in Ocean network. For example, it whitelists new service agreement templates through TCR & Voting. 
 * **Tribe**: it controls the registry of membership for each service agreement template; defines TCR based registries for permission, which has whitelisted members who can provide or consume the service. Tribe is part of Governance module.
 * **Dispute Resolution**: resolves the disputes between consumer and provider through voting or TCR. 
-* **Block Reward**: Ocean network will periodically release block reward (i.e., new minted ERC20 Ocean tokens) to reward the providers of data commons. Note provider of data commons must be randomly selected to fulfill the service requests so that they have the equal probability to receive block rewards.
+* **network reward**: Ocean network will periodically release network reward (i.e., new minted ERC20 Ocean tokens) to reward the providers of data commons. Note provider of data commons must be randomly selected to fulfill the service requests so that they have the equal probability to receive network rewards.
 * **Access Control**: it is the controller contract which grant access to actors after depended conditions are fulfilled. The access token can be delivered in two approaches: secret store and OEP10. 
 * **Payment**: it handles all payment processing, including lock payment, release payment and refund payment. 
 
@@ -36,7 +36,7 @@ The same diagram can be found in [research slides](https://docs.google.com/prese
 	* **hash condition**: it provides the proof of hash to prove the secret was received. For example, the hash of votes in the commit stage are used to verify the voters indeed submit the same votes in the reveal stage.
 	* **signature condition**: it verifies the signature to prove the ownership of private key for a public key. For example, service agreement needs the signature to verify the service request is signed by the consumer.
 	* **threshold condition**: it verifies that the percentage of M-out-of-N is achieved such as multi-signature and public voting. For example, 50% of voters need to support the application in order to get it whitelisted. Similarly, M-out-of-N nodes in Secret Store must be available to decrypt the secret token.
-	* **ethereum state condition**: it queries the state of ethereum ledger to prove certain condition. For example, block reward needs to query the status of service agreement and only reward providers of *fulfilled* service agreements.
+	* **ethereum state condition**: it queries the state of ethereum ledger to prove certain condition. For example, network reward needs to query the status of service agreement and only reward providers of *fulfilled* service agreements.
 
 * **Reward**:
 	* **escrow account**: it holds the payment funds from consumer and only releases the payment to the provider when service agreement has been delivered.
@@ -52,7 +52,7 @@ TCR | hash, signature, threshold, state conditions | | Voting |
 Tribe | hash, signature, threshold, state conditions | | TCR |
 Governance | hash, signature, threshold, state conditions | | TCR |
 Dispute Resolution | hash, signature, threshold, state conditions | | Voting, TCR |
-Block Reward | state condition | network reward | Ocean Token |
+network reward | state condition | network reward | Ocean Token |
 Secret Store | signature, threshold, state conditions | | |
 Payment | state condition | escrow account | Ocean token |
 Exchange | | | Ocean Token |
@@ -75,9 +75,10 @@ Ocean Token is the native and fungible tokens in Ocean network, which complies w
 
 Its total supply of Ocean Token is 1.4 billion.
 
-45% of supply is reserved for block rewards, which will be minted according to schedule below:
+45% of supply is reserved for network rewards, which will be minted according to schedule below:
 <img src="img/refactoring/schedule.jpg" width="500" />
 
+Note that the implementation should use block number rather than block time stamp to mint the network reward tokens.
 
 #### 2.1.2 Sample Code
 
@@ -94,38 +95,48 @@ uint256 public constant TOTAL_SUPPLY = 1400000000 * 10 ** 18;    // OceanToken t
 // transfer tokens 
 function transfer(address _to, uint256 _value) public returns (bool);
 
-// mint new Ocean tokens and send tokens to block reward contract 
+// mint new Ocean tokens and send tokens to network reward contract 
 function mintTokens() public returns (bool success);
 ```
 
 #### 2.1.3 Task & Issue
 
-- [ ] mint new tokens as block rewards according to the releasing schedule;
-- [ ] transfer minted new tokens to block reward pool.
+- [ ] mint new tokens as network rewards according to the releasing schedule;
+- [ ] transfer minted new tokens to network reward pool.
 
 ----
 
-### 2.2 Block Reward
+### 2.2 network reward
 
 #### 2.2.1 Definition
 
-Block rewards are newly minted Ocean tokens which reward providers of data commons. 
+network rewards are newly minted Ocean tokens which will be rewarded to providers who:  
+1. fulfill the SA of data commons;  
+2. stake on the data commons. 
 
 <img src="img/refactoring/blockreward.jpg" width="1000" />
 
 **Key Points**:
 
-* Block reward Ocean tokens will be minted and deposited into a reward pool;
-* In the same block interval, Ocean network randomly select a provider to serve the service agreement of data commons. Therefore, all providers have the equal probability to receive the block rewards.
-* When the service agreement is fulfilled and verified, provider receive a `lottery ticket` to win the partial block rewards;
-* Stakeholders of data commons in the same block interval receive a `lottery ticket` to win the partial block rewards.
-* In the end of current block interval, Ocean network randomly choose a winner from the providers and a winner from the stakeholders who hold `lottery tickets`.
-* This chosen provider and stakeholder share all tokens in the reward pool (the reward percentage is pre-defined, such as provider takes 80% block rewards, while stakeholder takes 20%);
-* The procedure will repeat for each block interval; if there is no winner, Ocean tokens in the reward pool will accumulate over time until a winner claims the reward.
+* How to choose winner of rewards?
+	* Network reward Ocean tokens will be minted and deposited into a reward pool;
+	* Providers who *fulfill the service agreements of data commons* **and** *put in stake* will receive `lottery tickets`, where the number of tickets is determined by fulfilled conditions. 
+	* The formula that calculates number of lottery tickets is a function of *(1) fulfilled conditions*, *(2) stake*, **and** *(3) size of datasets* (e.g., 1 lottery ticket per MB).
+	* When the amount of tokens in the reward pool exceeds certain threshold, Ocean network will randomly choose a winner from the providers who have lottery tickets. The winning probability is proportional to the number of tickets.
+
+* Delay on network reward:
+	* Attackers may publish data commons that they don't have IP rights in order to earn network rewards. If network rewards can be immediately withdrawn,   there is no time for Ocean network to detect.
+	* The block rewards must be put on hold for a period of time (i.e., 30 days) before they can be withdrawn from Ocean network.
+
+	
+* Challenge on winner of network reward:
+	* 	When the network rewards are put on hold, anyone can challenge it (e.g., claim the infringement of copyrights) with stake. If they win the challenge, the challenger and verifier get the network rewards.
+
+The procedure is illustrated in the below diagram:
 
 <img src="img/refactoring/rewardLogic.jpg" width="1000" />
 
-The process for a service prodiver to receive block rewards in one block interval is below:
+Below diagram shows how to calculate the number of lottery tickets based on service conditions. The convertion table is for illustration purpose only. 
 
 <img src="img/refactoring/distributeBR.jpg" width="800" />
 
@@ -140,7 +151,7 @@ address[] candidates;
 // number of reward tokens in this block interval
 uint256 rewardPool;
 
-// randomly pick a provider to receive block reward
+// randomly pick a provider to receive network reward
 function sendBlockReward() public returns (bool success){
 	...
 	// Ocean token contract mints new tokens
@@ -150,7 +161,7 @@ function sendBlockReward() public returns (bool success){
 	uint256 random = keccak256(abi.encodePacked(...)) % n;
 	
 	// send tokens in rewardPool to a randomly chosen provider
-	transfer(candidates[random], rewardPool);
+	transfer(candidates[random], rewardPool * percentage);
 	...
 };
 ```
@@ -158,12 +169,11 @@ function sendBlockReward() public returns (bool success){
 #### 2.2.3 Task & Issue
 
 - [ ] retrieve proofs of fulfilled service agreements for data commons;
-- [ ] add providers of these proofs to the winner candidate list;
-- [ ] retrieve list of stakeholders for data commons;
-- [ ] random number generator to have uniform-distributed random numbers;
-- [ ] detect the end of current block interval;
-- [ ] trigger the minting of new block rewards in Token contract;
-- [ ] choose a random provider and a random stakeholder;
+- [ ] add providers of these proofs to the candidate list and calculate their number of `lottery ticket`;
+- [ ] retrieve list of stakeholders for data commons and calculate their number of `lottery ticket`;
+- [ ] detect the balance of reward pool exceeds certain threshold;
+- [ ] trigger the minting of new network rewards in Token contract;
+- [ ] choose a random provider and a random stakeholder according to their number of `lottery tickets`;
 - [ ] split the current reward pool into token rewards for chosen provider and stakeholder.
 
 ----
@@ -191,10 +201,13 @@ The key point is to split up the conditions from reward payment as:
 2. **support Tri-State: Unknown, True, False**
 <img src="img/refactoring/triState.jpg" width="800" />
 
-3. **New service agreement template must go through governance and TCR to be whitelisted**. 
+3. **Add current provider of data commons into network reward candidates and calculate number of lottery tickets if service agreement is fulfilled and verified.** 
+
+4. **New SA template for services shall go through governance and TCR to be whitelisted**. Note that *dataset may not go through TCR* in order to be published, because a global TCR for assets causes high onboarding friction and does not scale.
+
 <img src="img/refactoring/whitelistSAT.jpg" width="800" />
 
-4. **Add current provider of data commons into block reward candidates if service agreement is fulfilled and verified.**
+
 
 #### 2.3.2 Sample Code
 
@@ -224,15 +237,15 @@ function executeAgreement(bytes32 templateId, bytes signature, address consumer,
 // fulfill the service agreement (after all conditions are fulfilled)
 function fulfillAgreement(bytes32 serviceId) public noPendingFulfillments(serviceId) returns(bool){
 	...
-	// detect new block interval and distribute tokens in current block reward pool
+	// detect new block interval and distribute tokens in current network reward pool
 	if( find a new block interval) {
-		// distribute block reward tokens 
+		// distribute network reward tokens 
 		BlockReward. sendBlockReward();  
 		// reset the candidate list	
 		BlockReward.clearCandidateList()
 	}
 	...
-	// add current provider of data commons into candidate list of block reward 
+	// add current provider of data commons into candidate list of network reward 
 	BlockReward.addCandidate(address provider);
 	...
 };
@@ -251,8 +264,8 @@ function calculatePayment(bytes32 serviceId) public returns(bool);
 - [ ] when create new SA template, the template must go through TCR to get whitelisted;
 - [ ] add new SA template into Tribe and Curation registry;
 - [ ] add permission checking with Tribe registry;
-- [ ] when SA is fulfilled, check whether it is needed to distribute block reward. If not, add provider of data commons to the winner candidate list.
-- [ ] In the end of block interval, trigger the distribution of block rewards.
+- [ ] when SA is fulfilled, check whether it is needed to distribute network reward. If not, add provider of data commons to the winner candidate list.
+- [ ] In the end of block interval, trigger the distribution of network rewards.
 
 ----
 
@@ -278,7 +291,7 @@ function refundPayment(bytes32 serviceId, bytes32 assetId, uint256 price) public
 
 #### 2.4.3 Task & Issue
 
-- [ ] add function to distribute block rewards with pre-defined percentage parameters;
+- [ ] add function to distribute network rewards with pre-defined percentage parameters;
 - [ ] add function to verify the status of payments.
 
 
@@ -311,21 +324,21 @@ function grantAccess(bytes32 serviceId, bytes32 assetId) public returns (bool);
 
 ----
 
-### 2.6 Tribe
+### 2.6 Tribe or Group
 
 #### 2.6.1 Definition
 
-Each service agreement template has its corresponding `Tribe` including:
+Each service is represented by an unique DID and has three registries:
 
-* *open registry* that enables membership for this SA template;
-* *provider registry* includes members who can fulfill the instantiated service agreement;
-* *consumer registry* includes members who are eligible to consume the instantiated service agreement;
+* *open registry*: users have credentials in this registry are the members for this service and they can further become provider or consumer for this service;
+* *provider registry* users have credentials in this registry can fulfill the service agreement;
+* *consumer registry* users have credentials in this registry can consume the service agreement;
 
-<img src="img/refactoring/tribe.jpg" width="600" />
+<img src="img/refactoring/tribe.jpg" width="1000" />
 
 **How to add member into Provider registry?**
 
-* owner of service agreement template is a provider of the instantiated service agreement by default;
+* owner of service agreement template is a provider of the service agreement by default;
 * other members in the tribe shall be whitelisted through TCR in order to fulfill the service agreement.
 
 **How to add member into Consumer registry?**
@@ -380,7 +393,7 @@ function addConsumer(bytes32 template_Id, address consumer) public returns (bool
 
 #### 2.7.1 Definition
 
-Curation is required in Ocean to generate a ranked list of SA sorted from high quality to low. In the decentralized settings, curation could be done with staking mechanism & bonding curves.
+Curation is required in Ocean to generate a ranked list of services sorted from high quality to low. In the decentralized settings, curation could be done with staking mechanism & bonding curves.
 
 A bonding curves is a fixed curve that bonds reserved token (i.e., Ether or Ocean token) with a local ERC20 boned token for an associated SA:
 
@@ -388,9 +401,13 @@ A bonding curves is a fixed curve that bonds reserved token (i.e., Ether or Ocea
 
 The bonding curves determines the exchange ratio with an analytical formula, which models the price of bonded token as a function of its total supply. Usually price goes up when total supply increases, which indicates strong demand of bonded tokens.
 
-**(1) Curation for SA template**
+**(1) Curation of Serivces**
 
-* Each service agreement template has its own fixed bonding curve along with ERC20 bonded tokens;
+**Each service is represented by an unique DID** (e.g., `ocn://did:provider/service`). The process of publishing a serivce using DID is shown as below:
+
+<img src="img/refactoring/publishService.jpg" width="1000" />
+
+* Each service has its own fixed bonding curve along with ERC20 bonded tokens;
 * Whenever the ERC20 bonded token is minted or burnt, the fixed bonding curve is used to calculate the price of bonded tokens:
 	* calculates how many bonded tokens should be minted for a given amount of Ocean tokens;
 	* calculates how many Ocean tokens should be returned when a given amount of bonded tokens are burnt.
@@ -467,6 +484,10 @@ To resolve the dispute, there are two approaches:
 
 * **Voting based resolution**: it enables expert verification (or arbitration) with permissioned voting on the disputes. 
 * **TCR based resolution**: it enables community opinion since all community members can vote on the disputes, which will be resolved based on TCR results.
+
+Moreover, the dispute resolution is actually a threshold service condition (i.e., M out of N voters must approve to resolve the dispute), therefore, it can be formulated as a service condition with unified interface.
+
+ <img src="img/refactoring/disputeWrapper.jpg" width="600" />
 
 #### 2.8.2 Sample Code
 
@@ -629,7 +650,7 @@ It illustrates the interaction between contracts.
 * TCR
 * Curation
 * Tribe
-* Block Reward
+* network reward
 * Dispute Resolution
 * Voting
 * Ocean Token 
@@ -642,7 +663,7 @@ It illustrates the interaction between contracts.
 * TCR
 * Dispute Resolution
 * Access Control
-* Block Reward
+* network reward
 * Tribe
 * Curation
 * Service Agreement
@@ -737,7 +758,7 @@ regular: must to have for Tethys
 
 ### 5.4 Incentives
 
-1. Virtual Block Reward  
+1. Virtual network reward  
 	* simple treasure chest for holding the mineable tokens  
 	* periodical release of rewards (enables: simple reward)  
 	* *conversion of service condition to reward (enables: selected reward)*  
@@ -781,7 +802,7 @@ Let us take a look at the bonded token contract case:
 
 ### 6.2 Random Number Generator
 
-The random number generation is very important in Ocean, which is required in many places such as selecting winner of block rewards and etc.
+The random number generation is very important in Ocean, which is required in many places such as selecting winner of network rewards and etc.
 
 The most famous one is RANDAO as shown in the diagram below. It needs three stages and two interactions with users to generate a truly random number. 
 
@@ -795,4 +816,6 @@ In addition, decentralized Oraclize like **chainlink** can be explored.
 
 We need to carefully choose the approach to generate random number, because many projects had been hacked due to their designs of RNG and lose many tokens.
 
+### 6.3 Pump and Dump Attack
 
+It is a typical attack to any market maker, where attacker buys huge amount of tokens with very low price and fraudulently pump up the price in order to dump his holdings for profits.
