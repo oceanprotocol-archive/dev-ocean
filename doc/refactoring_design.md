@@ -203,7 +203,7 @@ The key point is to split up the conditions from reward payment as:
 
 3. **Add current provider of data commons into network reward candidates and calculate number of lottery tickets if service agreement is fulfilled and verified.** 
 
-4. **New SA template for services shall go through governance and TCR to be whitelisted**. Note that *dataset may not go through TCR* in order to be published, because a global TCR for assets causes high onboarding friction and does not scale.
+4. **New SA template shall go through governance and TCR to be whitelisted**. 
 
 <img src="img/refactoring/whitelistSAT.jpg" width="800" />
 
