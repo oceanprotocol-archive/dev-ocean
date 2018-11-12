@@ -1,6 +1,5 @@
 
 Table of Contents
-=================
 
    * [Table of Contents](#table-of-contents)
    * [Architecture](#architecture)
@@ -10,7 +9,7 @@ Table of Contents
             * [Data science Tools](#data-science-tools)
          * [Tier 2 - Protocol Layer](#tier-2---protocol-layer)
             * [Squid Libraries](#squid-libraries)
-            * [Provider](#provider)
+            * [Aquarius](#aquarius)
             * [Brizo](#brizo)
          * [Tier 1 - Decentralized VM Layer](#tier-1---decentralized-vm-layer)
             * [Keeper Smart Contracts](#keeper-smart-contracts)
@@ -19,8 +18,9 @@ Table of Contents
          * [On-Chain Access Control](#on-chain-access-control)
       * [Project Repositories](#project-repositories)
 
-
 ---
+
+**Note: The Provider was renamed as Aquarius and some of its functionality was moved into Brizo. Some diagrams still use the old name.**
 
 
 This page is a central point for documenting the Ocean Architecture.
@@ -33,10 +33,9 @@ In the image below you can see a diagram of the initial High-Level Ocean Network
 
 In the above diagram you can see the following components (from top to bottom):
 
-
 - **Frontend** (Tier 3) - Application implemented using HTML + Javascript + CSS, running in the client side (user's browser).
 - **Data Science Tools** (Tier 3) - Applications executed by data scientists, typically getting access to the Ocean data and executing algorithms on top of that data
-- **Provider** (Tier 2) - Backend application providing some advanced network services. Executed typically by Marketplaces. Initially:
+- **Aquarius** (Tier 2) - Backend application providing some advanced network services. Executed typically by Marketplaces. Initially:
   - On-Chain access control.
   - Metadata storage.
   - Gathering of service proofs.
@@ -65,13 +64,13 @@ It is not a final product, but can be used as reference to implement further Mar
 Marketplaces will be running on the client side and will communicate with the following external components:
 
  - **Smart Contracts**. Enables interaction with the Ocean Smart Contracts that provide the Market business logic. This integration is implemented using the [Ethereum Javascript API (web3.js)](https://github.com/ethereum/web3.js/).
- - **Provider**. Enables access to asset's made accessible to consumers, and facilitates the Metadata management of assets for the publishers. This communication happens using HTTP API's.
+ - **Aquarius**. Enables access to asset's made accessible to consumers, and facilitates the Metadata management of assets for the publishers. This communication happens using HTTP API's.
 
 The frontend application will subscribe to the EVM transaction log, enabling the receipt of asynchronous messages. This will facilitate the triggering of automatic actions when some event(s) is raised (i.e. the request of an asset is triggered automatically when the purchase has been confirmed).
 
 ![Frontend High-Level Architecture](architecture/img/frontend-hl-arch.png)
 
-The Squid library showed in the above diagram encapsulates the logic to deal with the Ocean components (Keeper & Provider). Squid libraries in different languages are part of the Tier 2.
+The Squid library showed in the above diagram encapsulates the logic to deal with the Ocean components (such as Keeper nodes and Aquarius nodes). Squid libraries in different languages are part of the Tier 2.
 
 #### Data science Tools
 
@@ -92,18 +91,15 @@ Squid API as specification, can be implemented in different languages, initially
 
 The complete specification of the [Squid API](development/squid.md) can be reviewed as part of this repository.
 
+#### Aquarius
 
-#### Provider
+Aquarius is an application running in the backend (Python) that enables some advanced network capabilities:
 
-The Provider is an application running in the backend (Python) that enables some advanced network capabilities:
-
-- Metadata Management - Abstracts access to different Metadata stores, allowing Providers to integrate different metadata repositories. The OceanDB plugin system can integrate different data stores (ElasticSearch, MongoDB, BigChainDB) implementing the Oceandb interfaces.
-- Gathering of Service Proofs - Enables different kind of service proofs from different providers. For example - allowing the retrieval of receipt's from cloud providers to validate service delivery.
-- On-Chain Access Control - The Provider is in charge of the on-chain validation that a consumer is entitled to get access to an asset or service. This happens by integrating with the Keeper from the Provider side.
+**Metadata Management** - Abstracts access to different Metadata stores, allowing Aquarius to integrate different metadata repositories. The OceanDB plugin system can integrate different data stores (Elasticsearch, MongoDB, BigchainDB) implementing the OceanDB interfaces.
 
 The high-level architecture can be seen in the following diagram:
 
-![Provider High-Level Architecture](architecture/img/provider-hl-arch.png)
+![Aquarius High-Level Architecture](architecture/img/provider-hl-arch.png)
 
 #### Brizo
 
@@ -111,11 +107,12 @@ Brizo is component providing additional capabilities to the **Publishers**. It a
 The most basic scenario of a Publisher, is to provide access to the Assets this Publisher owns or manage. In addition to this, other extended services could be offered as extension to this.
 Brizo enables, interacting with the infrastructure providers, to build additional services based in that infrastructure like:
 
-* Computing on top of the data without moving the data
-* Storage services for new derived assets
+- Computing on top of the data without moving the data
+- Storage services for new derived assets
+- Gathering of Service Proofs - Enables different kind of service proofs from different providers. For example - allowing the retrieval of receipts from cloud providers to validate service delivery.
+- On-Chain Access Control - Brizo is in charge of the on-chain validation that a consumer is entitled to get access to an asset or service. This happens by integrating with the Keeper from the Brizo side.
 
 ![Brizo High-Level Architecture](architecture/img/brizo-hl-arch.png)
-
 
 ### Tier 1 - Decentralized VM Layer
 
