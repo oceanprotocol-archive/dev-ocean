@@ -7,7 +7,7 @@ Table of Contents
    * [Architecture](#architecture)
       * [Enabling Publisher Services (Brizo)](#enabling-publisher-services-brizo)
       * [Responsibilities](#responsibilities)
-      * [Initial solution](#initial-solution)
+      * [Flow](#flow)
       * [Next steps](#next-steps)
 
 
@@ -93,24 +93,24 @@ He/She picks the asset, signs the agreement, then sends `signature, templateId` 
 in the `PaymentCondition.sol` contract and fulfill the condition.
 ##### 3. Fulfill Upload Algorithm Condition
 - The Data scientist, parses the DDO (using Squid) in order to see how the Publisher exposes a computing service.
-The computing service defines, `how to upload algorithm to publisher side`, and `how to consume an output`. 
+The computing service defines, `how to upload an algorithm to the publisher side`, and `how to consume an output`. 
 - The data scientist, uploads the algorithm `off-chain` directly to the data set publisher `algorithm endpoint`.
 - Once, the algorithm file/s is/are uploaded, the data scientist calculates file/s hash, signs this hash and then submits 
 the signature **ONLY** on-chain. 
-- The publisher receives the algorithm file/s, calulates the hash(algorithm file/s) and submits this hash in order to fulfill `uploadAlgorithm` condition.
+- The publisher receives the algorithm file/s, calculates the hash(algorithm file/s) and submits this hash in order to fulfill `uploadAlgorithm` condition.
 The keeper contracts automatically, verifies that both parties see the same files using (the `hash which is submitted by the publisher`, `signature submitted by data scientist` and `data scientist address`).
-- Please do note that the software component that is responsible for running attaching the algorithm, data assets and runs the 
-containr is the [Brizo](https://github.com/oceanprotocol/brizo). Moreover, it pulls the logs periodically and saves the outputs.
+- Please do note that the software component that is responsible for running the algorithm, attaching data assets and runs the 
+container is the [Brizo](https://github.com/oceanprotocol/brizo). Moreover, it pulls the logs periodically and saves the outputs.
 
 ##### 4. Fulfill Grant Access Condition
 
 - In the mean while, the publisher starts computation machine/s, trains the model, collects logs and generates outputs (the derived asset).
-Finally, archive the outputs and upload them.
-- The publisher registers the derived asset as a DID/DDO and assigns the ownership to the data scientist.
+Finally, The publisher archives and uploads the outputs.
+- The publisher registers the derived asset (outputs) as a DID/DDO and assigns the ownership to the data scientist.
 - The publisher grants access to the data scientist using `secret-store` and fulfill the grant access condition.
 
 ##### 5. Fulfill Release Payment
-- Release Payment as a part of the reward function verifies that all the above steps are already fulfilled. The publisher
+- Release Payment as a part of the reward function verifies all the above conditions. and the publisher
 can call it once the granted access is fulfilled within a `timeout`. 
 - The data scientist can consume the derived asset (outputs) by calling the secret store which in turn check the permissions 
 on-chain then downloads the outputs using the decryption keys.
