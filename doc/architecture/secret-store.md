@@ -18,6 +18,8 @@ Table of Contents
 
 This page describes the Parity Secret Store integration.
 
+**Note: When this document was written, there was a component named the Provider, and there was no Aquarius or Ocean. Since then, the Provider was renamed to Aquarius, and some of the functionality of the Provider was moved over to Brizo, including the functionality related to secrets and access control.**
+
 # Motivation
 
 The current implementation of Ocean Protocol, detailed in the [OEP-10](https://github.com/oceanprotocol/OEPs/tree/master/10) requires Publishers, Consumers, Providers and Smart Contracts
@@ -71,7 +73,7 @@ This logic was encapsulated as part of the [Ocean Protocol Secret Store Java Cli
 This method allows to a Publisher to given a resource unique id and a document, to retrieve the document encrypted and store/distribute the keys used to encrypt/decrypt the document in the Secret Store cluster.
 The concept of document to encrypt is totally flexible. A document could be one or multiple URL's, access tokens to an external resource, etc.
 Typically in Ocean, during the Asset access phase, what we are encrypting/decrypting is the URL to get access to an Asset that is stored in a cloud provider.
-This could be extended in following phases, allowing to encrypt/decrypt a unique Marketplace/Provider (_sic_, the Provider was later renamed to Aquarius) URL that a part of give access to a resource, as a previous phase setup the cloud provider access policies for a specific user/ip address.
+This could be extended in following phases, allowing to encrypt/decrypt a unique Marketplace/Provider URL that a part of give access to a resource, as a previous phase setup the cloud provider access policies for a specific user/ip address.
 
 The lower level implementation is represented in the following flow:
 
@@ -142,7 +144,7 @@ Having this into account, at network launch, the initial Ocean deployment could 
 
 * A pool of Parity Ethereum client/nodes used to deployed the Ocean Keeper Contracts and syncronize with the Ethereum network
 * A Secret Store cluster allowing to share secrets between parties
-* A possible Commons Marketplace with his own Provider (_sic_, the Provider was later renamed to Aquarius) agent and Ocean DB instance. It would be used to demonstrate the Ocean capabilities using free/open assets
+* A possible Commons Marketplace with his own Provider agent and Ocean DB instance. It would be used to demonstrate the Ocean capabilities using free/open assets
 
 ![Ocean initial deployment](img/ocean-initial-deployment.png)
 
