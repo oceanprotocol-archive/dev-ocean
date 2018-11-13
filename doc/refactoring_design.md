@@ -140,6 +140,12 @@ Below diagram shows how to calculate the number of lottery tickets based on serv
 
 <img src="img/refactoring/distributeBR.jpg" width="800" />
 
+Key component is the conversion table that converts service conditions into a specific amount of lottery tickets. 
+
+Below is a first-cut design, where it calculates the `logarithm` of stake amount and time period to avoid impact of huge amount of stake. Otherwise, big whales can stake huge amount of stakes to have extremely high probability of winning network rewards.
+
+<img src="img/refactoring/rewardConversion.jpg" width="800" />
+
 #### 2.2.2 Sample Code
 
 The sample smart contract looks like this:
@@ -324,68 +330,70 @@ function grantAccess(bytes32 serviceId, bytes32 assetId) public returns (bool);
 
 ----
 
-### 2.6 Tribe or Group
+### 2.6 Group
 
-#### 2.6.1 Definition
+#### 2.6.1 User Permission
 
-Each service is represented by an unique DID and has three registries:
+Group module includes user's permission (i.e., membership, provider, consumer) for each service, which is represented by an unique DID:
 
-* *open registry*: users have credentials in this registry are the members for this service and they can further become provider or consumer for this service;
-* *provider registry* users have credentials in this registry can fulfill the service agreement;
-* *consumer registry* users have credentials in this registry can consume the service agreement;
+* *member*: users is a member for this service and they can further become provider or consumer with required credentials;
+* *provider* users can be a provider to fulfill the service;
+* *consumer* users can be a consumer to consume the service;
 
-<img src="img/refactoring/tribe.jpg" width="1000" />
+As such, Group module provides a query function to return whether a specific user has the permission to be a provider or consumer of the given service.
 
-**How to add member into Provider registry?**
+<img src="img/refactoring/userpermission.jpg" width="600" />
 
-* owner of service agreement template is a provider of the service agreement by default;
-* other members in the tribe shall be whitelisted through TCR in order to fulfill the service agreement.
+**How to become provider?**
 
-**How to add member into Consumer registry?**
+* publisher of service is a provider of the service by default;
+* user can be whitelisted through TCR to become a provider;
+* or other credentials as needed.
 
-* pre-vetted users by the owner of datasets;
-* consumers who makes payment for the service agreement;
-* all members have access to data commons.
+**How to become consumer?**
 
-**How to choose Provider for SA?**:
+* pre-vetted users by the owner of dataset or publisher of service;
+* consumers who have special credentials or satisfy requirements;
 
-* *data commons*: Ocean network randomly choose a provider to fulfill the service agreement request of data commons;
-* *priced data*: Consumer chooses the provider to fulfill his service agreement request.
+#### 2.6.2 Provider List for Service
+
+It is required to retrieve the provider list for a specific service in two cases:
+
+1. *data commons*: Ocean network has to randomly choose a provider from the `provider list` to fulfill the service request of data commons;
+2. *priced data*: Consumer chooses a provider from the `provider list` to fulfill his service request.
+
+The provider list for each service can be stored in Ocean DB off-chain and updated whenever a provider is added or removed. 
+
+Or, it can be built in On-Chain Group module as:
+<img src="img/refactoring/providerlist.jpg" width="600" />
 
 #### 2.6.2 Sample Code
 
 ```Solidity
-struct Tribe{
-   // open registry of membership
-	mapping(address => bool) private members;
-	
-	// TCR based registry for provider permission: who can provide service
-	mapping(address => bool) private providers;
-	
-	 // TCR based registry for consumer permission: who can consume service
-	mapping(address => bool) private consumers;
-}
+// each service (DID) has its permission hashmap (service DID -> permission byte)
+// last 3 bits of permission byte represent status of member, provider, consumer of user for given service
+mapping(address => mapping(bytes32 => byte)) private permission;
 
-// each SA template has its corresponding Tribe struct 
-mapping(bytes32 => Tribe) private tribes;
+// (Optional) each service (DID) has its corresponding provider list
+mapping(bytes32 => mapping(address => bool)) private providerList;
 
 // add new member to the tribe (similarly, there is function to remove a member)
-function addMember(bytes32 template_Id, address member) public returns (bool);
+function addMember(bytes32 DID, address member) public returns (bool);
 
-// add new provider to fulfill the SA (similarly, there is function to remove a provider)
-function addProvider(bytes32 template_Id, address provider) public returns (bool);
+// add new provider to fulfill the service (similarly, there is function to remove a provider)
+function addProvider(bytes32 DID, address provider) public returns (bool);
 
-// add new consumer to consume the SA (similarly, there is function to remove a consumer)
-function addConsumer(bytes32 template_Id, address consumer) public returns (bool);
+// add new consumer to consume the service (similarly, there is function to remove a consumer)
+function addConsumer(bytes32 DID, address consumer) public returns (bool);
 ```
 
 #### 2.6.3 Task & Issue
 
-- [ ] add data structures of permission registries for membership, provider and consumer;
-- [ ] user needs to go through TCR to be added into provider registry;
-- [ ] user needs to make payment or pre-vetted to be added into consumer registry;
-- [ ] members in the tribe have access to data commons; there is no need to have consumer registry;
-- [ ] add functions to remove user from provider registry or consumer registry;
+- [ ] add data structures of user permission;
+- [ ] user needs to go through TCR to become a provider;
+- [ ] user needs to make payment or pre-vetted to become a consumer;
+- [ ] data commons can be accessed by any user;
+- [ ] add functions to disable user's permission;
 
 ----
 
