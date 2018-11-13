@@ -144,7 +144,7 @@ Key component is the conversion table that converts service conditions into a sp
 
 We use a mixed **proof-of-work + proof-of-stake** method to determine the number of lottery tickets. 
 
-* **Proof of Work**: provider can prove their work using the gas consumption for computing, the dataset size (in MB) and service complete proof. `logarithm` is used to average the impact from those factors. As such, the computing formula is different for each different service and provider.
+* **Proof of Work**: provider can prove their work using the dataset size (in MB) and service complete proof. `logarithm` is used to average the impact from those factors. As such, the computing formula is different for each different service and provider. Note that proper method needs to verify the size of dataset to prevent fraudulence.
 * **Proof of Stake**: provider need to put in stake on the service in order to receive the lottery ticket. Similarly, `logarithm` of stake amount and time period are used to avoid impact of huge amount of stake. Otherwise, big whales can stake huge amount of stakes to have extremely high probability of winning network rewards.
 
 <img src="img/refactoring/rewardConversion.jpg" width="800" />
@@ -339,23 +339,22 @@ function grantAccess(bytes32 serviceId, bytes32 assetId) public returns (bool);
 
 Group module defines user's permission (i.e., membership, provider, consumer) for each service that is represented by an unique DID:
 
-* Each service has its own `credential requirements` for its member, provider, and consumer permissions. User needs to have the correct credential in order to have the correspnoding permission. 
-* User can own various `credentials` such as pre-vetted status, special badge, group membership, and etc. Each credential entitle user to own permission for services that require the same credential.
+* Each service has its own `credential requirements` for users to provide or consume the service. 
+* User can own various `credentials` such as pre-vetted status, group membership and etc. Each credential entitles user to own acess to the services that require the same credential.
 
 As such, Group module has a query function to return whether user has a specific credential to be a provider or consumer of the given service. 
 
 <img src="img/refactoring/userpermission.jpg" width="600" />
 
-**How to become provider?**
+Current supported credentials in this first-cut design:
 
-* publisher of service is a provider of the service by default;
-* user can be whitelisted through TCR to become a provider;
-* or other credentials as needed.
+**Credential for provider**
 
-**How to become consumer?**
+* user shall be whitelisted through TCR;
 
-* pre-vetted users by the owner of dataset or publisher of service;
-* consumers who have special credentials or satisfy requirements;
+**Credential for consumer**
+
+* pre-vetted users can access service without fee;
 
 #### 2.6.2 Provider List for Service
 
@@ -364,10 +363,8 @@ It is required to retrieve the provider list for a specific service in two cases
 1. *data commons*: Ocean network has to randomly choose a provider from the `provider list` to fulfill the service request of data commons;
 2. *priced data*: Consumer chooses a provider from the `provider list` to fulfill his service request.
 
-The provider list for each service can be stored in Ocean DB off-chain and updated whenever a provider is added or removed. 
+The provider list for each service can be stored in Ocean DB off-chain and updated whenever a provider is added or removed. The off-chain discovery function can pull out the list of providers when consumers query the services.
 
-Or, it can be built in On-Chain Group module as:
-<img src="img/refactoring/providerlist.jpg" width="600" />
 
 #### 2.6.2 Sample Code
 
