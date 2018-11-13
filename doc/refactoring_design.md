@@ -142,7 +142,10 @@ Below diagram shows how to calculate the number of lottery tickets based on serv
 
 Key component is the conversion table that converts service conditions into a specific amount of lottery tickets. 
 
-Below is a first-cut design, where it calculates the `logarithm` of stake amount and time period to avoid impact of huge amount of stake. Otherwise, big whales can stake huge amount of stakes to have extremely high probability of winning network rewards.
+We use a mixed **proof-of-work + proof-of-stake** method to determine the number of lottery tickets. 
+
+* **Proof of Work**: provider can prove their work using the gas consumption for computing, the dataset size (in MB) and service complete proof. `logarithm` is used to average the impact from those factors. As such, the computing formula is different for each different service and provider.
+* **Proof of Stake**: provider need to put in stake on the service in order to receive the lottery ticket. Similarly, `logarithm` of stake amount and time period are used to avoid impact of huge amount of stake. Otherwise, big whales can stake huge amount of stakes to have extremely high probability of winning network rewards.
 
 <img src="img/refactoring/rewardConversion.jpg" width="800" />
 
