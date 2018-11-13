@@ -334,13 +334,12 @@ function grantAccess(bytes32 serviceId, bytes32 assetId) public returns (bool);
 
 #### 2.6.1 User Permission
 
-Group module includes user's permission (i.e., membership, provider, consumer) for each service, which is represented by an unique DID:
+Group module defines user's permission (i.e., membership, provider, consumer) for each service that is represented by an unique DID:
 
-* *member*: users is a member for this service and they can further become provider or consumer with required credentials;
-* *provider* users can be a provider to fulfill the service;
-* *consumer* users can be a consumer to consume the service;
+* Each service has its own `credential requirements` for its member, provider, and consumer permissions. User needs to have the correct credential in order to have the correspnoding permission. 
+* User can own various `credentials` such as pre-vetted status, special badge, group membership, and etc. Each credential entitle user to own permission for services that require the same credential.
 
-As such, Group module provides a query function to return whether a specific user has the permission to be a provider or consumer of the given service.
+As such, Group module has a query function to return whether user has a specific credential to be a provider or consumer of the given service. 
 
 <img src="img/refactoring/userpermission.jpg" width="600" />
 
@@ -370,21 +369,34 @@ Or, it can be built in On-Chain Group module as:
 #### 2.6.2 Sample Code
 
 ```Solidity
-// each service (DID) has its permission hashmap (service DID -> permission byte)
-// last 3 bits of permission byte represent status of member, provider, consumer of user for given service
-mapping(address => mapping(bytes32 => byte)) private permission;
+Struct Requirement {
+	// each service (DID) has its credential requirements for membership
+	mapping(uint => bytes32[]) private member;
+
+	// each service (DID) has its credential requirements for provider
+	mapping(uint => bytes32[]) private provider;
+	
+	// each service (DID) has its credential requirements for consumer
+	mapping(uint => bytes32[]) private consumer;
+}
+
+// each service (DID) has its credential requirements
+mapping(bytes32 => Requirement) private serviceRequirements;
+
+// each user has its credentials
+mapping(address => mapping(bytes32 => bool)) private userCredentials;
 
 // (Optional) each service (DID) has its corresponding provider list
 mapping(bytes32 => mapping(address => bool)) private providerList;
 
-// add new member to the tribe (similarly, there is function to remove a member)
-function addMember(bytes32 DID, address member) public returns (bool);
+// query credential of a specific user
+function queryCredential(address member, bytes32 credential) public view returns (bool);
 
-// add new provider to fulfill the service (similarly, there is function to remove a provider)
-function addProvider(bytes32 DID, address provider) public returns (bool);
+// add credential to a specific user
+function addCredential(address member, bytes32 credential) public returns (bool);
 
-// add new consumer to consume the service (similarly, there is function to remove a consumer)
-function addConsumer(bytes32 DID, address consumer) public returns (bool);
+// query user permission for a specific service
+function addConsumer(bytes32 DID, address user) public returns (bool member, bool provider, bool consumer);
 ```
 
 #### 2.6.3 Task & Issue
