@@ -18,6 +18,8 @@ Table of Contents
 
 This page describes the Parity Secret Store integration.
 
+**Note: When this document was written, there was a component named the Provider, and there was no Aquarius or Ocean. Since then, the Provider was renamed to Aquarius, and some of the functionality of the Provider was moved over to Brizo, including the functionality related to secrets and access control.**
+
 # Motivation
 
 The current implementation of Ocean Protocol, detailed in the [OEP-10](https://github.com/oceanprotocol/OEPs/tree/master/10) requires Publishers, Consumers, Providers and Smart Contracts
