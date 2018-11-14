@@ -201,7 +201,12 @@ asset_ddo = ocean.register(metadata, publisher)
 
 * **signServiceAgreement** - ASYNC. Signs the ServiceAgreement from the consumer side
 ```
-signature = ocean.signServiceAgreement(did, consumer)
+signature,serviceAgreementId = ocean.signServiceAgreement(did, serviceDefinitionId, consumer)
+```
+
+* **executeServiceAgreement** - ASYNC. Execute the ServiceAgreement from the publisher side
+```
+ServiceAgreement = ocean.executeServiceAgreement(did, serviceDefinitionId, serviceAgreementId, serviceAgreementSignature, consumer, publisher)
 ```
 
 * **resolveDID** - SYNC. Given a DID, return the associated DID Document (DDO). The DDO is resolved by directly interacting with the keeper node. 
@@ -467,7 +472,7 @@ Public API
 | Ocean            | searchOrders `tbd`                 | array[Order]            | Low  | Not Implemented       | Not Implemented           | Not Implemented     |
 | Ocean            | getOrdersByAccount                 | array[Order]            |      | Not Implemented       | Not Implemented           | Not Implemented     |
 | Ocean            | registerAsset                      | DDO                     | High | Not Implemented       | x                         | Not Implemented     |
-| Ocean            | signServiceAgreement               | string                  | High | Not Implemented       | x                         | Not Implemented     |
+| Ocean            | signServiceAgreement               | string,string           | High | Not Implemented       | x                         | Not Implemented     |
 | Ocean            | executeServiceAgreement            | ServiceAgreement        | High | Not Implemented       | x                         | Not Implemented     |
 | Ocean            | resolveDID                         | ddo                     | High | Not Implemented       | Not Implemented           | Not Implemented     |
 | Ocean            | getOrder                           | Order                   | High | Not Implemented       | Not Implemented           | Not Implemented     |
