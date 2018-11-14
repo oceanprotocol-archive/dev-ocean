@@ -1,3 +1,9 @@
+---
+title: Architecture Overview
+description: This page is a central point for documenting the architecture of Ocean Protocol.
+slug: /concepts/architecture/
+section: concepts
+---
 
 Table of Contents
 
