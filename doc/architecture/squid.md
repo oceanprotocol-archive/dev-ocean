@@ -9,31 +9,6 @@ section: concepts
 
 The goal of this doc is to help a developer develop a version of the Squid API in any programming language. Currently, the Squid API is defined for Object-Oriented languages such as JavaScript, Java, and Python (which are the three initial implementation languages).
 
-<!--ts-->
-   * [Squid API](#squid-api)
-      * [Common](#common)
-         * [Getting an instance](#getting-an-instance)
-            * [Methods](#methods)
-      * [Ocean](#ocean)
-         * [Methods](#methods-1)
-      * [Account](#account)
-         * [Methods](#methods-2)
-      * [Asset](#asset)
-         * [Methods](#methods-3)
-      * [ServiceAgreement](#serviceagreement)
-         * [Methods](#methods-4)
-      * [Order](#order)
-         * [Methods](#methods-5)
-      * [SecretStore (Private)](#secretstore-private)
-         * [Methods](#methods-6)
-      * [DID-DDO-Library (Private)](#did-ddo-library-private)
-      * [Squid API Implementation state](#squid-api-implementation-state)
-      * [Examples](#examples)
-
-<!-- Added by: batman, at: 2018-10-18T09:08+02:00 -->
-
-<!--te-->
-
 ---
 
 **🐲🦑 THERE BE DRAGONS AND SQUIDS. This is in alpha state and you can expect running into problems. If you run into them, please open up [a new issue](https://github.com/oceanprotocol/dev-ocean/issues). 🦑🐲**

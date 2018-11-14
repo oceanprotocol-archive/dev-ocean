@@ -5,33 +5,7 @@ slug: /concepts/architecture/
 section: concepts
 ---
 
-Table of Contents
-
-   * [Table of Contents](#table-of-contents)
-   * [Architecture](#architecture)
-      * [Components](#components)
-         * [Tier 3 - Application Layer](#tier-3---application-layer)
-            * [Pleuston Frontend](#pleuston-frontend)
-            * [Data science Tools](#data-science-tools)
-         * [Tier 2 - Protocol Layer](#tier-2---protocol-layer)
-            * [Squid Libraries](#squid-libraries)
-            * [Aquarius](#aquarius)
-            * [Brizo](#brizo)
-         * [Tier 1 - Decentralized VM Layer](#tier-1---decentralized-vm-layer)
-            * [Keeper Smart Contracts](#keeper-smart-contracts)
-      * [Interactions](#interactions)
-         * [Assets registering and consumption](#assets-registering-and-consumption)
-         * [On-Chain Access Control](#on-chain-access-control)
-      * [Project Repositories](#project-repositories)
-
----
-
 **Note: The Provider was renamed as Aquarius and some of its functionality was moved into Brizo. Some diagrams still use the old name.**
-
-
-This page is a central point for documenting the Ocean Architecture.
-
-# Architecture
 
 In the image below you can see a diagram of the initial High-Level Ocean Network Architecture:
 
@@ -47,7 +21,6 @@ In the above diagram you can see the following components (from top to bottom):
   - Gathering of service proofs.
 - **Brizo** (Tier 2) - Backend application allowing to provide additional services to Publishers (Compute)
 - **Keeper Contracts** (Tier 1) - Solidity Smart Contracts running on the decentralized Ethereum Virtual Machine (EVM).
-
 
 ## Components
 
@@ -69,8 +42,8 @@ It is not a final product, but can be used as reference to implement further Mar
 
 Marketplaces will be running on the client side and will communicate with the following external components:
 
- - **Smart Contracts**. Enables interaction with the Ocean Smart Contracts that provide the Market business logic. This integration is implemented using the [Ethereum Javascript API (web3.js)](https://github.com/ethereum/web3.js/).
- - **Aquarius**. Enables access to asset's made accessible to consumers, and facilitates the Metadata management of assets for the publishers. This communication happens using HTTP API's.
+- **Smart Contracts**. Enables interaction with the Ocean Smart Contracts that provide the Market business logic. This integration is implemented using the [Ethereum Javascript API (web3.js)](https://github.com/ethereum/web3.js/).
+- **Aquarius**. Enables access to asset's made accessible to consumers, and facilitates the Metadata management of assets for the publishers. This communication happens using HTTP API's.
 
 The frontend application will subscribe to the EVM transaction log, enabling the receipt of asynchronous messages. This will facilitate the triggering of automatic actions when some event(s) is raised (i.e. the request of an asset is triggered automatically when the purchase has been confirmed).
 
@@ -82,7 +55,6 @@ The Squid library showed in the above diagram encapsulates the logic to deal wit
 
 Data science Tools are the interface to Ocean used by data scientists. Typically in Python (but not limited to it),
 those tools and libraries expose a high-level API allowing to integrate the Ocean capabilities in different kind of computation pipelines.
-
 
 ### Tier 2 - Protocol Layer
 
@@ -134,9 +106,6 @@ The Ocean Keeper implementation is where we put the following modules together:
 
 ![Contracts Architecture](architecture/img/contracts-structure.jpg)
 
-
-
-
 ## Interactions
 
 ### Assets registering and consumption
@@ -148,9 +117,3 @@ The lower level details about the consumption are included in the On-Chain Acces
 ### On-Chain Access Control
 
 ![On-Chain Access Control Flow](architecture/img/onchain-acl.png)
-
-## Project Repositories
-
-The Ocean Github project repositories can be found in the [repositories section](architecture/repos.md).
-
-
