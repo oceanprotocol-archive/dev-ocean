@@ -194,9 +194,14 @@ array[Order] = ocean.searchOrders(searchQuery)
 array[Order] = ocean.getOrdersByAccount(account)
 ```
 
-* **register** - ASYNC. High-level method publishing the metadata off-chain and registering the Service Agreement on-chain. It orchestrate the publishAssetMetadata and publishServiceAgreement, and creating a DDO methods.
+* **registerAsset** - ASYNC. High-level method publishing the metadata off-chain and registering the Service Agreement on-chain. It orchestrate the publishAssetMetadata and publishServiceAgreement, and creating a DDO methods.
 ```
-asset_did = ocean.register(asset)
+asset_ddo = ocean.register(metadata, publisher)
+```
+
+* **signServiceAgreement** - ASYNC. Signs the ServiceAgreement from the consumer side
+```
+signature = ocean.signServiceAgreement(did, consumer)
 ```
 
 * **resolveDID** - SYNC. Given a DID, return the associated DID Document (DDO). The DDO is resolved by directly interacting with the keeper node. 
@@ -457,10 +462,13 @@ Public API
 | :--------------- | :--------------------------------- | :---------------------- | :--- | :-------------------- | :------------------------ | :------------------ |
 | Ocean            | getInstance (js, java)/ Ocean (py) | Ocean                   | High | Not Implemented       | x                         | Not Implemented     |
 | Ocean            | getAccounts                        | array[Account]          | High | x                     | x                         | Not Implemented     |
-| Ocean            | searchAssets                       | array[Asset]            | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| Ocean            | searchAssets                       | array[Asset]            | High | Not Implemented       | x                         | Not Implemented     |
+| Ocean            | searchAssetsByText                 | array[Asset]            | High | Not Implemented       | x                         | Not Implemented     |
 | Ocean            | searchOrders `tbd`                 | array[Order]            | Low  | Not Implemented       | Not Implemented           | Not Implemented     |
 | Ocean            | getOrdersByAccount                 | array[Order]            |      | Not Implemented       | Not Implemented           | Not Implemented     |
-| Ocean            | register                           | string                  | High | Not Implemented       | x                         | Not Implemented     |
+| Ocean            | registerAsset                      | DDO                     | High | Not Implemented       | x                         | Not Implemented     |
+| Ocean            | signServiceAgreement               | string                  | High | Not Implemented       | x                         | Not Implemented     |
+| Ocean            | executeServiceAgreement            | ServiceAgreement        | High | Not Implemented       | x                         | Not Implemented     |
 | Ocean            | resolveDID                         | ddo                     | High | Not Implemented       | Not Implemented           | Not Implemented     |
 | Ocean            | getOrder                           | Order                   | High | Not Implemented       | Not Implemented           | Not Implemented     |
 | Ocean            | getAsset                           | Asset                   | High | Not Implemented       | Not Implemented           | Not Implemented     |
@@ -469,8 +477,15 @@ Public API
 | Account          | getEtherBalance                    | number/integer          | High | x                     | x                         | Not Implemented     |
 | Account          | getBalance                         | Balance                 | High | x                     | x                         | Not Implemented     |
 | Account          | requestTokens                      | number/integer          | High | x                     | x                         | Not Implemented     |
-| Asset            | getId                              | string                  | High | x                     | x                         | Not Implemented     |
-| Asset            | purchase                           | Order                   | High | Not Implemented       | x                         | Not Implemented     |
+| ServiceAgreement | getId                              | string                  | High | Not Implemented       | x                         | Not Implemented     |
+| ServiceAgreement | getPrice                           | number/integer          | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| ServiceAgreement | getStatus                          | xxx                     | High | Not Implemented       | x                         | Not Implemented     |
+| ServiceAgreement | publish                            | xxx                     | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| ServiceAgreement | retire                             | xxx                     | Low  | Not Implemented       | Not Implemented           | Not Implemented     |
+| ServiceAgreement | grantAccess                        | xxx                     | High | Not Implemented       | x                         | Not Implemented     |
+| ServiceAgreement | getAccess                          | xxx                     | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| Asset            | getId                              | string                  | High | x                     | Not Implemented           | Not Implemented     |
+| Asset            | purchase                           | Order                   | High | Not Implemented       | Not Implemented           | Not Implemented     |
 | Asset            | getDID                             | string                  | High | Not Implemented       | Not Implemented           | Not Implemented     |
 | Asset            | getDDO                             | ddo                     | High | Not Implemented       | Not Implemented           | Not Implemented     |
 | Asset            | publishMetadata                    | string                  | High | x                     | Not Implemented           | Not Implemented     |
@@ -478,25 +493,19 @@ Public API
 | Asset            | updateMetadata                     | boolean                 | High | x                     | Not Implemented           | Not Implemented     |
 | Asset            | retireMetadata                     | boolean                 | Low  | x                     | Not Implemented           | Not Implemented     |
 | Asset            | getServiceAgreements               | array[ServiceAgreement] | Low  | Not Implemented       | Not Implemented           | Not Implemented     |
-| ServiceAgreement | getId                              | string                  | High | Not Implemented       | Not Implemented           | Not Implemented     |
-| ServiceAgreement | getPrice                           | number/integer          | High | Not Implemented       | Not Implemented           | Not Implemented     |
-| ServiceAgreement | getStatus                          | xxx                     | High | Not Implemented       | Not Implemented           | Not Implemented     |
-| ServiceAgreement | publish                            | xxx                     | High | Not Implemented       | Not Implemented           | Not Implemented     |
-| ServiceAgreement | retire                             | xxx                     | Low  | Not Implemented       | Not Implemented           | Not Implemented     |
-| ServiceAgreement | getAccess                          | xxx                     | High | Not Implemented       | Not Implemented           | Not Implemented     |
-| Order            | getId                              | string                  | High | Not Implemented       | x                         | Not Implemented     |
-| Order            | getStatus                          | AccessStatus            | High | Not Implemented       | x                         | Not Implemented     |
+| Order            | getId                              | string                  | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| Order            | getStatus                          | AccessStatus            | High | Not Implemented       | Not Implemented           | Not Implemented     |
 | Order            | verifyPayment                      | boolean                 | Low  | Not Implemented       | Not Implemented           | Not Implemented     |
-| Order            | pay                                | string                  | High | Not Implemented       | x                         | Not Implemented     |
-| Order            | commit                             | boolean                 | High | Not Implemented       | x                         | Not Implemented     |
-| Order            | consume                            | blob                    | High | Not Implemented       | x                         | Not Implemented     |
+| Order            | pay                                | string                  | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| Order            | commit                             | boolean                 | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| Order            | consume                            | blob                    | High | Not Implemented       | Not Implemented           | Not Implemented     |
 
 Private API                                                                                 
 
 | Class       | Method          | Return Value | Prio  | Python Implementation | Javascript Implementation | Java Implementation |
 | :---------- | :-------------- | :----------- | :---- | :-------------------- | :------------------------ | :------------------ |
-| SecretStore | encryptDocument | string       | High  | Not Implemented       | Not Implemented           | Not Implemented     |
-| SecretStore | decryptDocument | string       | Hight | Not Implemented       | Not Implemented           | Not Implemented     |
+| SecretStore | encryptDocument | string       | High  | Not Implemented       | x                         | Not Implemented     |
+| SecretStore | decryptDocument | string       | Hight | Not Implemented       | x                         | Not Implemented     |
 | DID-DDO-lib | TBD             |              |       |                       |                           |                     |
 | DID-DDO-lib | TBD ...         |              |       |                       |                           |                     |
 
