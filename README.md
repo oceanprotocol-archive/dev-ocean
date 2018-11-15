@@ -1,19 +1,19 @@
 [![banner](doc/img/repo-banner@2x.png)](https://oceanprotocol.com)
 
+<h1 align="center">dev-ocean: Ocean Engineering</h1>
+
 <p align="center">
-  <img src="https://media.giphy.com/media/Xbaqg3KwpxHjO/giphy.gif">
+  <img src="https://media.giphy.com/media/Xbaqg3KwpxHjO/giphy.gif" width="270">
 </p>
 
-<h1 align="center">Dev-Ocean: Ocean Engineering</h1>
-
-> 💧 Ocean Engineering Pages
+> 🕶 Ocean Engineering Pages with documentation about Development, DevOps, QA, Security, etc.
 > [oceanprotocol.com](https://oceanprotocol.com)
+
+**This repo contains internal documentation for all Ocean engineering processes. You will find most of the key documents on our [central documentation site](https://docs.oceanprotocol.com) under Core Concepts.**
 
 See [Ocean project map](https://github.com/oceanprotocol/engineering/blob/master/PROJECT_MAP.md) for current development status and handy links.
 
-
 The main objective of the Ocean Engineering practice is:
-
 
 * Simplify what we do in order to avoid reinventing the wheel.
 * Promote quality and security.
@@ -35,30 +35,24 @@ The engineering practice is based in a list of key [principles](doc/principles.m
 
 ## Areas
 
-The documentation is divided in different areas:
+This repo is divided into different areas:
 
+- [Docs: Architecture](https://docs.oceanprotocol.com/concepts/architecture/)
 - [Development](doc/development.md)
 - [DevOps](doc/devops.md)
 - [QA](doc/qa.md)
 - [Security](doc/security.md)
-- [Architecture](doc/architecture.md)
 - [Lifecycle](doc/alm.md)
-
 
 ## Additional Information
 
+- **[Ocean Protocol Documentation](https://docs.oceanprotocol.com)**
+- [Docs: Software Components](https://docs.oceanprotocol.com/concepts/components/)
 - [Ocean Github Boards](doc/alm/boards.md)
-- [GitHub Engineering Board](https://github.com/oceanprotocol/engineering/projects/1)
-- [GitHub Issues](https://github.com/oceanprotocol/engineering/issues)
-- [Milestones](https://github.com/oceanprotocol/engineering/milestones?direction=asc&sort=due_date&state=open)
-- [Github Project Repositories](doc/architecture/repos.md)
+- [GitHub Engineering Board](https://github.com/oceanprotocol/dev-ocean/projects/1)
+- [GitHub Issues](https://github.com/oceanprotocol/dev-ocean/issues)
+- [Milestones](https://github.com/oceanprotocol/dev-ocean/milestones?direction=asc&sort=due_date&state=open)
 
 ## Contributing
 
-We use GitHub as a means of maintaining and tracking issues and source code development.
-
-If you would like to contribute, please fork this repository, do work in a feature branch, and finally open a pull request for maintainers to review your changes.
-
-Ocean Protocol uses [C4 Standard process](https://github.com/unprotocols/rfc/blob/master/1/README.md) to manage changes in the source code.  Find here more details about [Ocean C4 OEP](https://github.com/oceanprotocol/OEPs/tree/master/1).
-
-
+- See [Docs: Contributing](https://docs.oceanprotocol.com/concepts/contributing/)
