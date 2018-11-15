@@ -473,7 +473,7 @@ access = serviceAgreement.getAccess()
 
 Interface provides access to Order functions
 
-### getI
+### getId
 
 SYNC. Return the ID used by this order.
 
@@ -481,7 +481,7 @@ SYNC. Return the ID used by this order.
 id= order.getId()
 ```
 
-### getStatu
+### getStatus
 
 ASYNC. Using an order object, returns an integer representing the order status as defined in the keeper. It is described as an Enum.
 
@@ -495,7 +495,7 @@ Possible values are:
 status= order.getStatus()
 ```
 
-### commi
+### commit
 
 ASYNC. Publisher commits this order with the access token.
 
@@ -503,7 +503,7 @@ ASYNC. Publisher commits this order with the access token.
 isCommited= order.commit(accessToken)
 ```
 
-### pa
+### pay
 
 ASYNC. Pay for this order with given account.
 
@@ -511,7 +511,7 @@ ASYNC. Pay for this order with given account.
 paymentId= order.pay(consumerAccount)
 ```
 
-### verifyPaymen
+### verifyPayment
 
 SYNC. Given an order object, verifies if the order was paid.
 
