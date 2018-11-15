@@ -90,24 +90,25 @@ class Balance {
 
 ### Getting an instance
 
-```
+```java
 getInstance(web3Dto, providerDto)
 ```
 
-Parameters:
+#### Parameters
 
-* web3Dto - Web3 client wrapped in a DTO object to avoid coupling with specific web3 specific libraries
-* providerDto - Ocean Provider client wrapped in a DTO object
+* `web3Dto` - Web3 client wrapped in a DTO object to avoid coupling with specific web3 specific libraries
+* `providerDto` - Ocean Provider client wrapped in a DTO object
 
-This method returns an instance of the **Ocean** class. It allows to get access to the other Ocean core methods
+This method returns an instance of the **Ocean** class. It allows to get access to the other Ocean core methods.
 
-In Python
-Instantiate an ocean object
+### Instantiate an Ocean object
+
+In Python:
 
 ```python
 ocean = Ocean(web3Dto, providerDto)
 
-# for comaptability use get_instance to return an Ocean object
+# for compatibility use get_instance to return an Ocean object
 ocean = Ocean.get_instance(web3Dto, providerDto)
 
 class Ocean:
@@ -117,9 +118,9 @@ class Ocean:
     return Ocean(web3Dto, providerDto)
 ```
 
-In JavaScript
+In JavaScript:
 
-```javascript
+```js
 import { Ocean } from '@oceanprotocol/squid'
 
 const ocean = await Ocean.getInstance({...})
@@ -127,7 +128,7 @@ const ocean = await Ocean.getInstance({...})
 
 ## Ocean
 
-This class serves as the interface with Ocean Protocol. The Ocean class aggregates the list of **Account**s (ethereum accounts), list of **Asset**s, and a list of **Order** objects. The Ocean class aggregates the Keeper class, which in turn interfaces with the running Smart Contracts: Market, Token, and Auth. 
+This class serves as the interface with Ocean Protocol. The Ocean class aggregates the list of **Account**s (ethereum accounts), list of **Asset**s, and a list of **Order** objects. The Ocean class aggregates the Keeper class, which in turn interfaces with the running Smart Contracts: Market, Token, and Auth.
 
 ### getAccounts
 
@@ -153,16 +154,17 @@ POST {provider.url}/api/v1/provider/assets/metadata/query
 
 This method is expecting a json object that contains the following structure:
 
- ```  {
-        "offset": 100,
-        "page": 0,
-        "query": {
-          "value": 1
-        },
-        "sort": {
-          "value": 1
-        },
-        "text": "Office"
+ ```json
+{
+    "offset": 100,
+    "page": 0,
+    "query": {
+        "value": 1
+    },
+    "sort": {
+        "value": 1
+    },
+    "text": "Office"
 }
  ```
 
@@ -170,7 +172,7 @@ The only mandatory argument is query or text, but you have to use only one of th
 
 ### searchOrders
 
-(*TBD*) SYNC. Return a list of orders by search query. **Nice to Have**.
+(*TBD*) SYNC. Return a list of orders by search query. _Nice to Have_.
 
 ```js
 array[Order] = ocean.searchOrders(searchQuery)
@@ -218,7 +220,7 @@ Asset = ocean.getAsset(asset_DID)
 
 ### getServiceAgreement
 
-SYNC. Returns as serviceAgreement object based from the service agreement id (Publisher). **Nice to Have**.
+SYNC. Returns as serviceAgreement object based from the service agreement id (Publisher). _Nice to Have_.
 
 ```js
 serviceAgreement = ocean.getServiceAgreement(serviceAgreementId)
@@ -226,7 +228,7 @@ serviceAgreement = ocean.getServiceAgreement(serviceAgreementId)
 
 ## Account
 
-Ocean Account object
+Ocean Account object.
 
 ### getId
 
@@ -274,7 +276,7 @@ Interface provides access to assets.
 
 ### getId
 
-SYNC. Return the Id used by this asset.
+SYNC. Return the ID used by this asset.
 
 ```js
 id= order.getId()
@@ -282,7 +284,7 @@ id= order.getId()
 
 ### purchase
 
-ASYNC. Given an Asset id/did or Asset object and Service Agreement, the Consumer created for the  class purchases an asset
+ASYNC. Given an Asset ID/DID or Asset object and Service Agreement, the Consumer created for the  class purchases an asset
 
 ```js
 order = asset.purchase(assetDID, serviceAgreementId, timeout)
@@ -322,7 +324,7 @@ This method is expecting a json object that contains the following structure:
 
 ```json
 {
-    "assetId": ,
+    "assetId":,
     "publisherId":,
     "base":{
         "name":,
@@ -337,7 +339,7 @@ This method is expecting a json object that contains the following structure:
 }
 ```
 
-In the base object there are more optional fields that you can check in the [provider API](https://github.com/oceanprotocol/provider/blob/develop/provider/app/assets.py).
+In the base object there are more optional fields that you can check in the [provider API](https://github.com/oceanprotocol/aquarius/blob/develop/aquarius/app/assets.py).
 
 ### getMetadata
 
@@ -384,13 +386,13 @@ This method is expecting a json object that contains the following structure:
         "type":
     },
     "curation":{
-        "rating":
+        "rating": ,
         "numVotes":
     }
-    }
+}
 ```
 
-In the base object there are more optional fields that you can check in the [provider API](https://github.com/oceanprotocol/provider/blob/develop/provider/app/assets.py).
+In the base object there are more optional fields that you can check in the [provider API](https://github.com/oceanprotocol/aquarius/blob/develop/aquarius/app/assets.py).
 
 ### retireMetadata
 
@@ -402,7 +404,7 @@ asset.retireMetadata(metadata)
 
 ### getServiceAgreements
 
-SYNC. Get a list of the service agreements published for this asset. providerId could be optional. **Nice to Have**
+SYNC. Get a list of the service agreements published for this asset. providerId could be optional. _Nice to Have_
 
 ```js
 [serviceAgreementIds] = asset.getServiceAgreements(providerId)
@@ -410,11 +412,11 @@ SYNC. Get a list of the service agreements published for this asset. providerId 
 
 ## ServiceAgreement
 
-Interface provides access to ServiceAgreement functions
+Interface provides access to ServiceAgreement functions.
 
 ### getId
 
-SYNC. Return the Id used by this serviceAgreement.
+SYNC. Return the ID used by this serviceAgreement.
 
 ```js
 id = serviceAgreement.getId()
@@ -422,7 +424,7 @@ id = serviceAgreement.getId()
 
 ### getPrice
 
-SYNC. Given a service agreement id, get's the asset price information existing on-chain.
+SYNC. Given a service agreement ID, gets the asset price information existing on-chain.
 
 ```js
 price = serviceAgreement.getPrice(serviceAgreementId)
@@ -431,7 +433,13 @@ tbd
 
 ### getStatus
 
-SYNC. Return's the status of a Service Agreement. Possible values are (0=> Pending, 1=> Enabled, 2=> Retired)
+SYNC. Returns the status of a Service Agreement.
+
+Possible values are:
+
+- `0` => Pending
+- `1` => Enabled
+- `2` => Retired
 
 ```js
 status = serviceAgreement.getStatus()
@@ -447,7 +455,7 @@ serviceAgreement = serviceAgreement.publish(providerId, price, ..)
 
 ### retire
 
-ASYNC. Given a Service Agreement object, the Publisher retire a Service Agreement. It changes the status to the value 2=>Retired.
+ASYNC. Given a Service Agreement object, the Publisher retire a Service Agreement. It changes the status to the value `2` => Retired.
 
 ```js
 result = serviceAgreement.retire()
@@ -467,7 +475,7 @@ Interface provides access to Order functions
 
 ### getI
 
-SYNC. Return the Id used by this order.
+SYNC. Return the ID used by this order.
 
 ```js
 id= order.getId()
@@ -475,7 +483,13 @@ id= order.getId()
 
 ### getStatu
 
-ASYNC. Using an order object, returns an integer representing the order status as defined in the keeper. It is described as an Enum Possible values are (0=>Pending, 1=>Paid, 2=>Canceled)
+ASYNC. Using an order object, returns an integer representing the order status as defined in the keeper. It is described as an Enum.
+
+Possible values are:
+
+- `0` => Pending
+- `1` => Paid
+- `2` =>Canceled
 
 ```js
 status= order.getStatus()
@@ -505,9 +519,9 @@ SYNC. Given an order object, verifies if the order was paid.
 status= order.verifyPayment()
 ```
 
-### consum
+### consume
 
-ASYNC. Get all the information required to get access to an asset after the purchase process, using the internal assetId and serviceAgreementId
+ASYNC. Get all the information required to get access to an asset after the purchase process, using the internal `assetId` and `serviceAgreementId`.
 
 ```js
 url= order.consume(consumerAccount)
@@ -517,21 +531,24 @@ url= order.consume(consumerAccount)
 
 Interface provides access to SecretStore functions
 
-### Methods
+### encryptDocument
 
-### encryptDocumen
+SYNC. **Private function** encapsulated as part of the `register` function.
 
-SYNC. **Private function** encapsulated as part of the **register** function. It integrates the Parity Ethereum & Secret Store API allowing to encrypt a document.
-Given by a **Publisher** an unique resource id (did), the document to encrypt and the Secret Store cluster threshold (could be pre-defined to a fixed number), integrate the Secret Store API's to encrypt the document.
+It integrates the Parity Ethereum & Secret Store API allowing to encrypt a document.
+
+Given by a **Publisher** an unique resource id (DID), the document to encrypt and the Secret Store cluster threshold (could be pre-defined to a fixed number), integrate the Secret Store APIs to encrypt the document.
 
 ```js
 encryptedDocument= secretStore.encryptDocument(did, document, threshold)
 ```
 
-### decryptDocumen
+### decryptDocument
 
-SYNC.  **Private function** encapsulated as part of the **getAssetAccess** function. It integrates the Parity Ethereum & Secret Store API allowing to decrypt a document if the user executing this function is authorized by a Smart Contract.
-Given by a **Consumer** an unique resource id (did) and the document encrypted, this functions integrates the Secret Store API's to decrypt the document. The on-chain authorization phase is transparent for the user.
+SYNC.  **Private function** encapsulated as part of the `getAssetAccess` function. 
+
+It integrates the Parity Ethereum & Secret Store API allowing to decrypt a document if the user executing this function is authorized by a Smart Contract.
+Given by a **Consumer** an unique resource id (DID) and the document encrypted, this functions integrates the Secret Store API's to decrypt the document. The on-chain authorization phase is transparent for the user.
 
 ```js
 document= secretStore.decryptDocument(did, encryptedDocument)
