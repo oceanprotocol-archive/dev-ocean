@@ -138,9 +138,10 @@ network rewards are newly minted Ocean tokens which will be rewarded to provider
 	* The block rewards must be put on hold for a period of time (i.e., 30 days) before they can be withdrawn from Ocean network.
 
 	
-* Challenge on winner of network reward:
-	* 	When the network rewards are put on hold, providers with lottery tickets can challenge the block reward and vote in the challenge. 
-	*  providers who already have lottery ticket but do not receive rewards have more incentives to challenge & vote, because: if original winner loses the challenge, the challenger & winning voters will split the network rewards.
+* Challenge network reward:
+	* 	When the network rewards are put on hold, those providers who have lottery tickets but do not receive rewards can challenge the winner of network reward and vote in the challenge. 
+	*  providers who have lottery ticket but do not receive rewards have more incentives to challenge & vote. They become `verifiers` in this case.
+	*  If original winner loses the challenge, the challenger & winning voters will split the network rewards.
 	*  If the original winner appeals, arbitrators can help review the voting result if number of voters is small. It helps to avoid the situation that many providers collude to take the network rewards away from the original winner.
 
 The procedure is illustrated in the below diagram:
