@@ -53,6 +53,21 @@ This repo is divided into different areas:
 - [GitHub Issues](https://github.com/oceanprotocol/dev-ocean/issues)
 - [Milestones](https://github.com/oceanprotocol/dev-ocean/milestones?direction=asc&sort=due_date&state=open)
 
+## Integration into `oceanprotocol/docs`
+
+To include a markdown document from this repo on docs.oceanprotocol.com, you need to add 4 required values to a document's YAML frontmatter. E.g. for the [doc/architecture.md](doc/architecture.md) document:
+
+```yaml
+---
+title: Architecture Overview
+description: This page is a central point for documenting the architecture of Ocean Protocol.
+slug: /concepts/architecture/
+section: concepts
+---
+```
+
+For more requirements and information please see [External Content Files](https://github.com/oceanprotocol/docs#external-content-files) and [Markdown File Requirements](https://github.com/oceanprotocol/docs#markdown-file-requirements) on the [oceanprotocol/docs](https://github.com/oceanprotocol/docs#markdown-file-requirements) repo.
+
 ## Contributing
 
 - See [Docs: Contributing](https://docs.oceanprotocol.com/concepts/contributing/)
