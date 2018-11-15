@@ -116,26 +116,38 @@ network rewards are newly minted Ocean tokens which will be rewarded to provider
 
 <img src="img/refactoring/blockreward.jpg" width="1000" />
 
+*Edit*: Trent proposed "Bootstrap" phase to minimize the risk at the beginning of our network launch by distributing small amount of network rewards. After the operation is proved to be safe, Ocean increases the amount of rewards. See "Open Question 6.4" in the end for more details.
+
 **Key Points**:
 
 * How to choose winner of rewards?
 	* Network reward Ocean tokens will be minted and deposited into a reward pool;
 	* Providers who *fulfill the service agreements of data commons* **and** *put in stake* will receive `lottery tickets`, where the number of tickets is determined by fulfilled conditions. 
-	* The formula that calculates number of lottery tickets is a function of *(1) fulfilled conditions*, *(2) stake*, **and** *(3) size of datasets* (e.g., 1 lottery ticket per MB).
+	<!--- * The formula that calculates number of lottery tickets is a function of *(1) fulfilled conditions*, *(2) stake*, **and** *(3) size of datasets* (e.g., 1 lottery ticket per MB). -->
 	* When the amount of tokens in the reward pool exceeds certain threshold, Ocean network will randomly choose a winner from the providers who have lottery tickets. The winning probability is proportional to the number of tickets.
 
 * Delay on network reward:
-	* Attackers may publish data commons that they don't have IP rights in order to earn network rewards. If network rewards can be immediately withdrawn,   there is no time for Ocean network to detect.
+	* Provider may attack the reward mechanism for more network rewards in many ways:
+		* publish data commons with inappropriate content.
+		* conduct Sybil downloads attack.
+		* split large dataset into small pieces to have more lottery tickets.
+		* big whales put in huge number of stakes if stake amount determines #lottery tickets.
+		* duplicate content (i.e., copy & paste) to create a large size dataset if the size has impact on #lottery tickets.
+		* etc...
+	* If network rewards can be immediately withdrawn,   there is no time for Ocean network to detect these attacks.
 	* The block rewards must be put on hold for a period of time (i.e., 30 days) before they can be withdrawn from Ocean network.
 
 	
 * Challenge on winner of network reward:
-	* 	When the network rewards are put on hold, anyone can challenge it (e.g., claim the infringement of copyrights) with stake. If they win the challenge, the challenger and verifier get the network rewards.
+	* 	When the network rewards are put on hold, providers with lottery tickets can challenge the block reward and vote in the challenge. 
+	*  providers who already have lottery ticket but do not receive rewards have more incentives to challenge & vote, because: if original winner loses the challenge, the challenger & winning voters will split the network rewards.
+	*  If the original winner appeals, arbitrators can help review the voting result if number of voters is small. It helps to avoid the situation that many providers collude to take the network rewards away from the original winner.
 
 The procedure is illustrated in the below diagram:
 
 <img src="img/refactoring/rewardLogic.jpg" width="1000" />
 
+<!--- 
 Below diagram shows how to calculate the number of lottery tickets based on service conditions. The convertion table is for illustration purpose only. 
 
 <img src="img/refactoring/distributeBR.jpg" width="800" />
@@ -148,7 +160,8 @@ We use a mixed **proof-of-work + proof-of-stake** method to determine the number
 * **Proof of Stake**: provider need to put in stake on the service in order to receive the lottery ticket. Similarly, `logarithm` of stake amount and time period are used to avoid impact of huge amount of stake. Otherwise, big whales can stake huge amount of stakes to have extremely high probability of winning network rewards.
 
 <img src="img/refactoring/rewardConversion.jpg" width="800" />
-
+ -->
+ 
 #### 2.2.2 Sample Code
 
 The sample smart contract looks like this:
@@ -839,3 +852,11 @@ We need to carefully choose the approach to generate random number, because many
 ### 6.3 Pump and Dump Attack
 
 It is a typical attack to any market maker, where attacker buys huge amount of tokens with very low price and fraudulently pump up the price in order to dump his holdings for profits.
+
+
+### 6.4 Bootstrap Phase
+
+> (Trent): given that we're going to have a lot of learning on the network in the first 1-2 years, and tuning block rewards, perhaps we have a "bootstrap" phase for the amount of block rewards too. Specifically: have sigmoid-S curve rather than an exponential curve. So for the first 1-2 years it's a small amount of tokens, then it goes exponential and eventually tapers off. Another way is just keep the exponential, but multiply it by 0.1 to start, then 0.2 after milestone x hit, then 0.5, then 1.0. (I'd mentioned this in some discussions 2-3 weeks ago, but it's good to have this in the design.)
+
+
+<img src="img/refactoring/bootstrap.jpg" width="650" />
