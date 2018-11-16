@@ -7,6 +7,8 @@ section: concepts
 
 **Note: The Provider was renamed as Aquarius and some of its functionality was moved into Brizo. Some diagrams still use the old name.**
 
+The Ocean Protocol architecture is implemented based on [OEP-03/ARCH](https://github.com/oceanprotocol/OEPs/tree/master/3).
+
 In the image below you can see a diagram of the initial High-Level Ocean Network Architecture:
 
 ![High-Level Architecture](architecture/img/high-level-architecture.png)
