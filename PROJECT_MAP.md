@@ -18,8 +18,8 @@ The current milestone is [Trilobite - Tethys Beta (v0.9)](https://github.com/oce
 
 ## Main Ocean Development Repositories
 
-See [doc/architecture/repos.md](doc/architecture/repos.md)
+See [Docs: Software Components](https://docs.oceanprotocol.com/concepts/components/)
 
 ## Ocean Architecture
 
-See [doc/architecture.md](doc/architecture.md)
+See [Docs: Architecture](https://docs.oceanprotocol.com/concepts/architecture/)

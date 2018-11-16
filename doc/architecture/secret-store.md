@@ -1,36 +1,26 @@
-
-Table of Contents
-=================
-
-   * [Table of Contents](#table-of-contents)
-   * [Motivation](#motivation)
-   * [Introduction](#introduction)
-   * [Architecture](#architecture)
-      * [Encryption](#encryption)
-      * [Decryption](#decryption)
-      * [Authorization](#authorization)
-   * [Deployment](#deployment)
-      * [Links](#links)
-
-
 ---
-
-
-This page describes the Parity Secret Store integration.
+title: Secret Store
+description: This page describes the Parity Secret Store integration.
+slug: /concepts/secret-store/
+section: concepts
+---
 
 **Note: When this document was written, there was a component named the Provider, and there was no Aquarius or Ocean. Since then, the Provider was renamed to Aquarius, and some of the functionality of the Provider was moved over to Brizo, including the functionality related to secrets and access control.**
 
-# Motivation
+## Motivation
 
-The current implementation of Ocean Protocol, detailed in the [OEP-10](https://github.com/oceanprotocol/OEPs/tree/master/10) requires Publishers, Consumers, Providers and Smart Contracts
-to setup a complete negotiation between them. This integration was difficult, needs to scale to support delegation of permissions and because the complexity is a potential source of errors.
+The current implementation of Ocean Protocol, detailed in the [OEP-10](https://github.com/oceanprotocol/OEPs/tree/master/10) requires Publishers, Consumers, Providers and Smart Contracts to setup a complete negotiation between them.
+
+This integration was difficult, needs to scale to support delegation of permissions and because the complexity is a potential source of errors.
+
 Because of that we investigated alternative approaches to achieve a more secure and scalable way to share secrets between parties.
 
-
-# Introduction
+## Introduction
 
 Parity Secret Store is a feature included as part of the Parity Ethereum client that allows to store on the blockchain a fragmented ECDSA key which retrievals are controlled by a permissioned Smart Contract.
+
 The Secret Store implements a Threshold System that makes nodes unable to reconstruct the keys that allows to decrypt the documents.
+
 It means a Secret Store node, only saves a portion of the ECDSA key. The decryption key can only be generated if a consensus is reached by an amount of Secret Store nodes bigger than the threshold that the publisher of secret chooses.
 
 From the [Parity Secret Store documentation](https://wiki.parity.io/Secret-Store) page:
@@ -46,12 +36,10 @@ The Parity Secret Store is core technology that enables:
 * distributed key storage - private key shares are stored separately by every party and are never exposed neither to another parties, nor to external entities;
 * threshold retrieval according to blockchain permissions - all operations that are requiring private key, require at least t+1 parties to agree on ‘Permissioning contract’ state.
 
-
 This last point can enable to Ocean Protocol to have a solid mechanism to distribute encrypted contents between parties (Consumers and Publishers),
 and these contents only can be decrypted after a On-Chain authorization phase.
 
-
-# Architecture
+## Architecture
 
 The integration of the Secret could have the following characteristics:
 
@@ -63,16 +51,19 @@ The integration of the Secret could have the following characteristics:
 
 ![High-Level Architecture using Secret Store](img/secret-store-high-level.png)
 
-## Encryption
+### Encryption
 
 The standard Parity Secret Store publishing flow is the following:
 
 ![Secret Store Publishing Flow](img/ss-overview-2.jpg)
 
 This logic was encapsulated as part of the [Ocean Protocol Secret Store Java Client](https://github.com/oceanprotocol/secret-store-client-java), and is abstracted as part of the `encryptDocument` Squid method.
+
 This method allows to a Publisher to given a resource unique id and a document, to retrieve the document encrypted and store/distribute the keys used to encrypt/decrypt the document in the Secret Store cluster.
+
 The concept of document to encrypt is totally flexible. A document could be one or multiple URL's, access tokens to an external resource, etc.
 Typically in Ocean, during the Asset access phase, what we are encrypting/decrypting is the URL to get access to an Asset that is stored in a cloud provider.
+
 This could be extended in following phases, allowing to encrypt/decrypt a unique Marketplace/Provider URL that a part of give access to a resource, as a previous phase setup the cloud provider access policies for a specific user/ip address.
 
 The lower level implementation is represented in the following flow:
@@ -83,23 +74,26 @@ As a result of this flow, the encrypted document can be shared with the potentia
 
 The action of Granting permissions on-chain to a specific user is not part of this flow.
 
-## Decryption
+### Decryption
 
 The standard Parity Secret Store consuming flow is the following:
 
 ![Secret Store Publishing Flow](img/ss-overview-3.jpg)
 
 Again this logic is encapsulated as part of the `decryptDocument` Squid method. This method allows a to Consumer, given a resource unique id and a encrypted document (shared for the Publisher via Metadata or libp2p) to decrypt this document using the Secret Store cluster capabilities.
+
 Decryption only can be achieved if the Secret Store cluster achieve the quorum specified by the Publisher during the publishing process with the **threshold** attribute.
+
 The Secret Store validates on-chain the authorization permissions of the user trying to decrypt a document, not allowing to do it if those permissions are not satisfied.
 
 ![Ocean Secret Store Consuming Flow](img/secret-store-flow-consume.png)
 
-## Authorization
+### Authorization
 
 The Consumer on-chain authorization will be implemented using the Secret Store ACL capabilities.
 In the Secret Store configuration, an address of the authorization Smart Contract can be configured:
-```
+
+```solidity
 acl_contract = "6d6a34f2be1e76902a2fde049f317610cdf453eb"
 ```
 
@@ -120,13 +114,13 @@ Using this capability, a simple `checkPermissions` method could be as following:
 
 This could be easily adapted to use the Service Agreements approach.
 
-
-# Deployment
+## Deployment
 
 The Secret Store functionality is provided by a Permissioned cluster that will be executed as part of the Ocean Protocol basic infrastructure.
+
 The nodes part of this cluster only can be added changing the configuration of the members of the cluster, so a third-party malicious user can't join the cluster without changing the configuration of the other nodes.
 
-```
+```text
 [secretstore]
 
 // Here the list of all the nodes part of the Secret Store cluster
@@ -148,10 +142,12 @@ Having this into account, at network launch, the initial Ocean deployment could 
 
 ![Ocean initial deployment](img/ocean-initial-deployment.png)
 
-
 ## Links
 
 * [Parity Secret Store](https://wiki.parity.io/Secret-Store)
 * [ECDKG: A Distributed Key Generation Protocol Based on Elliptic Curve Discrete Logarithm](http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.124.4128&rank=1)
-* [Ocean Protocol Secret Store Java Client](https://github.com/oceanprotocol/secret-store-client-java)
 * [Secret Store Proof of Concept](https://github.com/oceanprotocol/poc-secret-store)
+
+<repo name="secret-store-client-js"></repo>
+<repo name="secret-store-client-py"></repo>
+<repo name="secret-store-client-java"></repo>
