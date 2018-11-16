@@ -1,11 +1,11 @@
 ---
 title: Ocean Engineering Principles
-description: Our engineering principles are based in the DevOps **CAMS** acronym (Culture, Automation, Measurement and Sharing).
+description: Our engineering principles are based on the DevOps **CAMS** acronym (Culture, Automation, Measurement and Sharing).
 slug: /concepts/principles/
 section: concepts
 ---
 
-The main objective of the Ocean Engineering practice is:
+The main objectives of the Ocean Engineering practice are:
 
 - Simplify what we do in order to avoid reinventing the wheel.
 - Promote quality and security.
