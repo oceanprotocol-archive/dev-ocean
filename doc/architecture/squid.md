@@ -474,7 +474,7 @@ Public API
 | Ocean            | registerAsset                      | DDO                     | High | Not Implemented       | x                         | Not Implemented     |
 | Ocean            | signServiceAgreement               | string,string           | High | Not Implemented       | x                         | Not Implemented     |
 | Ocean            | executeServiceAgreement            | ServiceAgreement        | High | Not Implemented       | x                         | Not Implemented     |
-| Ocean            | resolveDID                         | ddo                     | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| Ocean            | resolveDID                         | ddo                     | High | Not Implemented       | x                         | Not Implemented     |
 | Ocean            | getOrder                           | Order                   | High | Not Implemented       | Not Implemented           | Not Implemented     |
 | Ocean            | getAsset                           | Asset                   | High | Not Implemented       | Not Implemented           | Not Implemented     |
 | Account          | getId                              | string                  | High | Not Implemented       | x                         | Not Implemented     |
