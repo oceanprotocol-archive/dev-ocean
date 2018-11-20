@@ -28,8 +28,8 @@ OceanToken = name of the Artifact
 kovan = name of the chain
 
 i.e.
-OceanToken.poa_aws.json
-OceanToken.mainnet.json
+- OceanToken.poa_aws.json
+- OceanToken.mainnet.json
 
 ### Content
 
@@ -41,9 +41,9 @@ OceanToken.mainnet.json
 }
 ```
 
-abi: the current ABI of the contract
-bytecode: the contract content in bytecode representation
-address: the Address of the topmost instance on the Blockchain
+- abi: the current ABI of the contract
+- bytecode: the contract content in bytecode representation
+- address: the Address of the topmost instance on the Blockchain
 
 We store tha abi together with the address for a specific chain on a specific time to bundle them up. [see](#issues/patterns) for details
 
