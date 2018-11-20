@@ -20,7 +20,7 @@ contracts have changed to enable development of the contracts and `squid-x`.
 ### Structure
 
 ### Files
-artifacts/*
+artifacts/*.json
 
 OceanToken.kovan.json
 
@@ -40,6 +40,14 @@ OceanToken.mainnet.json
   "address": "0x758Ec40785099b8A3b3EFBfD5EE79Cd1394424a0"
 }
 ```
+
+abi: the current ABI of the contract
+bytecode: the contract content in bytecode representation
+address: the Address of the topmost instance on the Blockchain
+
+We store tha abi together with the address for a specific chain on a specific time to bundle them up. [see](#issues/patterns) for details
+
+https://github.com/oceanprotocol/keeper-contracts/blob/5b6f28e27b24479e241fb68958c793032545ed11/artifacts/OceanMarket.kovan.json
 
 ### Versioning
 The whole `artifacts` folder is under version control on docker, maven, npm and pypi
