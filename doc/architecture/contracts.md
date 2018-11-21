@@ -68,10 +68,6 @@ everthing in between
 * Time travel possible by loading and old version of `keeper-contracts` e.g. `v0.3.21` to travel back to that point (address, abi 
 combination) of all the chains (kovan, poa, mainnet)
 
-
-
-docker
-
 * no need for addresses or network in config of `squid-x`
 * auto network detection available right now with metamask (switching to different networks without the 
 need to reconfigured `squid-js``)
@@ -88,12 +84,12 @@ config files is one
 ## Issues / Patterns
 
 * ABI and Address constellation have to be exactly precise
-    if you mix up older or newer ABI's with Addresses you are going to have a bad time
-    The result could be catastrophic
+    if you mix up older or newer ABI's with older or newer Addresses you are going to have a bad time.
+    The result could be catastrophic.
     
 * ABI and Address could be versioned separated:
-    ABI could be versioned how they are right now in `keeper-contracts` release for npm, maven, docker and pypi
-    how do we release the different addresses for the different Blockchains (at least 4) then?
+    ABI could be versioned how they are right now in `keeper-contracts` release for npm, maven, docker and pypi.
+    how do we release the different addresses for the different Blockchains (at least 4 times (the number of contracts we are having right now)) then?
     how do we version them?
     how do we update them?
 
