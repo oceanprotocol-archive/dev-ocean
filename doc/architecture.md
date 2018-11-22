@@ -100,12 +100,18 @@ The Ocean Keeper implementation is where we put the following modules together:
 
 ## Interactions
 
-### Asset Registration and Consumption
+### Asset Registration
 
-![Assets Registering & Consumption Flow](architecture/img/assets-registering.png)
+![Asset Registration Flow](architecture/img/assets-registering.png)
+
+### Asset Consumption
+
+![Asset Consumption Flow](architecture/img/assets-consumption.png)
 
 The lower level details about the consumption are included in the On-Chain Access Control section below.
 
 ### On-Chain Access Control
 
 ![On-Chain Access Control Flow](architecture/img/onchain-acl.png)
+
+You can find more information about the complete On-Chain Access Control implementation in the [OEP-11](https://github.com/oceanprotocol/OEPs/tree/master/11). 
