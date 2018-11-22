@@ -43,6 +43,7 @@ The integration of the Secret could have the following characteristics:
 - Requires the usage of the Parity EVM Secret Store API existing in the Parity Ethereum clients
 - Requires the usage of the Parity Secret Store API. This software is part of the Parity Ethereum client
 - It's based in the usage of a permissioned Secret Store cluster. This cluster would be deployed/governed by the Ocean Protocol Foundation at network launch as part of the base Ocean core capabilities. Additional parties (user/companies/organizations) could be added as members to decentralize the responsibility of running this infrastructure.
+- Publishers and Consumers could use their own Parity Secret Store cluster. The cluster to use is part of the Squid configuration used by the different users of Ocean.
 
 ![High-Level Architecture using Secret Store](img/secret-store-high-level.png)
 
@@ -64,7 +65,7 @@ A Publisher (such as Alice in the diagram above) can use `encryptDocument` to en
 The type of document to encrypt is totally flexible. A document could be one or multiple URLs, access tokens to an external resource, etc.
 Typically in Ocean, during the Asset access phase, what we are decrypting is the URL to get access to an Asset that is stored in a cloud provider.
 
-This could be extended in following phases, allowing to encrypt/decrypt a unique Marketplace/Provider URL that a part of give access to a resource, as a previous phase setup the cloud provider access policies for a specific user/ip address.
+This could be extended in the future allowing configuration of access policies at runtime. This would allow the granting of access to specific IP addresses to get access to assets, after the authorization phase.
 
 The following diagram illustrates how a Secret Store integrates into the Ocean publishing flow:
 
