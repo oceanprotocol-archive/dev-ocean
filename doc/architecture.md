@@ -123,3 +123,5 @@ The lower level details about the consumption are included in the On-Chain Acces
 ### On-Chain Access Control
 
 ![On-Chain Access Control Flow](architecture/img/onchain-acl.png)
+
+You can find more information about the complete On-Chain Access Control implementation in the [OEP-11](https://github.com/oceanprotocol/OEPs/tree/master/11). 
