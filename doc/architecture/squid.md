@@ -140,39 +140,54 @@ array[Account] = ocean.getAccounts()
 
 ### searchAssets
 
-SYNC. Given a search query, returns a list of the Asset objects matching with that query.
+ASYNC. Given a search query, returns a list of the Asset objects matching with that query.
 
 ```js
 array[Asset] = ocean.searchAssets(searchQuery)
 ```
 
 You have to do a request to this endpoint:
-
-```text
-POST {provider.url}/api/v1/provider/assets/metadata/query
-```
-
+POST {provider.url}/api/v1/aquarius/assets/ddo/query
 This method is expecting a json object that contains the following structure:
 
- ```json
+ ```
 {
-    "offset": 100,
-    "page": 0,
-    "query": {
-        "value": 1
-    },
-    "sort": {
-        "value": 1
-    },
-    "text": "Office"
+        "offset": 100,
+        "page": 0,
+        "query": {
+          "value": 1
+        },
+        "sort": {
+          "value": 1
+        }
 }
  ```
 
-The only mandatory argument is query or text, but you have to use only one of them. The other fields are optional.
+### searchAssetsByText
+
+ASYNC. Given a search text query, returns a list of the Asset objects matching with that text query.
+
+```
+array[Asset] = ocean.searchAssetsByText(searchQuery)
+```
+You have to do a request to this endpoint:
+GET {provider.url}/api/v1/aquarius/assets/ddo/query
+This method is expecting a json object that contains the following structure:
+
+ ```
+{
+        "offset": 100,
+        "page": 0,
+        "sort": {
+          "value": 1
+        },
+        "text": "Office"
+}
+ ```
 
 ### searchOrders
 
-(*TBD*) SYNC. Return a list of orders by search query. _Nice to Have_.
+(*TBD*) SYNC. Return a list of orders by search query. **Nice to Have**.
 
 ```js
 array[Order] = ocean.searchOrders(searchQuery)
@@ -196,7 +211,7 @@ asset_did = ocean.register(asset)
 
 ### resolveDID
 
-SYNC. Given a DID, return the associated DID Document (DDO). The DDO is resolved by directly interacting with the keeper node.
+ASYNC. Given a DID, return the associated DID Document (DDO). The DDO is resolved by directly interacting with the keeper node.
 
 ```js
 DDO = ocean.resolveDID(did)
@@ -209,6 +224,7 @@ ASYNC. Get an order from the given orderId.
 ```js
 Order = ocean.getOrder(orderId)
 ```
+
 
 ### getAsset
 
@@ -566,7 +582,8 @@ Public API
 | :--------------- | :--------------------------------- | :---------------------- | :--- | :-------------------- | :------------------------ | :------------------ |
 | Ocean            | getInstance (js, java)/ Ocean (py) | Ocean                   | High | Not Implemented       | x                         | Not Implemented     |
 | Ocean            | getAccounts                        | array[Account]          | High | Not Implemented       | x                         | Not Implemented     |
-| Ocean            | searchAssets                       | array[Asset]            | High | Not Implemented       | Not Implemented           | Not Implemented     |
+| Ocean            | searchAssets                       | array[Asset]            | High | Not Implemented       | x                         | Not Implemented     |
+| Ocean            | searchAssetsByText                 | array[Asset]            | High | Not Implemented       | x                         | Not Implemented     |
 | Ocean            | searchOrders `tbd`                 | array[Order]            | Low  | Not Implemented       | Not Implemented           | Not Implemented     |
 | Ocean            | getOrdersByAccount                 | array[Order]            |      | Not Implemented       | x                         | Not Implemented     |
 | Ocean            | register                           | string                  | High | Not Implemented       | x                         | Not Implemented     |
