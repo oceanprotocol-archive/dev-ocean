@@ -1,64 +1,56 @@
 [![banner](doc/img/repo-banner@2x.png)](https://oceanprotocol.com)
 
+<h1 align="center">dev-ocean: Ocean Engineering</h1>
+
 <p align="center">
-  <img src="https://media.giphy.com/media/Xbaqg3KwpxHjO/giphy.gif">
+  <img src="https://media.giphy.com/media/Xbaqg3KwpxHjO/giphy.gif" width="270">
 </p>
 
-<h1 align="center">Dev-Ocean: Ocean Engineering</h1>
-
-> 💧 Ocean Engineering Pages
+> 🕶 Ocean Engineering Pages with documentation about Development, Application Lifecycle, DevOps, etc.
 > [oceanprotocol.com](https://oceanprotocol.com)
 
-See [Ocean project map](https://github.com/oceanprotocol/engineering/blob/master/PROJECT_MAP.md) for current development status and handy links.
+---
 
+**This repo contains internal documentation for all Ocean engineering processes.**
 
-The main objective of the Ocean Engineering practice is:
+---
 
+The Ocean Engineering practice follows a list of  [key principles](https://docs.oceanprotocol.com/concepts/principles/) based on the **CAMS** acronym (Culture, Automation, Measurement and Sharing).
 
-* Simplify what we do in order to avoid reinventing the wheel.
-* Promote quality and security.
-* Better communication about what we do and why we are doing it. Our community needs information!
-* Be more effective in order to make a better use of our time.
-* Use some common good principles & patterns. These can be useful!
-
-The engineering practice is based in a list of key [principles](doc/principles.md) based in the **CAMS** acronym (Culture, Automation, Measurement and Sharing).
-
-## Key Concepts
-
-- **Simplicity** - Everything we define should be thin and simple.
-- **Open Source** - We are building FLOSS, so Open Source and Open Standards.
-- **Openness** - Community first, open discussions, open documentation, open requirements.
-- **Quality** - New best practices should be oriented to promote a high quality product.
-- **Security** - Security MUST be a first class citizen.
-- **Automation** - We should automate as much as we can...it will make our lives easier.
-- **Team** - All of us are part of the team. All the best practices will be defined by all us.
+See the [Ocean project map](https://github.com/oceanprotocol/engineering/blob/master/PROJECT_MAP.md) for current development status and handy links.
 
 ## Areas
 
-The documentation is divided in different areas:
+The docs in this repo are divided into different areas:
 
+- [Application Lifecycle Management (ALM)](doc/alm.md)
+- [Architecture](doc/architecture.md), [also available at docs.oceanprotocol.com](https://docs.oceanprotocol.com/concepts/architecture/)
 - [Development](doc/development.md)
 - [DevOps](doc/devops.md)
-- [QA](doc/qa.md)
-- [Security](doc/security.md)
-- [Architecture](doc/architecture.md)
-- [Lifecycle](doc/alm.md)
-
 
 ## Additional Information
 
-- [Ocean Github Boards](doc/alm/boards.md)
-- [GitHub Engineering Board](https://github.com/oceanprotocol/engineering/projects/1)
-- [GitHub Issues](https://github.com/oceanprotocol/engineering/issues)
-- [Milestones](https://github.com/oceanprotocol/engineering/milestones?direction=asc&sort=due_date&state=open)
-- [Github Project Repositories](doc/architecture/repos.md)
+- **[Ocean Protocol Documentation](https://docs.oceanprotocol.com)**
+- [Docs: Software Components](https://docs.oceanprotocol.com/concepts/components/)
+- [List of Project Boards](doc/alm/boards.md) including the [Engineering Board](https://github.com/oceanprotocol/dev-ocean/projects/1)
+- [Issues in the dev-ocean repo](https://github.com/oceanprotocol/dev-ocean/issues)
+- [Milestones](https://github.com/oceanprotocol/dev-ocean/milestones?direction=asc&sort=due_date&state=open)
 
-## Contributing
+## Integration with docs.oceanprotocol.com
 
-We use GitHub as a means of maintaining and tracking issues and source code development.
+To include a Markdown document from this repo on docs.oceanprotocol.com, you need to add four required values to a document's YAML frontmatter. For example, for the [doc/architecture.md](doc/architecture.md) document:
 
-If you would like to contribute, please fork this repository, do work in a feature branch, and finally open a pull request for maintainers to review your changes.
+```yaml
+---
+title: Architecture Overview
+description: This page is a central point for documenting the architecture of Ocean Protocol.
+slug: /concepts/architecture/
+section: concepts
+---
+```
 
-Ocean Protocol uses [C4 Standard process](https://github.com/unprotocols/rfc/blob/master/1/README.md) to manage changes in the source code.  Find here more details about [Ocean C4 OEP](https://github.com/oceanprotocol/OEPs/tree/master/1).
+For more requirements and information please see [External Content Files](https://github.com/oceanprotocol/docs#external-content-files) and [Markdown File Requirements](https://github.com/oceanprotocol/docs#markdown-file-requirements) in the [oceanprotocol/docs](https://github.com/oceanprotocol/docs#markdown-file-requirements) repo.
 
+## Contributing to Ocean Protocol
 
+See the docs: [Ways to Contribute](https://docs.oceanprotocol.com/concepts/contributing/).

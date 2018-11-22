@@ -129,6 +129,24 @@ setup(
 
 ```
 
+### Upload to PyPI
+
+Ensure that `setuptools` is installed in the active environment.
+
+Go to the root directory of your project (i.e. the one containing `setup.py`).
+
+Build the package and the wheel:
+
+```bash
+python setup.py sdist bdist_wheel
+```
+
+Upload to PyPI:
+
+```bash
+twine upload dist/*
+```
+
 ## Logging
 
 Python `logging` should be employed generously. In the root calling
@@ -344,6 +362,33 @@ To integrate this environment in PyCharm;
 
 ### pipenv
 The new kid on the block. [Pipenv](https://github.com/pypa/pipenv) on GitHub.
+
+## Project Directory Cleanup
+
+After working with a Python project for a while, the project directory can get full of artifacts, and sometimes those can cause problems (e.g. conflicts). You can clean those out using:
+
+```bash
+# Remove build artifacts
+rm -fr build/
+rm -fr dist/
+rm -fr .eggs/
+find . -name '*.egg-info' -exec rm -fr {} +
+find . -name '*.egg' -exec rm -f {} +
+
+# Remove Python file artifacts
+find . -name '*.pyc' -exec rm -f {} +
+find . -name '*.pyo' -exec rm -f {} +
+find . -name '*~' -exec rm -f {} +
+find . -name '__pycache__' -exec rm -fr {} +
+
+# Remove test and coverage artifacts
+find . -name '.pytest_cache' -exec rm -fr {} +
+rm -fr .tox/
+rm -f .coverage
+rm -fr htmlcov/
+```
+
+Tip: If you get a permissions error, then give yourself the needed permissions using `sudo chown -R $(whoami):$(whoami) .`
 
 ## IDE's and editors
 ### Jupyter Lab
