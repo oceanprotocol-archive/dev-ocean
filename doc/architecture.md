@@ -80,9 +80,9 @@ The most basic scenario for a Publisher is to provide access to the Assets the P
 In addition to this, other extended services could also be offered, e.g.
 
 - Computing on top of the data without moving the data
-- Storage services for new derived assets
-- Gathering of Service Proofs - Enables different kind of service proofs from different providers. For example - allowing the retrieval of receipts from cloud providers to validate service delivery.
-- On-Chain Access Control - Brizo is in charge of the on-chain validation that a consumer is entitled to get access to an asset or service. This happens by integrating with the Keeper from the Brizo side.
+- Storage services for newly derived assets
+- Gathering of Service Proofs - Enables different kinds of service proofs from different providers. For example - allowing the retrieval of receipts from cloud providers to validate service delivery.
+- On-Chain Access Control - Brizo is in charge of the on-chain validation, controlling the assets or services that a consumer is entitled to get access to. This happens by integrating with the Keeper from the Brizo side.
 
 ![Brizo High-Level Architecture](architecture/img/brizo-hl-arch.png)
 
