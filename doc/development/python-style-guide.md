@@ -6,7 +6,9 @@ Here are some differences:
 
 ## Linter
 
-We use Codacy to check code style, and Codacy uses [PyLint](https://www.pylint.org/) to check Python code style.
+Most of the Ocean repositories containing Python code have [Flake8](http://flake8.pycqa.org/en/latest/) set up as the default linter for checking Python code style.
+
+We use Codacy to check the code style of all pull requests, and Codacy uses [PyLint](https://www.pylint.org/) to check Python code style.
 
 ## Global imports
 
