@@ -89,10 +89,14 @@ config files is one
     
 * ABI and Address could be versioned separated:
     ABI could be versioned how they are right now in `keeper-contracts` release for npm, maven, docker and pypi.
-    how do we release the different addresses for the different Blockchains (at least 4 times (the number of contracts we are having right now)) then?
-    how do we version them?
-    how do we update them?
+    - how do we release the different addresses for the different Blockchains (at least 4 times (the number of contracts we are having right now)) then?
+    - how do we version them?
+    - how do we update them?
 
+* Addressbook concept
+    - storing the addresse/network combinations and the versions of KC (only containing the ABI's) in some sort of address book.
+    - see [here](https://github.com/dharmaprotocol/charta/blob/51933fb822ad47686ee0e2284f6de0517fa1afe1/scripts/generate_address_book.js#L45)
+    
 * How to get ABI and Address from the docker instance?
     * Change it that you dont need it to get
     
@@ -102,6 +106,7 @@ config files is one
     * use kovan or poa testet from docker as default instead of ganache
     
 * Never use ganache-cli for running stuff, it's only for unit testing of `keeper-contracts` and `squid-x`
-    it is not persistant 
-    addresses will change on every start
-    mess
+   - it is not persistant 
+   - addresses will change on every start
+   - mess
+ 
