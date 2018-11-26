@@ -1,17 +1,16 @@
----
-title: Squid API
-description: The Squid API is a Level-2 API built on top of core Ocean components. It's a facilitator or enabler, but it's not the only way to interact with Ocean.
-slug: /concepts/squid/
-section: concepts
----
+# Squid API
 
-**Note: "Provider" was renamed to Aquarius and some of its functionality was moved over to Brizo. This page hasn't been updated to reflect that change yet.**
+The Squid API is a Level-2 API built on top of core Ocean components. It's a facilitator or enabler, but it's not the only way to interact with Ocean.
+
+**Note 1: "Provider" was renamed to Aquarius and some of its functionality was moved over to Brizo. This page hasn't been updated to reflect that change yet.**
+
+**Note 2: This document was created to help the developers of squid-js, squid-py and squid-java develop a consistent API, but it hasn't kept up with those implementations. For the latest actually-implemented APIs, refer to their repos:**
+
+- [squid-js](https://github.com/oceanprotocol/squid-js)
+- [squid-py](https://github.com/oceanprotocol/squid-py)
+- [squid-java](https://github.com/oceanprotocol/squid-java)
 
 The goal of this doc is to help a developer develop a version of the Squid API in any programming language. Currently, the Squid API is defined for Object-Oriented languages such as JavaScript, Java, and Python (which are the three initial implementation languages).
-
-<repo name="squid-js"></repo>
-<repo name="squid-py"></repo>
-<repo name="squid-java"></repo>
 
 ---
 
@@ -617,7 +616,7 @@ Public API
 | Order            | commit                             | boolean                 | High | Not Implemented       | x                         | Not Implemented     |
 | Order            | consume                            | blob                    | High | Not Implemented       | x                         | Not Implemented     |
 
-Private API                                                                                 
+Private API
 
 | Class       | Method          | Return Value | Prio  | Python Implementation | Javascript Implementation | Java Implementation |
 | :---------- | :-------------- | :----------- | :---- | :-------------------- | :------------------------ | :------------------ |
@@ -628,6 +627,4 @@ Private API
 
 ## Examples
 
-For examples please see [Tuna](https://github.com/oceanprotocol/tuna).
-
-<repo name="tuna"></repo>
+For examples, see the page listing [Tools & Examples on the Ocean Protocol docs site](https://docs.oceanprotocol.com/concepts/tools/).
