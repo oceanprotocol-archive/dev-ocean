@@ -86,7 +86,7 @@ The following describes the steps in the flow.
 
 - The data scientist parses the DDO (using Squid) to see how the Publisher exposes a computing service. The computing service defines how to upload an algorithm to the Publisher side and how to consume an output.
 - The data scientist uploads the algorithm _off-chain_ directly to the data set Publisher's algorithm endpoint.
-- Once, the algorithm files are uploaded, the data scientist calculates the files' hash, signs this hash and then submits **ONLY** the signature on-chain.
+- Once the algorithm files are uploaded, the data scientist calculates the files' hash, signs this hash and then submits **ONLY** the signature on-chain.
 - The Publisher receives the algorithm files, calculates the hash (algorithm files) and submits this hash to fulfill the `uploadAlgorithm` condition. The Keeper contracts automatically verify that both parties see the same files using 1) the hash which is submitted by the Publisher; 2) the signature submitted by the data scientist; and, 3) the data scientist's address.
 - Please note that the software component that is responsible for running the algorithm, attaching data assets, and running the container is Brizo. Moreover, it pulls the logs periodically and saves the outputs.
 
