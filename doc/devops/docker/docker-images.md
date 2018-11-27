@@ -47,11 +47,11 @@ To add a new image it must be used the _Create Automated Build_ menu. Using GitH
 
 In order to have an homogeneous Docker Hub setup and Docker images, it is necessary to configure all the development projects using the following setup:
 
-![Docker Hub image configuration](../img/dockerhub-autobuild-tags.png)
+![Docker Hub image configuration](dockerhub-autobuild-tags.png)
 
 Note that if the field _Name_ regex is left blank, Docker Hub will automatically configure the regex to match any tag.
 
 ### Collaborators & teams
 In order to allow a Docker Hub user to configure/add a image in Ocean organization, the user id must be added to the _devops_ or _owners_ team.
 
-![Docker Hub user configuration](../img/dockerhub-users.png)
+![Docker Hub user configuration](dockerhub-users.png)
