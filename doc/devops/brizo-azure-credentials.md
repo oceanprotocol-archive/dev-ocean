@@ -2,7 +2,7 @@
 title: Create Azure Credentials for Brizo
 description: Tutorial about how to set up Azure storage for use with Brizo
 slug: /tutorials/azure-for-brizo/
-section: concepts
+section: tutorials
 ---
 
 Publishers must run [Brizo](https://github.com/oceanprotocol/brizo) to mediate consumer access to data assets stored in Azure. Brizo needs the following Azure credentials from the publisher:
