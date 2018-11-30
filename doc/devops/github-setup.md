@@ -1,22 +1,25 @@
 
-Table of Contents
-=================
+**Table of Contents**
 
-   * [Github default configuration](#github-default-configuration)
-        * [Collaborators & teams](#collaborators--teams)
-        * [CODEOWNERS](#codeowners)
-   * [Branches](#branches)
-      * [Default Branch](#default-branch)
-      * [Branch Protection](#branch-protection)
-   * [Visibility](#visibility)
+<!--ts-->
+   * [GitHub Default Configuration](#github-default-configuration)
+      * [Collaborators &amp; Teams](#collaborators--teams)
+      * [CODEOWNERS](#codeowners)
+      * [Branches](#branches)
+         * [Default Branch](#default-branch)
+         * [Branch protection](#branch-protection)
+      * [Visibility](#visibility)
+      * [CONTRIBUTING.md and PR &amp; Issue Templates](#contributingmd-and-pr--issue-templates)
+
+<!--te-->
 
 ---
 
-# Github default configuration
+# GitHub Default Configuration
 
-In order to have an homogeneous Github setup, it is necessary to configure all the development projects using the following approach:
+In order to have a homogeneous GitHub setup, it is necessary to configure all the development projects using the following approach.
 
-## Collaborators & teams
+## Collaborators & Teams
 
 All the development repositories just created should be configured adding the following teams:
 
@@ -74,6 +77,19 @@ Some small projects could not require **develop** branch. In those cases, this c
 The Github repositories just created must be configured as **Private**.
 This configuration must be applied until an initial stable version be released and the project includes the [required Open Source configuration](https://github.com/oceanprotocol/art/tree/master/github).
 
-## PR and issues templates
+## CONTRIBUTING.md and PR & Issue Templates
 
-A .github folder should be added in the repos with an issue_template.md and a pull_request_template.md. 
+A `.github` folder should be added to the repo with the following files:
+
+* a `CONTRIBUTING.md` file containing the text:
+
+  ```text
+  # Contributing
+
+  See the page titled
+  "[Ways to Contribute](https://docs.oceanprotocol.com/concepts/contributing/)"
+  in the Ocean Protocol documentation.
+  ```
+
+* an `issue_template.md` file
+* a `pull_request_template.md` file
