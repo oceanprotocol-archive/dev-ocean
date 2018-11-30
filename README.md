@@ -53,4 +53,4 @@ For more requirements and information please see [External Content Files](https:
 
 ## Contributing to Ocean Protocol
 
-See the docs: [Ways to Contribute](https://docs.oceanprotocol.com/concepts/contributing/).
+See the page titled "[Ways to Contribute](https://docs.oceanprotocol.com/concepts/contributing/)" in the Ocean Protocol documentation.
