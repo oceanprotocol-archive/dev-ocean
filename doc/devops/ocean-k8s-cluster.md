@@ -1,5 +1,7 @@
 # Ocean Cluster deployed in Kubernetes
 
+** This cluster is for Ocean internal use **
+
 ## Table of Contents
 
   - [Architecture](#architecture)
@@ -16,6 +18,7 @@ The cluster is deployed using a Helm package. A general view about the architect
 
 | Serice           | URL                                                                                |
 |------------------|------------------------------------------------------------------------------------|
-| keeper-contracts | a0974921fd78611e89c320e965e714bc-1426721097.us-east-1.elb.amazonaws.com:8545       |
-| pleuston         | http://a09772bc5d78611e89c320e965e714bc-920324680.us-east-1.elb.amazonaws.com:3000 |
-| aquarius         | a0979d861d78611e89c320e965e714bc-1571806593.us-east-1.elb.amazonaws.com:5000       |
+| keeper-contracts | http://ac8af1101ef0511e88a360a98afc4587-1611267666.us-east-1.elb.amazonaws.com:8545/ |
+| pleuston         | http://ac8b2799bef0511e88a360a98afc4587-1424712179.us-east-1.elb.amazonaws.com:3000/ |
+| aquarius         | http://ac8b5e618ef0511e88a360a98afc4587-575519081.us-east-1.elb.amazonaws.com:5000/ |
+| brizo            | http://ac8b8cc42ef0511e88a360a98afc4587-974193642.us-east-1.elb.amazonaws.com:8030/ |
