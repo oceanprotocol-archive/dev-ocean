@@ -93,29 +93,7 @@ The following diagram illustrates how a Secret Store integrates into the Ocean a
 
 ### Authorization
 
-The Consumer on-chain authorization will be implemented using the Secret Store ACL capabilities.
-In the Secret Store configuration, an address of the authorization Smart Contract can be configured:
-
-```solidity
-acl_contract = "6d6a34f2be1e76902a2fde049f317610cdf453eb"
-```
-
-Doing that, during the decryption phase, the Secret Store will call to the `checkPermissions` method of that address passing as parameter the following attributes:
-
-* public key of the user trying to get access or decrypt
-* document key id to check if user has permissions
-
-Using this capability, a simple `checkPermissions` method could be as following:
-
-```solidity
-  // Checks if a specific user has grants to access using the acl mapping
-  function checkPermissions(address user, bytes32 document) constant public returns (bool) {
-    require(acl[document][user].canRead == 1, 'User was not whitelisted');
-    return true;
-  }
-```
-
-This could be easily adapted to use the Service Agreements approach.
+See [OEP-11 (ACL)](https://github.com/oceanprotocol/OEPs/tree/master/11) to understand how a Service Agreement interacts with a Secret Store to manage access control.
 
 ## Deployment
 
