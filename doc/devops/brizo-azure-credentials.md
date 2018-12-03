@@ -1,11 +1,11 @@
 ---
-title: Create Azure Credentials for Brizo
-description: Tutorial about how to set up Azure storage for use with Brizo
+title: Set up Azure Storage
+description: Tutorial about how to set up Azure Storage for use with Ocean Protocol
 slug: /tutorials/azure-for-brizo/
 section: tutorials
 ---
 
-Publishers must run [Brizo](https://github.com/oceanprotocol/brizo) to mediate consumer access to data assets stored in Azure. Brizo needs the following Azure credentials from the publisher:
+Publishers must run [Brizo](https://github.com/oceanprotocol/brizo) to mediate consumer access to data assets stored in Azure Storage. Brizo needs the following Azure credentials from the publisher:
 
 - `AZURE_ACCOUNT_NAME`: Azure Storage Account Name (for storing files)
 - `AZURE_ACCOUNT_KEY`: Azure Storage Account key
@@ -159,3 +159,13 @@ Copy the value of one of the keys (e.g. key1, not the connection string). That's
 ```
 
 You now have all the Azure credentials Brizo needs.
+
+## Store Some Data in Azure Storage
+
+You now have a storage account, but you don't have any data stored under it yet. To get some data stored in [Azure Storage](https://docs.microsoft.com/en-us/azure/storage/common/storage-introduction), the easiest option is to use [Azure Storage Explorer](https://azure.microsoft.com/en-us/features/storage-explorer/), a free desktop app that works on Windows, macOS and Linux.
+
+[Get Azure Storage Explorer](https://azure.microsoft.com/en-us/features/storage-explorer/).
+
+Azure Storage can store blobs, files, queues and tables. To work with Ocean Network, you should store your files in [Azure Blob storage (also called object storage)](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction), not Azure Files.
+
+Besides Azure Storage Explorer, there are [many other Azure Storage APIs, libraries and tools](https://docs.microsoft.com/en-us/azure/storage/common/storage-introduction#storage-apis-libraries-and-tools).
