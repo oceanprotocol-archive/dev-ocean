@@ -105,16 +105,9 @@ This method returns an instance of the **Ocean** class. It allows to get access 
 In Python:
 
 ```python
-ocean = Ocean(web3Dto, providerDto)
+ocean = Ocean('config.ini')
 
-# for compatibility use get_instance to return an Ocean object
-ocean = Ocean.get_instance(web3Dto, providerDto)
 
-class Ocean:
-  ...
-  @staticmethod
-  def getInstance(web3Dto, providerDto):
-    return Ocean(web3Dto, providerDto)
 ```
 
 In JavaScript:
@@ -127,7 +120,16 @@ const ocean = await Ocean.getInstance({...})
 
 ## Ocean
 
-This class serves as the interface with Ocean Protocol. The Ocean class aggregates the list of **Account**s (ethereum accounts), list of **Asset**s, and a list of **Order** objects. The Ocean class aggregates the Keeper class, which in turn interfaces with the running Smart Contracts: Market, Token, and Auth.
+This class serves as the interface with Ocean Protocol. The Ocean class aggregates the list of **Account**s 
+(ethereum accounts), list of **Asset**s, and a list of **Order** objects. The Ocean class aggregates the 
+Keeper class, which in turn interfaces with the running Smart Contracts: Token, ServiceAgreements, PaymentConditions, etc.
+
+Account/wallet:
+* Javascript: relies on Metamask wallet/account management. Transactions will prompt the user for approval
+* Python: `Ocean` has a main account which defaults to the first account in web3.eth.accounts. The main account can be set 
+using `ocean.set_main_account(address, password)`. If the password is not set or invalid, all keeper (on-chain) transactions 
+will fail unless the account is unlocked which is not recommended
+* Java: TBD
 
 ### getAccounts
 
@@ -209,9 +211,12 @@ array[Order] = ocean.getOrdersByAccount(account)
 
 ### registerAsset
 
-ASYNC. High-level method publishing the metadata off-chain and registering the Service Agreement on-chain. It orchestrate the publishAssetMetadata and publishServiceAgreement, and creating a DDO methods.
-```
-asset_ddo = ocean.register(metadata, publisher)
+ASYNC. High-level method publishing the metadata in a DDO (DID document) off-chain and registering 
+the asset DID on-chain. This creates an asset DID and DDO document that encapsulate the ownership, 
+metadata (as a service), and other services available with this asset (e.g. Access or Compute service agreements)
+
+```js
+asset_did = ocean.registerAsset(metadata, publisherAddress, serviceDescriptors)
 ```
 
 ### signServiceAgreement
@@ -230,7 +235,8 @@ ServiceAgreement = ocean.executeServiceAgreement(did, serviceDefinitionId, servi
 
 ### resolveDID
 
-ASYNC. Given a DID, return the associated DID Document (DDO). The DDO is resolved by directly interacting with the keeper node.
+ASYNC. Given a DID, return the associated DID Document (DDO). The DDO is resolved by directly 
+interacting with the keeper node. The DDO itself is stored off-chain in ocean-db (mongodb, bigchain-db, or whatever)
 
 ```js
 DDO = ocean.resolveDID(did)
@@ -249,7 +255,7 @@ Order = ocean.getOrder(orderId)
 ASYNC. Get an asset based on its identifier, in the form of a DID. 
 
 ```js
-Asset = ocean.getAsset(asset_DID)
+asset = ocean.getAsset(assetDID)
 ```
 
 ### getServiceAgreement
@@ -303,6 +309,15 @@ ASYNC. Request a number of Ocean Tokens. Returns the number of tokens accounted.
 ```js
 amount= account.requestTokens(amountTokens)
 ```
+
+### unlock
+ASYNC. Unlocks the eth account if password is provided (Python only). The unlock 
+applies only to the next transaction, the account locks automatically after the 
+transaction.
+
+```python
+account.unlock()
+``` 
 
 ## Asset
 
@@ -588,10 +603,6 @@ Given by a **Consumer** an unique resource id (DID) and the document encrypted, 
 document= secretStore.decryptDocument(did, encryptedDocument)
 ```
 
-## DID-DDO-Library (Private)
-
-TBD
-
 ## Squid API Implementation state
 
 Public API
@@ -642,10 +653,9 @@ Private API
 
 | Class       | Method          | Return Value | Prio  | Python Implementation | Javascript Implementation | Java Implementation |
 | :---------- | :-------------- | :----------- | :---- | :-------------------- | :------------------------ | :------------------ |
-| SecretStore | encryptDocument | string       | High  | Not Implemented       | x                         | Not Implemented     |
-| SecretStore | decryptDocument | string       | Hight | Not Implemented       | x                         | Not Implemented     |
-| DID-DDO-lib | TBD             |              |       |                       |                           |                     |
-| DID-DDO-lib | TBD ...         |              |       |                       |                           |                     |
+| SecretStore | encryptDocument | string       | High  | x                     | x                         | x                   |
+| SecretStore | decryptDocument | string       | Hight | x                     | x                         | x                   |
+
 
 ## Examples
 
