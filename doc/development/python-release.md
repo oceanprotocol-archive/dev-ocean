@@ -29,8 +29,6 @@ search = {current_version}
 replace = {new_version}
 ```
 
-
-
 ## Procedure
 
 - Create a new local feature branch, e.g. `git checkout -b feature/bumpversion-to-v0.2.5`
