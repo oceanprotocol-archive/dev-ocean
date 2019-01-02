@@ -7,7 +7,12 @@ Table of Contents
   * [JavaScript](#javascript)
   * [CSS](#css)
   * [Solidity](#solidity)
+    * [Ethlint](#ethlint)
+    * [Mythril](#mythril)
+    * [Solgraph](#solgraph)
   * [TypeScript](#typescript)
+    * [TSLint](#tslint)
+    * [TypeDoc](#typedoc)  
 
 ## Python
 
@@ -27,7 +32,9 @@ All CSS, CSS-preprocessors, and CSS-in-JS is linted with [stylelint](https://sty
 
 ## Solidity
 
-Solidity code is linted with [Solium](https://www.getsolium.com) and its recommended rules, the only customization being single quotes and indentation of 4 spaces. An example `.soliumrc.json` file would be:
+### Ethlint
+
+Solidity code is linted with [Ethlint](https://www.ethlint.com/) and its recommended rules, the only customization being single quotes and indentation of 4 spaces. An example `.soliumrc.json` file would be:
 
 ```json
 {
@@ -43,6 +50,10 @@ Solidity code is linted with [Solium](https://www.getsolium.com) and its recomme
 }
 ```
 
+You can specify an ignore file as `.soliumignore`
+
+### Mythril
+
 Solidity security checks are done with [Mythril](https://github.com/ConsenSys/mythril). It is a static code analyzer to check for the most common vulnerabilities and bad practices.
 
 ```bash
@@ -50,6 +61,8 @@ pip3 install mythril
 truffle compile
 myth --truffle
 ```
+
+### Solgraph
 
 Solidity documentation could be created with [Solgraph](https://github.com/raineorshine/solgraph).
 
@@ -62,7 +75,9 @@ dot -Tpng Market.dot -o Market.png
 
 ## TypeScript
 
-TypeScript code is linted with [tslint](https://palantir.github.io/tslint/) and its recommended rules. A sample `tslint.json` file would be:
+### TSLint
+
+TypeScript code is linted with [TSLint](https://palantir.github.io/tslint/) and its recommended rules. A sample `tslint.json` file would be:
 
 ```json
 {
@@ -111,6 +126,8 @@ TypeScript compilation is done with the TypeScript Compiler `tsc`. A sample `tsc
   ]
 }
 ```
+
+### TypeDoc
 
 We use [typedoc](https://github.com/TypeStrong/typedoc) to generate documentation in TypeScript.
 
