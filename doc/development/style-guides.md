@@ -72,6 +72,10 @@ solgraph Market.sol > Market.dot
 brew install graphviz
 dot -Tpng Market.dot -o Market.png
 ```
+#### Note
+
+Apart from abhove all, we are following the 80 characters the general ['standard'](https://softwareengineering.stackexchange.com/questions/148677/why-is-80-characters-the-standard-limit-for-code-width) limit for code width. 
+
 
 ## TypeScript
 
