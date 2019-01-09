@@ -45,7 +45,8 @@ Solidity code is linted with [Ethlint](https://www.ethlint.com/) and its recomme
   "rules": {
     "quotes": ["error", "single"],
     "indentation": ["error", 4],
-    "security/no-tx-origin": ["warning"]
+    "security/no-tx-origin": ["warning"],
+    "max-len": ["error", 80]
   }
 }
 ```
