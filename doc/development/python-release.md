@@ -8,7 +8,7 @@ This document describes the general way in which Python packages are released.
 - Install the bumpversion package , `pip install bumpversion`
 - Following git-flow process
 - Running Travis in the repo, i.e. `.travis.yml` exists and has the `deploy` section defined, (see below)
-- bumpversion.cfg exists, example below
+- `.bumpversion.cfg` exists, example below
 
 ```yaml
 [bumpversion]
