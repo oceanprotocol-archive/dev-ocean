@@ -18,6 +18,8 @@ Publishers must run [Brizo](https://github.com/oceanprotocol/brizo) to mediate c
 
 This tutorial is for publishers who want to get started using Azure to store their data assets. If you go through this tutorial, then you will get all the Azure credentials listed above.
 
+If you're using [Barge](https://github.com/oceanprotocol/barge) to run some Ocean Protocol components, then the above information should go in the file `barge/brizo.env`.
+
 If you already have data assets stored in Azure, then you might already have, or be able to get, the above information. You could use this tutorial to get a sense of where to look (but don't create anything new).
 
 This tutorial uses the [Microsoft Azure Portal](https://azure.microsoft.com/en-us/features/azure-portal/), but [there are many other ways to interact with Azure](https://docs.microsoft.com/en-us/azure/#pivot=sdkstools).
