@@ -1,7 +1,6 @@
 # Python Developer Guide
 
-The purpose of this guide is to document best practices, tips, and tricks for Python development. 
-
+The purpose of this guide is to document best practices, tips, and tricks for Python development.
 
   * [Templates](#templates)
   * [Publishing libraries to PyPI](#publishing-libraries-to-pypi)
@@ -16,10 +15,9 @@ The purpose of this guide is to document best practices, tips, and tricks for Py
     + [Bumpversion](#bumpversion)
     + [Testing within PyCharm](#testing-within-pycharm)
   * [Local package management and virtual environments](#local-package-management-and-virtual-environments)
-    + [Anaconda](#anaconda)
-      - [Create environment file](#create-environment-file)
-    + [pyenv](#pyenv)
-    + [pipenv](#pipenv)
+    + [Using pip and virtualenv](#using-pip-and-virtualenv)
+    + [Using pipenv](#using-pipenv)
+    + [Using Conda](#using-conda)
   * [IDE's and editors](#ide-s-and-editors)
     + [Jupyter Lab](#jupyter-lab)
     + [Atom](#atom)
@@ -300,68 +298,34 @@ Add the `--log-cli-level info` (or other logging level) argument to the run conf
 
 ## Local package management and virtual environments
 
-### Anaconda
-For handling packages and environments. Includes the python version in the environment.
+### Using pip and virtualenv
 
-Pip packages can be installed with `pip install`, but to ensure compatibility, first install the pip package itself with `conda install pip`
+[virtualenv](https://virtualenv.pypa.io/en/stable/) is used to create a local Python "virtual environment" which uses a particular version of Python and has a particular set of Python packages installed. You can switch between different virtualenvs. Example usage:
 
-Can use `conda` with `pip` if a package is not on the main channel, but check
-[conda-forge](https://anaconda.org/conda-forge) as well, many packages have been
-migrated by the community.
-
-**BEWARE** of pip installation in Conda! pip may report `Successfully installed`, but if there are any errors, the packages are not installed in the conda environment. Resolve all errors until `pip install -r requirements.txt` succeeds. 
-
-To work with conda environments, use the `conda env` command i.e.;
-`conda env list` to list all environments on the machine
-`conda env create --name myname --file environment.yml` to create a new env from .yml
-`conda env update --file environment.yml` to update an existing env from .yml
-
-
-#### Create environment file
-Conda uses a YAML file to specify environment dependencies, similar to pip `requirements.txt`.
-
-```
-name: test23
-dependencies:
-  - python=3.6
-  - pip:
-    - pip
-    - bumpversion
-    - wheel
-    - watchdog
-    - flake8
-    - tox
-    - coverage
-    - keeper-contracts
-    - singletonify
-    - twine
-    - setuptools
-    - py-solc
-    - web3
-    - PyJWT
-    - pyopenssl
-    - eciespy
-    - codacy-coverage
-    - pytest
-    - pytest-runner
+```bash
+virtualenv -p $(which python3.6) py36  # Create a Python 3.6 virtualenv named py36
+source py36/bin/activate  # Make the py36 virtualenv active
+python --version  # Check the version of Python in the virtualenv
+pip install blahblah  # Install the Python package named blahblah from PyPI
+pip freeze  # List the Python packages installed in the virtualenv
+deactivate  # Deactivate the current virtualenv (py36)
+source other_env/bin/activate  # activate other_env
 ```
 
-TODO: Add and describe the channels: section
+In many of our Python projects:
 
-Generally, you can install from the yaml file as follows; 
+* `pip install -e .[dev]` is how a Python project developer would install the local Python project (in `.`) in editable mode (`-e`) including all the extra Python packages that a developer needs (`[dev]` which is defined in the `extras_require` dict of `setup.py`).
+* `pip install -r requirements_dev.txt` or `pip install -r requirements.txt` will do `pip install -e .[dev]`
+* `pip install package_name_on_PyPI` will install only the packages listed in the `install_requires` list in `setup.py`
+* `pip install .` will install only the packages listed in the `install_requires` list in `setup.py` in the local directory (`.`) — this is what the Dockerfile does when building a new Docker image.
 
-`conda env create --name ocean-web3 --file environment.yml`
+### Using pipenv
 
-To integrate this environment in PyCharm;
-1. Create the environment on the command line (no proper support in PyCharm yet)
-1. In PyCharm; Settings / Project: Name / Project Interpreter
-1. Add / Conda
-1. Existing Environment, select from the auto-generated drop down list
+The new kid on the block and the current PyPA recommended package manager. [Pipenv](https://github.com/pypa/pipenv) on GitHub.
 
-### pyenv
+### Using Conda
 
-### pipenv
-The new kid on the block. [Pipenv](https://github.com/pypa/pipenv) on GitHub.
+We don't currently use Conda but we might in the future.
 
 ## Project Directory Cleanup
 
