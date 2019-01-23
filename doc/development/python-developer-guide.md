@@ -319,6 +319,8 @@ In many of our Python projects:
 * `pip install package_name_on_PyPI` will install only the packages listed in the `install_requires` list in `setup.py`
 * `pip install .` will install only the packages listed in the `install_requires` list in `setup.py` in the local directory (`.`) — this is what the Dockerfile does when building a new Docker image.
 
+For more about `pip`, see the [pip User Guide](https://pip.pypa.io/en/stable/). For more about `setup.py`, see [the Python docs about the setup script](https://docs.python.org/3.6/distutils/setupscript.html).
+
 ### Using pipenv
 
 The new kid on the block and the current PyPA recommended package manager. [Pipenv](https://github.com/pypa/pipenv) on GitHub.
