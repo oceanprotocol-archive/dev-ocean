@@ -1,6 +1,4 @@
-
-Table of Contents
-=================
+**Table of Contents**
 
    * [Development](#development)
       * [Style Guides](#style-guides)
@@ -12,6 +10,7 @@ Table of Contents
       * [Boards](#boards)
    * [Source Control Management](#source-control-management)
       * [Branching Model](#branching-model)
+   * [Peer Review](#peer-review)
    * [Testing](#testing)
       * [Test Driven Development](#test-driven-development)
       * [Unit Testing](#unit-testing)
@@ -55,20 +54,21 @@ Other existing boards are available, including Business - Roadmap information an
 
 # Source Control Management
 
-
 ## Branching Model
 
 The common branching model in place is **Gitflow**. You can find more information about this in the [Gitflow branching page](development/branching-model.md).
 
 # Peer Review
 
-# Testing
+See [the page about Peer Review](development/peer-review.md).
 
+See [the Process for Handling External Pull Requests](development/process-for-handling-external-pull-requests.md).
+
+# Testing
 
 ## Test Driven Development
 
 Using a [Test Driven Development (TDD)](development/tdd.md) approach is more than recommended. [Here](development/tdd.md) you can find some guidelines and recommendations about it.
-
 
 ## Unit Testing
 
