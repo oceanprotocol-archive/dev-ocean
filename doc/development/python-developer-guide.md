@@ -323,11 +323,11 @@ For more about `pip`, see the [pip User Guide](https://pip.pypa.io/en/stable/). 
 
 ### Using pipenv
 
-The new kid on the block and the current PyPA recommended package manager. [Pipenv](https://github.com/pypa/pipenv) on GitHub.
+The current PyPA recommended package manager. [Pipenv](https://github.com/pypa/pipenv) on GitHub.
 
 ### Using Conda
 
-We don't currently use Conda but we might in the future.
+Currently, packages are not published to the anaconda package repository. However, you may use Conda as a virtual environment manager, and `pip install` a python package into your conda environment. 
 
 ## Project Directory Cleanup
 
