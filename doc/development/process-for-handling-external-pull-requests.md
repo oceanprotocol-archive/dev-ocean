@@ -2,7 +2,7 @@
 
 ## Overview
 
-Before merging a pull request from an external developer, please follow this process, otherwise our code might end up containing intellectual property that hasn't been licensed under an open source license (and the owner might sue, or worse).
+Before merging a pull request from an external developer, please follow this process, otherwise our code might end up containing intellectual property that hasn't been licensed under an open source license and _bad things could happen_.
 
 ## Are they an external developer?
 
@@ -14,17 +14,26 @@ If they did an Ocean Protocol bounty in the past, but this pull request isn't as
 
 If the pull request is from someone who is fulfilling the requirements of a specific [Ocean Protocol bounty](https://docs.oceanprotocol.com/concepts/bounties/), then they are not an external developer and you can ignore this process.
 
-Otherwise they are an external developer.
+**If you're not sure of their status, ask in the pull request comments.**
 
-## Extra things external developers must do
+Bottom line: If they're not a _current_ employee of BigchainDB GmbH or DEX Pte Ltd and the pull request isn't to fulfill a specific _current_ Ocean Protocol bounty, then they are an external developer.
 
-See the things listed in the Ocean Protocol docs page about [Legal Requirements when Contributing Code](https://docs.oceanprotocol.com/concepts/legal-reqs/).
+## If they are an external developer, then do these steps
 
-1. Every file they modified contains the copyright notice described in the Ocean Protocol docs page about [Legal Requirements when Contributing Code](https://docs.oceanprotocol.com/concepts/legal-reqs/).
-1. In the pull request comments, ask them if they read and understood the [Developer Certificate of Origin](https://developercertificate.org/). They must answer "yes" (or equivalent) in the comments.
-1. There's a copy of the Developer Certificate of Origin (text file) in the root of the repository where they are contributing. If not, ask them to put one there.
-1. Every commit message in the pull request includes a Signed-off-by line, with a real name and a real email address. Pseudonyms and fake names will not suffice. The Signed-off-by line is akin to an e-signature. **Do some checking to convince yourself that it's a real name and email address.**
+Copy the following Markdown text into the pull request's comments:
 
-If any of the the external developer's Git commit messages do _not_ include a Singed-off-by line, then ask them to redo their pull request such that all commit messages _do_ include a Signed-off-by line. (They could use git rebase to modify their existing pull request, or they could just close the pull request and create a whole new one.) See [GitHub's help page about changing Git commit messages](https://help.github.com/articles/changing-a-commit-message/).
+```text
+Before we can merge this pull request, we need you to sign off on licensing your code under an open source license. One of the big concerns for people using and developing open source software is that someone who contributed to the code might claim the code infringes on their copyright or patent. To guard against this, we ask all our contributors to take certain steps (detailed below). This gives us the right to use the code contributed and any patents the contribution relies on. It also gives us and our users comfort that they won't be sued for using open source software. We know it's a hassle, but it makes the project more reliable in the long run. Thank you for your understanding and your contribution!
 
-If (and only if) all the above are true/done, then you can merge the pull request.
+1. Make sure that every file you modified contains the copyright notice described in the Ocean Protocol docs page about [Legal Requirements when Contributing Code](https://docs.oceanprotocol.com/concepts/legal-reqs/).
+1. Read and understand the [Developer Certificate of Origin](https://developercertificate.org/).
+1. Write a comment below that says, "I have read and understood the Developer Certificate of Origin."
+1. Make sure there's a copy of the Developer Certificate of Origin (text file) in the root of this repository. If there isn't one, then please add one (as part of this pull request).
+1. Make sure that every commit message in this pull request includes a Signed-off-by line, with your real name and your real email address. Pseudonyms and fake names will not suffice. The Signed-off-by line is akin to an e-signature. GitHub has [a help page about how to change Git commit messages](https://help.github.com/articles/changing-a-commit-message/).
+```
+
+Wait for them to fulfill all the above-listed requirements.
+
+Do some checking to convince yourself that the Signed-off-by lines contain a real name and email address.
+
+If (and only if) all the above-listed conditions are met, then you can merge the pull request.
