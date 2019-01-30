@@ -498,7 +498,7 @@ Returns
 
 Example
 ```js
-const payment_locked = ocean.agreements.conditions.payment.lock(agreementId, assetId, price)
+const paymentLocked = ocean.agreements.conditions.payment.lock(agreementId, assetId, price)
 ```
 
 ---
@@ -521,7 +521,7 @@ Returns
 
 Example
 ```js
-const payment_released = ocean.agreements.conditions.payment.release(agreementId, assetId, price)
+const paymentReleased = ocean.agreements.conditions.payment.release(agreementId, assetId, price)
 ```
 
 ---
@@ -546,7 +546,7 @@ Returns
 
 Example
 ```js
-const payment_refund = ocean.agreements.conditions.payment.refund(agreementId, assetId, price)
+const paymentRefund = ocean.agreements.conditions.payment.refund(agreementId, assetId, price)
 ```
 
 ---
@@ -580,9 +580,9 @@ Creates an `Access` type service to be included in asset DDO.
 
 Parameters
 ```
-           price: int number of tokens
-service_endpoint: str url of service endpoint
-consume_endpoint: str url of consume endpoint
+          price: int number of tokens
+serviceEndpoint: str url of service endpoint
+consumeEndpoint: str url of consume endpoint
 ```
 
 Returns
