@@ -448,7 +448,7 @@ Returns
 
 Example
 ```js
-const { agreementId, signature } = ocean.agreements.create(did, serviceDefinitionId, consumerAccount)
+const { agreementId, signature } = ocean.agreements.prepare(did, serviceDefinitionId, consumerAccount)
 ```
 
 ---
@@ -462,7 +462,7 @@ Parameters
         agreementId: hex str representation of `bytes32` id
 serviceDefinitionId: str id of the service within the asset DDO 
           signature: hex str the signature of the agreement hash (What is `agreement hash`)
-    consumerAddress: hex str the ethereum account address of the consumer signing the agreement
+    consumerAccount: Account instance of the consumer that signed the agreement
 ```
 
 Returns
@@ -476,7 +476,7 @@ const agreementId = ''
 const serviceDefinitionId = ocean.assets.resolve(did).services[0].serviceDefinitionId
 const consumerAddress = ocean.accounts.list()[0].address
 const signature = '?'
-ocean.agreements.send(did, agreementId, serviceDefinitionId, signature, consumerAddress)
+ocean.agreements.send(did, agreementId, serviceDefinitionId, signature, consumerAccount)
 ```
 
 ---
