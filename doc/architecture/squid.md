@@ -1,8 +1,12 @@
 # Squid API
+```
+name: Squid API Specification
+shortname: squid-spec
+version: 0.1
+status: Draft
+```
 
 The Squid API is a Level-2 API built on top of core Ocean components. It's a facilitator or enabler, but it's not the only way to interact with Ocean.
-
-**Note 1: "Provider" was renamed to Aquarius and some of its functionality was moved over to Brizo. This page hasn't been updated to reflect that change yet.**
 
 - [squid-js](https://github.com/oceanprotocol/squid-js)
 - [squid-py](https://github.com/oceanprotocol/squid-py)
@@ -15,7 +19,6 @@ The goal of this doc is to help a developer build a version of the Squid API in 
 **🐲🦑 THERE BE DRAGONS AND SQUIDS. This is in alpha state and you can expect running into problems. If you run into them, please open up [a new issue](https://github.com/oceanprotocol/dev-ocean/issues). 🦑🐲**
 
 ---
-
 
 ## Summary of modules
 * [ocean](#ocean)
@@ -34,24 +37,11 @@ The goal of this doc is to help a developer build a version of the Squid API in 
 
 This is the main class to interact with the Ocean network. 
 
-| Method                             | Return Value            | Python | JS   | Java |
-| :--------------------------------- | :---------------------- | :----- | :--- | :--- |
-| Ocean.getInstance() / Ocean()      | Ocean instance             |        |      |      |
-
 All ocean protocol features are accessed through this module.
 
 ---
 
 ## ocean.assets
-
-| Method    | Return Value              | Python | JS   | Java |
-| :-------- | :-------------------------| :----- | :--- |:---- |
-| create    | Asset                     |        |      |      | 
-| resolve   | Asset                     |        |      |      |
-| search    | Asset[]                   |        |      |      |
-| query     | Asset[]                   |        |      |      |
-| consume   | str downloaded file path  |        |      |      |
-| order     | hex str agreement id      |        |      |      |
 
 #### create
 
@@ -71,31 +61,24 @@ Returns
 
 Example
 ```js
-const metadata = {...}
+const metadata = {
+  "assetId": "0x123412341234",
+  "publisherId": "0x00000000000",
+  "base":{
+    "name": "name",
+    "size": "5gb",
+    "author": "someone",
+    "license": "public domain",
+    "contentType": '',
+    "files": ["/url/dataset-name"],
+  }
+}
+
 const asset = ocean.assets.create(metadata, publisherAccount, services=[ocean.services.createAccessService(...)])
 ```
 
-The metadata is a json object that contains the following structure:
-
-```json
-{
-  "assetId":,
-  "publisherId":,
-  "base":{
-    "name":,
-    "size":,
-    "author":,
-    "license":,
-    "contentType":,
-    "contentUrls":,
-    "price":,
-    "type":
-  }
-}
-```
-
-There are more optional fields that you can check in the [provider API](https://github.com/oceanprotocol/aquarius/blob/develop/aquarius/app/assets.py).
-
+The complete spec for assets metadata is here: [Asset Metadata Ontology](https://github.com/oceanprotocol/OEPs/tree/master/8)
+ 
 ---
 
 #### resolve
@@ -202,11 +185,11 @@ const agreementId = ocean.assets.order(did, serviceDefinitionId, consumerAccount
 
 Parameters
 ```
-        agreementId:  
+        agreementId: hex str representation of `bytes32` id
                 did: str the asset did which consist of `did:op:` and the assetId hex str (without `0x` prefix)
 serviceDefinitionId: str id of the service within the asset DDO
     consumerAccount: Account instance of the consumer ordering the service
-               mode: ?
+         resultPath: str path to store the downloaded files or results of a compute operation
 ```
 
 Returns
@@ -215,19 +198,12 @@ Returns
 
 Example
 ```js
-const downloadsPath = ocean.assets.consume(agreementId, did, serviceDefinitionId, consumerAccount, mode)
+const downloadsPath = ocean.assets.consume(agreementId, did, serviceDefinitionId, consumerAccount, resultPath)
 ```
 
 ---
 
 ## ocean.accounts
-
-| Method              | Return Value                        | Python | JS   | Java |
-| :------------------ | :-----------------------------------| :----- | :--- |:---- |
-| list                | Account list                        |        |      |      |
-| balance             | tuple(ether_balance, ocean_balance) |        |      |      |
-| request_tokens      |                                     |        |      |      |
-
 
 #### list
 
@@ -289,11 +265,7 @@ const success = ocean.accounts.requestTokens(account, amount)
 ---
 
 ## ocean.secret_store
-
-| Method         | Return Value              | Python | JS   | Java |
-| :------------- | :----------------------   | :----- | :--- |:---- |
-| encrypt        | string encrypted_content  |        |      |      |
-| decrypt        | string content            |        |      |      |
+This is a wrapper on top of the Secret Store defined in [Secret Store spec](https://github.com/oceanprotocol/dev-ocean/blob/master/doc/architecture/secret-store.md)
 
 #### encrypt
 Encrypt the given text and store the encryption keys using the `documentId`. The encrypted text can be decrypted 
@@ -346,11 +318,6 @@ ocean.secret_store.decrypt(documentId, encryptedContent, consumerAccount)
 
 ## ocean.tokens
 
-| Method      | Return Value      | Python | JS   | Java |
-| :---------- | :---------------- | :----- | :--- |:---- |
-| request     | bool True/False   |        |      |      |
-| transfer    | bool True/False   |        |      |      |
-
 #### request
 Request a number of Ocean Tokens.
 
@@ -394,10 +361,6 @@ ocean.tokens.transfer(receiverAddress, 20, fromAccount)
 
 ## ocean.templates
 
-| Method             | Return Value            | Python | JS   | Java |
-| :----------------- | :---------------------- | :----- | :--- |:---  |
-| create             | hex str template id     |        |      |      |
-
 #### create
 Create a service agreement template and deploy it on-chain so it can be used in service agreements.
 
@@ -425,12 +388,6 @@ ocean.templates.create(ocean.accounts.list()[0], templateJson, templateId)
 ---
 
 ## ocean.agreements
-
-| Method              | Return Value              | Python | JS   | Java |
-| :------------------ | :------------------------ | :----- | :--- |:---- |
-| prepare             | (agreementId, signature)  |        |      |      |
-| send                | -                         |        |      |      |
-| create              | boolean                   |        |      |      |
 
 #### prepare
 Creates a consumer signature for the specified asset service.
@@ -524,12 +481,6 @@ const success = ocean.agreements.create(
 
 ## ocean.agreements.conditions.payment
 
-| Method           | Return Value   | Python | JS   | Java |
-| :--------------- | :------------- | :----- | :--- |:---- |
-| lock             | boolean        |        |      |      |
-| release          | boolean        |        |      |      |
-| refund           | boolean        |        |      |      |
-
 #### lock
 Transfers tokens to the PaymentConditions contract account as an escrow payment. 
 This is required before access can be given to the asset data.
@@ -602,10 +553,6 @@ const payment_refund = ocean.agreements.conditions.payment.refund(agreementId, a
 
 ## ocean.agreements.conditions.access
 
-| Method        | Return Value            | Python | JS   | Java |
-| :------------ | :---------------------- | :----- | :--- |:---- |
-| grant         | boolean                 |        |      |      |
-
 #### grant
 Authorize the consumer defined in the agreement to access (consume) this asset.
 
@@ -627,10 +574,6 @@ ocean.agreements.conditions.access.grant(agreementId, assetId)
 ---
 
 ## ocean.services
-
-| Method                             | Return Value            | Python | JS   | Java |
-| :--------------------------------- | :---------------------- | :----- | :--- |:---- |
-| create_access_service              | Service instance        |        |      |      |
 
 #### createAccessService
 Creates an `Access` type service to be included in asset DDO.
@@ -661,45 +604,43 @@ const service = ocean.services.createAccessService(
 Models
 
 ### Account
-
-| attribute   | type       | Python | JS   | Java |
-| :---------- | :--------- | :----- | :--- |:--- |
-| address     | hex str    |        |    |      |
-
+| attribute   | type       |
+| :---------- | :--------- |
+| address     | hex str    |
 
 ### Asset
 
-| attribute   | type       | Python | JS   | Java |
-| :---------- | :--------- | :----- | :--- |:---- |
-| did         | str        |        |      |      |
-| metadata    | json       |        |      |      |
-| services    | Service [] |        |      |      |
+| attribute   | type       |
+| :---------- | :--------- |
+| did         | str        |
+| metadata    | json       |
+| services    | Service [] |
 
 
 ### Service
 
-| attribute            | type      | Python | JS   | Java |
-| :------------------- | :-------- | :----- | :--- |:---- |
-| type                 | string    |        |      |      |
-| serviceDefinitionId  | string    |        |      |      |
-| agreement            | Agreement |        |      |      |
-| endpoints            | Endpoints |        |      |      |
+| attribute            | type      |
+| :------------------- | :-------- |
+| type                 | string    |
+| serviceDefinitionId  | string    |
+| agreement            | Agreement |
+| endpoints            | Endpoints |
 
 
 ### Agreement
 
-| attribute   | type         | Python | JS   | Java |
-| :---------- | :----------- | :----- | :--- |:---  |
-| template    | hex str      |        |      |      |
-| conditions  | dict[]/map[] |        |      |      |
+| attribute   | type         |
+| :---------- | :----------- |
+| template    | hex str      |
+| conditions  | dict[]/map[] |
 
 
 ### Endpoints
 
-| attribute   | type       | Python | JS   | Java |
-| :---------- | :--------- | :----- | :--- |:---- |
-| service     | url str    |        |      |      |
-| consume     | url str    |        |      |      |
+| attribute   | type       |
+| :---------- | :--------- |
+| service     | url str    |
+| consume     | url str    |
 
 ---
 
@@ -712,3 +653,97 @@ TODO
 ## Examples
 
 For examples, see the page listing [Tools & Examples on the Ocean Protocol docs site](https://docs.oceanprotocol.com/concepts/tools/).
+
+## Implementation status
+
+ocean
+
+| Method                             | Return Value            | Python | JS   | Java |
+| :--------------------------------- | :---------------------- | :----- | :--- | :--- |
+| Ocean.getInstance() / Ocean()      | Ocean instance          |        |      |      |
+
+---
+
+ocean.assets
+
+| Method    | Return Value              | Python | JS   | Java |
+| :-------- | :-------------------------| :----- | :--- |:---- |
+| create    | Asset                     |        |      |      | 
+| resolve   | Asset                     |        |      |      |
+| search    | Asset[]                   |        |      |      |
+| query     | Asset[]                   |        |      |      |
+| consume   | str downloaded file path  |        |      |      |
+| order     | hex str agreement id      |        |      |      |
+
+---
+
+ocean.accounts
+
+| Method              | Return Value                        | Python | JS   | Java |
+| :------------------ | :-----------------------------------| :----- | :--- |:---- |
+| list                | Account list                        |        |      |      |
+| balance             | tuple(etherBalance, oceanBalance) |        |      |      |
+| requestTokens       | boolean (success/failure)           |        |      |      |
+
+---
+
+ocean.secret_store
+
+| Method         | Return Value              | Python | JS   | Java |
+| :------------- | :----------------------   | :----- | :--- |:---- |
+| encrypt        | string encrypted_content  |        |      |      |
+| decrypt        | string content            |        |      |      |
+
+---
+
+ocean.tokens
+
+| Method      | Return Value      | Python | JS   | Java |
+| :---------- | :---------------- | :----- | :--- |:---- |
+| request     | bool True/False   |        |      |      |
+| transfer    | bool True/False   |        |      |      |
+
+---
+
+ocean.templates
+
+| Method             | Return Value            | Python | JS   | Java |
+| :----------------- | :---------------------- | :----- | :--- |:---  |
+| create             | hex str template id     |        |      |      |
+
+---
+
+ocean.agreements
+
+| Method              | Return Value              | Python | JS   | Java |
+| :------------------ | :------------------------ | :----- | :--- |:---- |
+| prepare             | (agreementId, signature)  |        |      |      |
+| send                | -                         |        |      |      |
+| create              | boolean                   |        |      |      |
+
+---
+
+ocean.agreements.conditions.payment
+
+| Method           | Return Value   | Python | JS   | Java |
+| :--------------- | :------------- | :----- | :--- |:---- |
+| lock             | boolean        |        |      |      |
+| release          | boolean        |        |      |      |
+| refund           | boolean        |        |      |      |
+
+---
+
+ocean.agreements.conditions.access
+
+| Method        | Return Value            | Python | JS   | Java |
+| :------------ | :---------------------- | :----- | :--- |:---- |
+| grant         | boolean                 |        |      |      |
+
+---
+
+ocean.services
+
+| Method                             | Return Value            | Python | JS   | Java |
+| :--------------------------------- | :---------------------- | :----- | :--- |:---- |
+| createAccessService                | Service instance        |        |      |      |
+
