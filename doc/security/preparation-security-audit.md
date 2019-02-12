@@ -66,6 +66,7 @@ Additional Details:
 
 #### MultiSig Wallet
 
+https://github.com/oceanprotocol/MultiSigWallet
 
 #### Deployment
 
