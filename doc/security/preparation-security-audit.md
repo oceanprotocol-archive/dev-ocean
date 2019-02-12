@@ -59,10 +59,11 @@ Some information about SEA:
 Additional Details:
 
 * Travis is used as Continuous Integration pipeline: https://travis-ci.com/oceanprotocol/keeper-contracts
-* Security reports (mythril + securify) are generated automatically when merging to `develop` branch
-* Project integrates ZeppelinOS for upgradability
+* Security reports (mythril + securify) are generated automatically when merging to `develop` branch. They will be stored [here](https://github.com/oceanprotocol/keeper-contracts-security-reports)
+* Project integrates ZeppelinOS 2.0 for upgradability
 * Roles are managed using standard openzeppelin-eth project libraries
-* Project is using solidity 0.5
+* All contracts are Ownable to transfer ownership and leverage the `onlyOwner` modifier.
+* Project is using solidity 0.5.3
 
 #### MultiSig Wallet
 
@@ -70,6 +71,18 @@ https://github.com/oceanprotocol/MultiSigWallet
 
 #### Deployment
 
+Two instances of the MultiSigWallet are required. They are set up automatically by the deploment script.
+
+To deploy the contracts use:
+
+`npm run deploy` to deploy all the contracts.
+`npm run deploy OceanToken` to only deploy the OceanToken contract.
+
+This will deploy the contracts to a node located at localhost:8545. Most likely `ganache-cli`.
+
+To upgrade a contract use:
+
+`npm run upgrade OceanToken2:OceanToken` to swap out the implmenetation of `OceanToken` with the implementation of the `OceanToken2` contract.
 
 ### Token Bridge
 
@@ -79,7 +92,15 @@ Topic: Solidity Smart Contracts
 Branch: master
 ```
 
-Ocean Token Bridge is used to transfer ERC20 tokens between Ocean POA network and Ethereum main-net. It is based on token bridge developed by POA.network
+Ocean Token Bridge is used to transfer ERC20 tokens between Ocean POA network and Ethereum main-net. It is based on token bridge developed by POA.network.
+
+We are using the following components, that we copied to the `token-bridge` repository:
+
+[POA Token Bridge](https://github.com/poanetwork/token-bridge)
+[POA Bridge Contracts](https://github.com/poanetwork/poa-bridge-contracts)
+[OceanToken](https://github.com/oceanprotocol/keeper-contracts/blob/release/v0.7/contracts/OceanToken.sol) (this one should be taken from `keeper-contracts` rather than from the bridge repo)
+
+Ignore the folder: https://github.com/oceanprotocol/token-bridge/tree/master/ocean-token-contract
 
 #### Deployment
 
