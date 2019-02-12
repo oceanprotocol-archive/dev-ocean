@@ -373,7 +373,7 @@ templateJson: JSON definition of agreement template (refer to OEP-11 for full sp
 
 Returns
 
-`bool to indicate success/failure of the transfer`
+`bool to indicate success/failure of the template creation`
 
 Example
 ```js
@@ -576,13 +576,16 @@ ocean.agreements.conditions.access.grant(agreementId, assetId)
 ## ocean.services
 
 #### createAccessService
-Creates an `Access` type service to be included in asset DDO.
+Creates an asset with an `Access` type service.
 
 Parameters
 ```
+       metadata: JSON object describing various attributes of the asset data (see below for sample metadata attributes)
+        account: Account instance of who is publishing the asset
           price: int number of tokens
 serviceEndpoint: str url of service endpoint
 consumeEndpoint: str url of consume endpoint
+        timeout: int timeout in seconds
 ```
 
 Returns
@@ -604,9 +607,10 @@ const service = ocean.services.createAccessService(
 Models
 
 ### Account
-| attribute   | type       |
-| :---------- | :--------- |
-| address     | hex str    |
+| attribute   | type           |
+| :---------- | :------------- |
+| address     | hex str        |
+| password    | str (optional) |
 
 ### Asset
 
@@ -625,6 +629,7 @@ Models
 | serviceDefinitionId  | string    |
 | agreement            | Agreement |
 | endpoints            | Endpoints |
+| did                  | hex str   |
 
 
 ### Agreement
