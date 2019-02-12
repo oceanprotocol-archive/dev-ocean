@@ -18,6 +18,7 @@ Whe need to have information about:
 
 * Is the Ocean Token secure?
 * Are the user transactions facilitated using the Service Execution Agreements secure?
+* Is the governance model for deployment, upgrades and roles inside the contracts secure?
 * What's the overall level of security?
 * Are we okay for the next network launch?
 
@@ -63,15 +64,18 @@ Additional Details:
 * Project integrates ZeppelinOS 2.0 for upgradability
 * Roles are managed using standard openzeppelin-eth project libraries
 * All contracts are Ownable to transfer ownership and leverage the `onlyOwner` modifier.
-* Project is using solidity 0.5.3
+* Project is using solidity v0.5.3
 
 #### MultiSig Wallet
 
+Cleaned and modularized for of the Gnosis MultiSigWallet v1.4.0
 https://github.com/oceanprotocol/MultiSigWallet
+
+Can be used in conjunction with: https://wallet.gnosis.pm
 
 #### Deployment
 
-Two instances of the MultiSigWallet are required. They are set up automatically by the deploment script.
+Two instances of the MultiSigWallet are required. They are set up automatically by the deploment script. They can be used by importing the addresses in https://wallet.gnosis.pm
 
 To deploy the contracts use:
 
@@ -82,7 +86,9 @@ This will deploy the contracts to a node located at localhost:8545. Most likely 
 
 To upgrade a contract use:
 
-`npm run upgrade OceanToken2:OceanToken` to swap out the implmenetation of `OceanToken` with the implementation of the `OceanToken2` contract.
+`npm run upgrade OceanToken2:OceanToken` to swap out the implementation of `OceanToken` with the implementation of the `OceanToken2` contract.
+
+This will issue an `upgrade request` against the MultiSigWallet that has to be confirmed by the owners of the wallet. Once this is done the implementations are swapped out.
 
 ### Token Bridge
 
