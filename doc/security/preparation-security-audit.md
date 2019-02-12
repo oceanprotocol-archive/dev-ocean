@@ -3,13 +3,16 @@
 Table of Contents
 =================
 
-   * [Preparation for Security Review](#preparation-for-security-review)
+   * [Preparation for Security Audit](#preparation-for-security-audit)
+   * [Table of Contents](#table-of-contents)
       * [Goal of the security review](#goal-of-the-security-review)
       * [Components](#components)
          * [Keeper Contracts](#keeper-contracts)
+            * [MultiSig Wallet](#multisig-wallet)
+            * [Deployment](#deployment)
          * [Token Bridge](#token-bridge)
+            * [Deployment](#deployment-1)
          * [Secret Store](#secret-store)
-
 
 
 ## Goal of the security review
@@ -93,20 +96,20 @@ This will issue an `upgrade request` against the MultiSigWallet that has to be c
 ### Token Bridge
 
 ```
-Url: https://github.com/oceanprotocol/token-bridge/
+Url: https://github.com/oceanprotocol/poc-token-bridge/
 Topic: Solidity Smart Contracts
 Branch: master
 ```
 
 Ocean Token Bridge is used to transfer ERC20 tokens between Ocean POA network and Ethereum main-net. It is based on token bridge developed by POA.network.
 
-We are using the following components, that we copied to the `token-bridge` repository:
+We are using the following components. We have copied some of those from POA.network repositories for testing:
 
 [POA Token Bridge](https://github.com/poanetwork/token-bridge)
 [POA Bridge Contracts](https://github.com/poanetwork/poa-bridge-contracts)
 [OceanToken](https://github.com/oceanprotocol/keeper-contracts/blob/release/v0.7/contracts/OceanToken.sol) (this one should be taken from `keeper-contracts` rather than from the bridge repo)
 
-Ignore the folder: https://github.com/oceanprotocol/token-bridge/tree/master/ocean-token-contract
+This repo worked as PoC of the token bridge. But for further deployment it's necessary to use the source code coming from POA.network.
 
 #### Deployment
 
