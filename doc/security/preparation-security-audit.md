@@ -133,7 +133,8 @@ Instructions can be found on: https://github.com/oceanprotocol/dev-ocean/doc/arc
 
 ### Secret Store
 ```
-Url: https://github.com/paritytech/parity-ethereum
+Url: https://github.com/oceanprotocol/parity-ethereum
+Forked from: https://github.com/paritytech/parity-ethereum
 Topic: 
 Branch: master
 ```
