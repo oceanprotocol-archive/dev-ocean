@@ -128,7 +128,7 @@ The initial investigation & Proof of Concept can be found in the following repos
 
 #### Deployment
 
-Instructions can be found on: https://github.com/oceanprotocol/poc-token-bridge#3-how-to-deploy
+Instructions can be found on: https://github.com/oceanprotocol/dev-ocean/doc/architecture/token-bridge#how-to-deploy
 
 
 ### Secret Store
