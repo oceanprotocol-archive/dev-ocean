@@ -5,6 +5,8 @@ slug: /tutorials/azure-for-brizo/
 section: tutorials
 ---
 
+This tutorial is for publishers who want to get started using Azure to store some of their data assets. (Some data assets could also be stored in other places.)
+
 Publishers must run [Brizo](https://github.com/oceanprotocol/brizo) to mediate consumer access to data assets stored in Azure Storage. Brizo needs the following Azure credentials from the publisher:
 
 - `AZURE_ACCOUNT_NAME`: Azure Storage Account Name (for storing files)
@@ -16,11 +18,13 @@ Publishers must run [Brizo](https://github.com/oceanprotocol/brizo) to mediate c
 - `AZURE_TENANT_ID`: Azure Tenant ID
 - `AZURE_SUBSCRIPTION_ID`: Azure Subscription ID
 
-This tutorial is for publishers who want to get started using Azure to store their data assets. If you go through this tutorial, then you will get all the Azure credentials listed above.
-
-If you're using [Barge](https://github.com/oceanprotocol/barge) to run some Ocean Protocol components, then the above information should go in the file `barge/brizo.env`.
+If you go through this tutorial, then you will get all the Azure credentials listed above.
 
 If you already have data assets stored in Azure, then you might already have, or be able to get, the above information. You could use this tutorial to get a sense of where to look (but don't create anything new).
+
+To give the above Azure credentials to Brizo, you either put them in a Brizo config file or in environment variables with the above names. Environment variables should be used if you're running Brizo inside a container. If you want to use the config file option, see [the README.md file in the Brizo repository](https://github.com/oceanprotocol/brizo/blob/develop/README.md).
+
+If you're using [Barge](https://github.com/oceanprotocol/barge) to run Brizo and other Ocean Protocol components, then the above Azure credentials should go in the file `barge/brizo.env`. (That file gets used to set environment variables.)
 
 This tutorial uses the [Microsoft Azure Portal](https://azure.microsoft.com/en-us/features/azure-portal/), but [there are many other ways to interact with Azure](https://docs.microsoft.com/en-us/azure/#pivot=sdkstools).
 
@@ -160,7 +164,7 @@ Copy the value of one of the keys (e.g. key1, not the connection string). That's
 93uKDkbjfnSUNPKw2tpe0LOM+3Wk+OSkNmgwhzjvzDw1d3sKVhMRTC5ikvN0r3zsx8eQrmT9Wgjz22iLPu3aGw==
 ```
 
-You now have all the Azure credentials Brizo needs.
+You now have all the Azure credentials Brizo needs. See the instructions near the top of this page about how to give those Azure credentials to Brizo.
 
 ## Store Some Data in Azure Storage
 
