@@ -29,8 +29,7 @@ The goal of this doc is to help a developer build a version of the Squid API in 
 * [ocean.templates](#ocean.templates)
 * [ocean.services](#ocean.services)
 * [ocean.agreements](#ocean.agreements)
-* [ocean.agreements.conditions.payment](#ocean.agreements.conditions.payment)
-* [ocean.agreements.conditions.access](#ocean.agreements.conditions.access)
+* [ocean.agreements.conditions](#ocean.agreements.conditions)
 
 
 ## Ocean
@@ -74,7 +73,7 @@ const metadata = {
   }
 }
 
-const asset = ocean.assets.create(metadata, publisherAccount, services=[ocean.services.createAccessService(...)])
+const asset = ocean.assets.create(metadata, publisherAccount, services=[ocean.services.createAccessSecretStoreService(...)])
 ```
 
 The complete spec for assets metadata is here: [Asset Metadata Ontology](https://github.com/oceanprotocol/OEPs/tree/master/8)
@@ -479,17 +478,16 @@ const success = ocean.agreements.create(
 
 ---
 
-## ocean.agreements.conditions.payment
+## ocean.agreements.conditions
 
-#### lock
-Transfers tokens to the PaymentConditions contract account as an escrow payment. 
+#### lockReward
+Transfers tokens to the EscrowRewardCondition contract as an escrow payment. 
 This is required before access can be given to the asset data.
 
 Parameters
 ```
 agreementId: hex str representation of `bytes32` id
-    assetId: hex str representation of `bytes32` id
-      price: int the price set for this service agreement
+      amount: int the price set for this service agreement
 ```
 
 Returns
@@ -498,68 +496,19 @@ Returns
 
 Example
 ```js
-const paymentLocked = ocean.agreements.conditions.payment.lock(agreementId, assetId, price)
+const rewardLocked = ocean.agreements.conditions.lockReward(agreementId, amount)
 ```
 
 ---
 
-#### release
-Transfer the escrow or locked tokens from the PaymentConditions contract account to the 
-publisher's account. This should be allowed after access has been given to the consumer 
-and the asset data is downloaded.
-
-Parameters
-```
-agreementId: hex str representation of `bytes32` id
-    assetId: hex str representation of `bytes32` id
-      price: int the price set for this service agreement
-```
-
-Returns
-
-`bool success/failure`
-
-Example
-```js
-const paymentReleased = ocean.agreements.conditions.payment.release(agreementId, assetId, price)
-```
-
----
-
-#### refund
-Return the escrow or locked tokens back to the consumer account. 
-
-Refund requires the following events:
-Price is already paid to the escrow contract (i.e. `lockPayment` condition is already fulfilled) 
-Access condition `timeout` is exceeded without access having been given
-
-Parameters
-```
-agreementId: hex str representation of `bytes32` id
-    assetId: hex str representation of `bytes32` id
-      price: int the price set for this service agreement
-```
-
-Returns
-
-`bool success/failure`
-
-Example
-```js
-const paymentRefund = ocean.agreements.conditions.payment.refund(agreementId, assetId, price)
-```
-
----
-
-## ocean.agreements.conditions.access
-
-#### grant
+#### grantAccess
 Authorize the consumer defined in the agreement to access (consume) this asset.
 
 Parameters
 ```
 agreementId: hex str representation of `bytes32` id
     assetId: hex str representation of `bytes32` id
+    grantee: hexstr ethereum address of asset consumer
 ```
 
 Returns
@@ -568,14 +517,61 @@ Returns
 
 Example
 ```js
-ocean.agreements.conditions.access.grant(agreementId, assetId)
+ocean.agreements.conditions.grantAccess(agreementId, assetId, grantee)
+```
+
+---
+
+#### releaseReward
+Transfer the escrow or locked tokens from the LockRewardCondition contract to the 
+publisher's account. This should be allowed after access has been given to the consumer 
+and the asset data is downloaded.
+
+If the AccessSecretStoreCondition already timed out, this function will do a refund 
+by transferring the token amount to the original consumer.
+
+Parameters
+```
+agreementId: hex str representation of `bytes32` id
+     amount: int the price set for this service agreement
+```
+
+Returns
+
+`bool success/failure`
+
+Example
+```js
+const rewardReleased = ocean.agreements.conditions.releaseReward(agreementId, amount)
+```
+
+---
+
+#### refundReward
+Refund the escrow or locked tokens back to the consumer account. This will only work 
+in the case where access was not granted within the specified timeout in the service 
+agreement.
+
+Parameters
+```
+agreementId: hex str representation of `bytes32` id
+     amount: int the price set for this service agreement
+```
+
+Returns
+
+`bool success/failure`
+
+Example
+```js
+const rewardRefund = ocean.agreements.conditions.refundReward(agreementId, amount)
 ```
 
 ---
 
 ## ocean.services
 
-#### createAccessService
+#### createAccessSecretStoreService
 Creates an `Access` type service to be included in asset DDO.
 
 Parameters
@@ -591,7 +587,7 @@ Returns
 
 Example
 ```js
-const service = ocean.services.createAccessService(
+const service = ocean.services.createAccessSecretStoreService(
     25, 
     'http://brizo/services/access/initialize', 
     'http://brizo/services/access/consume'
@@ -723,21 +719,14 @@ ocean.agreements
 
 ---
 
-ocean.agreements.conditions.payment
+ocean.agreements.conditions
 
 | Method           | Return Value   | Python | JS   | Java |
 | :--------------- | :------------- | :----- | :--- |:---- |
-| lock             | boolean        |        |      |      |
-| release          | boolean        |        |      |      |
-| refund           | boolean        |        |      |      |
-
----
-
-ocean.agreements.conditions.access
-
-| Method        | Return Value            | Python | JS   | Java |
-| :------------ | :---------------------- | :----- | :--- |:---- |
-| grant         | boolean                 |        |      |      |
+| lockReward       | boolean        |        |      |      |
+| grantAccess      | boolean        |        |      |      |
+| releaseReward    | boolean        |        |      |      |
+| refundReward     | boolean        |        |      |      |
 
 ---
 
@@ -745,5 +734,5 @@ ocean.services
 
 | Method                             | Return Value            | Python | JS   | Java |
 | :--------------------------------- | :---------------------- | :----- | :--- |:---- |
-| createAccessService                | Service instance        |        |      |      |
+| createAccessSecretStoreService                | Service instance        |        |      |      |
 
