@@ -2,7 +2,7 @@
 ```
 name: Squid API Specification
 shortname: squid-spec
-version: 0.1
+version: 0.2
 status: Draft
 ```
 
