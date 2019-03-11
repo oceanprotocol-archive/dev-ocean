@@ -29,7 +29,7 @@ Copy the following text into the pull request's comments:
 
 BEGIN TEXT BLOCK
 
-Before we can merge this pull request, we need you to sign off on licensing your code under an open source license. One of the big concerns for people using and developing open source software is that someone who contributed to the code might claim the code infringes on their copyright or patent. To guard against this, we ask all our contributors to take certain steps (detailed below). This gives us the right to use the code contributed and any patents the contribution relies on. It also gives us and our users comfort that they won't be sued for using open source software. We know it's a hassle, but it makes the project more reliable in the long run. Thank you for your understanding and your contribution!
+Before we can merge this pull request, we need you to sign off on licensing your code under the [Apache License version 2.0](https://www.apache.org/licenses/LICENSE-2.0). One of the big concerns for people using and developing open source software is that someone who contributed to the code might claim the code infringes on their copyright or patent. To guard against this, we ask all our contributors to take certain steps (detailed below). This gives us the right to use the code contributed and any patents the contribution relies on. It also gives us and our users comfort that they won't be sued for using open source software. We know it's a hassle, but it makes the project more reliable in the long run. Thank you for your understanding and your contribution!
 
 1. Make sure that every file you modified or created contains a copyright notice comment like the following (at the top of the file):
 
