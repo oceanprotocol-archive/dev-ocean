@@ -38,7 +38,10 @@ Before we can merge this pull request, we need you to sign off on licensing your
    # SPDX-License-Identifier: Apache-2.0
    ```
 
-   If a copyright notice is not present, then add one. Make sure you're using the correct syntax for comments (which varies from language to language). The example shown above is for a Python file.
+   - If a copyright notice is not present, then add one.
+   - If the first line of the file is a line beginning with `#!` (e.g. `#!/usr/bin/python3`) then leave that as the first line and add the copyright notice afterwards.
+   - If a copyright notice is present but it says something like `Copyright 2018 Ocean Protocol Foundation` then please change it to say the above.
+   - Make sure you're using the correct syntax for comments (which varies from language to language). The example shown above is for a Python file.
 1. Read the [Developer Certificate of Origin, Version 1.1](https://developercertificate.org/).
 1. You will be asked to include a Signed-off-by line in all your commit messages. (Instructions are given in the next step.) Make sure you understand that including a Signed-off-by line in your commits certifies that you can make the statements in the Developer Certificate of Origin. If you have questions about this, then please ask them in the comments below. Do not continue until you fully understand.
 1. Make sure that every commit message in this pull request includes a Signed-off-by line of the form:
