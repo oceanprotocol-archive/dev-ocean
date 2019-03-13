@@ -360,28 +360,67 @@ ocean.tokens.transfer(receiverAddress, 20, fromAccount)
 
 ## ocean.templates
 
-#### create
-Create a service agreement template and deploy it on-chain so it can be used in service agreements.
+#### propose
+Suggest an agreement template smart contract to include in the white listed agreement templates.
 
 Parameters
 ```
-     account: Account instance
-templateJson: JSON definition of agreement template (refer to OEP-11 for full spec)
-  templateId: hex str representation of `bytes32` id of the template
+templateAddress: hex str the ethereum address of the deployed template (smart contract address)
+        account: Account instance owner of the agreement template
 ```
 
 Returns
 
-`bool to indicate success/failure of the transfer`
+`bool to indicate success/failure of the operation`
 
 Example
 ```js
-const templateJson = {
-    conditions: [],
-    
-}
-const templateId = '0x345645675678...'
-ocean.templates.create(ocean.accounts.list()[0], templateJson, templateId)
+const templateAddress = '0x345645675678...'
+ocean.templates.propose(templateId, ocean.accounts.list()[0])
+```
+
+---
+
+#### approve
+Approve (whitelist) an already proposed template. Once a template is approved 
+it can be used for creating agreements in Ocean Protocol keeper network.
+
+Parameters
+```
+templateAddress: hex str the ethereum address of the deployed template (smart contract address)
+        account: Account instance owner of the agreement template
+```
+
+Returns
+
+`bool to indicate success/failure of the operation`
+
+Example
+```js
+const templateAddress = '0x345645675678...'
+ocean.templates.approve(templateId, ocean.accounts.list()[0])
+```
+
+---
+
+#### revoke
+Cancel the propsed/approved template or essentially de-whitelist the template. This 
+prevents the creation of any further agreements that are based on this template.
+
+Parameters
+```
+templateAddress: hex str the ethereum address of the deployed template (smart contract address)
+        account: Account instance owner of the agreement template
+```
+
+Returns
+
+`bool to indicate success/failure of the operation`
+
+Example
+```js
+const templateAddress = '0x345645675678...'
+ocean.templates.revoke(templateId, ocean.accounts.list()[0])
 ```
 
 ---
