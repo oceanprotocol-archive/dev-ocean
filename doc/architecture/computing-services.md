@@ -5,6 +5,8 @@ slug: /concepts/computing-services/
 section: concepts
 ---
 
+**NOTICE: Because the Keeper Contracts have been refactored, this spec is now out-of-date. It should be updated or replaced.**
+
 ## Motivation
 
 The most basic scenario for a Publisher is to provide access to the datasets they own or manage.
