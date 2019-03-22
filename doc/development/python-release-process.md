@@ -36,7 +36,7 @@ replace = {new_version}
   - To bump the patch version: `bumpversion patch`
   - To bump the minor version: `bumpversion minor`
   - To bump the major version: `bumpversion major`
-- Commit the changes to the feature branch.
+- Note that bumpversion automatically creates a git commit to commit the changes.
 - Push this feature branch to GitHub.
 - Make a pull request from the just-pushed branch.
 - Wait for all the tests to pass!
