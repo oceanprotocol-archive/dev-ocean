@@ -29,7 +29,13 @@ Note: The above list assumes we include a "Notice" listing all the third-party p
 
 ### JavaScript
 
-Use [license-checker](https://www.npmjs.com/package/license-checker). (Click that link then follow the instructions on the destination page.)
+Use [license-checker](https://www.npmjs.com/package/license-checker). Go into the root directory of the repository and then:
+
+```bash
+npm install -g license-checker
+npm install yui-lint
+license-checker --production --summary
+```
 
 ### Python
 
