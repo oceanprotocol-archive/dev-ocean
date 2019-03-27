@@ -6,6 +6,7 @@
          * [Python](#python)
          * [Javascript](#javascript)
          * [Solidity](#solidity)
+      * [Policies on Using Third-Party Packages](#policies-on-using-third-party-packages)
       * [Documentation Strategy](#documentation-strategy)
       * [Boards](#boards)
    * [Source Control Management](#source-control-management)
@@ -16,7 +17,6 @@
       * [Unit Testing](#unit-testing)
       * [Integration Tests](#integration-tests)
    * [Links](#links)
-
 
 ---
 
@@ -41,6 +41,10 @@ We use consistent code styles at Ocean Protocol and enforce them through various
 * [How to publish JavaScript projects as npm packages](development/libraries-npm.md)
 
 ### Solidity
+
+## Policies on Using Third-Party Packages
+
+See the [Third-Party Package Licensing Policy](development/third-party-package-licensing-policy.md).
 
 ## Documentation Strategy
 
