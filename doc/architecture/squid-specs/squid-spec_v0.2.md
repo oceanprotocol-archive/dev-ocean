@@ -2,7 +2,7 @@
 ```
 name: Squid API Specification
 shortname: squid-spec
-version: 0.3
+version: 0.2
 status: Draft
 ```
 
@@ -20,7 +20,6 @@ The goal of this doc is to help a developer build a version of the Squid API in 
 
 ---
 
-
 ## Summary of modules
 * [ocean](#ocean)
 * [ocean.assets](#ocean.assets)
@@ -32,29 +31,6 @@ The goal of this doc is to help a developer build a version of the Squid API in 
 * [ocean.agreements](#ocean.agreements)
 * [ocean.agreements.conditions](#ocean.agreements.conditions)
 
-
-## Changelog
-
-You can find older versions of the squid specifications in the [squid-specs folder](squid-specs).
-
-### Squid Spec 0.3 (latest)
-
-* New methods
-  - Get list of the Assets Published by an user
-  - Get list of the Assets Purchased by an user
-  - Get the SEA status
-  - Get the Owner of an Asset
-  - Expose an additional consume interface allowing to use `index` parameter
-  - Consumer can initialize a SEA on-chain
-  - Validate an Asset Data integrity
-
-
-### Squid Spec 0.2
-
-* Service Execution Agreements
-* Assets Management
-* Tokens request and transfer
-* Secret Store API
 
 ## Ocean
 
