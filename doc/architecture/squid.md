@@ -687,7 +687,7 @@ TODO
 
 ## Examples
 
-For examples, see the page listing [Tools & Examples on the Ocean Protocol docs site](https://docs.oceanprotocol.com/concepts/tools/).
+See the [Example Code Using Squid](https://docs.oceanprotocol.com/tutorials/example-code/) (a page of links in the Ocean Protocol Docs).
 
 ## Implementation status
 
