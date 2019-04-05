@@ -205,6 +205,8 @@ const agreementId = ocean.assets.order(did, serviceDefinitionId, consumerAccount
 ---
 
 #### consume
+Downloads all files associated with the asset unless `index` is specified which will 
+download only that one data file.
 
 Parameters
 ```
@@ -212,7 +214,9 @@ Parameters
                 did: str the asset did which consist of `did:op:` and the assetId hex str (without `0x` prefix)
 serviceDefinitionId: str id of the service within the asset DDO
     consumerAccount: Account instance of the consumer ordering the service
-         resultPath: str path to store the downloaded files or results of a compute operation
+         resultPath: (optional) str path to store the downloaded files or results of a compute operation
+         index: (optional) int index of specific file to download. The index 
+            corresponds to the index in the `files` list in the DDO document.
 ```
 
 Returns
@@ -222,6 +226,87 @@ Returns
 Example
 ```js
 const downloadsPath = ocean.assets.consume(agreementId, did, serviceDefinitionId, consumerAccount, resultPath)
+```
+
+---
+
+#### validate
+Validate the integrity of an asset after consuming. This is achieved by regenerating 
+the checksum of the ddo document and comparing to the registered checksum that was 
+generated at time of publishing the asset. 
+
+Parameters
+```
+  did: str the asset did which consist of `did:op:` and the assetId hex str (without `0x` prefix)
+files: list of paths to downloaded files after completing asset purchase 
+```
+
+Returns
+
+`boolean`
+
+
+Example
+```js
+const asset_did = "did:op:000000000000000000000000000"
+const isDataValid = ocean.assets.validate(asset_did, ["/path/to/file0", "/path/to/file1",])
+```
+
+---
+
+#### owner
+
+Parameters
+```
+did: str the asset did which consist of `did:op:` and the assetId hex str (without `0x` prefix)
+```
+
+Returns
+
+hex str -- the ethereum address of the owner/publisher of given asset did
+
+Example
+```js
+const asset_did = "did:op:000000000000000000000000000"
+const ownerAddress = ocean.assets.owner(asset_did)
+```
+
+---
+
+#### ownerAssets
+
+Parameters
+```
+ownerAddress: hex str ethereum address of owner/publisher
+```
+
+Returns
+
+List of Asset objects published by `ownerAddress`
+
+Example
+```js
+const myAddress = "0x00000000000000000000000000000000"
+const assets = ocean.assets.ownerAssets(myAddress)
+```
+
+---
+
+#### consumerAssets
+
+Parameters
+```
+consumerAddress: hex str ethereum address of consumer
+```
+
+Returns
+
+List of Asset objects purchased by `consumerAddress`
+
+Example
+```js
+const myAddress = "0x00000000000000000000000000000000"
+const assets = ocean.assets.consumerAssets(myAddress)
 ```
 
 ---
@@ -512,7 +597,8 @@ Parameters
 serviceDefinitionId: str id of the service within the asset DDO 
           signature: hex str the signature of the agreement hash (What is `agreement hash`)
     consumerAddress: hex str the ethereum account address of the consumer signing the agreement
-   publisherAccount: Account instance of the publisher of this asset
+            account: Account instance of the creator of this agreement. Can be the consumer, publisher, 
+            provider, or any valid ethereum account.
 ```
 
 **Return**
@@ -528,15 +614,46 @@ const {
     agreementId,
     signature,
     consumerAddress } = payload
-const publisherAccount = ocean.accounts.list()[0]
+const myAccount = ocean.accounts.list()[0]
 const success = ocean.agreements.create(
     did, 
     agreementId, 
     serviceDefinitionId, 
     signature, 
     consumerAddress, 
-    publisherAccount
+    myAccount
     )
+```
+
+---
+
+#### status
+Get the status of a service agreement.
+
+Parameters
+```
+agreementId: hex str representation of `bytes32` id
+```
+
+Returns
+- json document with condition status of each of the agreement's conditions.
+
+```json
+{
+    "agreementId": "",
+    "conditions": {
+        "lockReward": 1,
+        "accessSecretStore": 1,
+        "escrowReward": 1,
+    }  
+}
+```
+- None/null if agreement is invalid
+
+Example
+```js
+const agreementId = ""
+const agreementStatus = ocean.agreements.status(agreementId)
 ```
 
 ---
@@ -725,14 +842,18 @@ ocean
 
 ocean.assets
 
-| Method    | Return Value              | Python | JS   | Java |
-| :-------- | :-------------------------| :----- | :--- |:---- |
-| create    | Asset                     |        |      |      | 
-| resolve   | Asset                     |        |      |      |
-| search    | Asset[]                   |        |      |      |
-| query     | Asset[]                   |        |      |      |
-| consume   | str downloaded file path  |        |      |      |
-| order     | hex str agreement id      |        |      |      |
+| Method              | Return Value              | Python | JS   | Java |
+| :------------------ | :------------------------ | :----- | :--- |:---- |
+| create              | Asset                     |        |      |      | 
+| resolve             | Asset                     |        |      |      |
+| search              | Asset[]                   |        |      |      |
+| query               | Asset[]                   |        |      |      |
+| consume             | str downloaded file path  |        |      |      |
+| order               | hex str agreement id      |        |      |      |
+| validate            | boolean                   |        |      |      |
+| owner               | hex str ethereum address  |        |      |      |
+| ownerList           | Asset[]                   |        |      |      |
+| consumerList        | Asset[]                   |        |      |      |
 
 ---
 
@@ -779,6 +900,7 @@ ocean.agreements
 | prepare             | (agreementId, signature)  |        |      |      |
 | send                | -                         |        |      |      |
 | create              | boolean                   |        |      |      |
+| status              | json                      |        |      |      |
 
 ---
 
