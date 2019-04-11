@@ -1,6 +1,6 @@
 ---
 title: Architecture Overview
-description: This page is a central point for documenting the architecture of Ocean Protocol.
+description: An overview of the architecture of Ocean Protocol.
 slug: /concepts/architecture/
 section: concepts
 ---
@@ -11,21 +11,21 @@ The Ocean Protocol network architecture is implemented based on [OEP-03/ARCH](ht
 
 In the above diagram you can see the following components (from top to bottom):
 
-- **Frontend** (Tier 3) - Application implemented using HTML + JavaScript + CSS, running in the client side (user's browser).
-- **Data Science Tools** (Tier 3) - Applications executed by data scientists, typically getting access to the Ocean data and executing algorithms on top of that data.
-- **Aquarius** (Tier 2) - Backend application providing Metadata storage and management services. Typically executed by Marketplaces.
-- **Brizo** (Tier 2) - Backend application providing access control services, i.e. consumer access to publisher data or compute services. Typically executed by Publishers.
-- **Keeper Contracts** (Tier 1) - Solidity smart contracts running on a decentralized Ethereum Virtual Machine (EVM).
+- **Frontend** (Tier 3)
+- **Data Science Tools** (Tier 3)
+- **Aquarius** (Tier 2)
+- **Brizo** (Tier 2)
+- **Keeper Contracts** (Tier 1)
+
+Below, we describe what those components do.
 
 ## Components
 
 ### Tier 3 - Application Layer
 
-#### Pleuston Frontend
+#### Frontend
 
-Pleuston implements the template of a Marketplace. It's helpful to demonstrate some of the capabilities existing in Ocean.
-It is not a final product, but can be used as reference to implement further Marketplaces using the existing code.
-The Pleuston application implements the following high-level functionality:
+A marketplace/publisher app, typically running in a web browser, implementing the following high-level functionality:
 
 - **Publishing** - Allows the user to publish new assets to the network.
 - **Consuming** - Allows the user to list and consume published assets.
@@ -35,16 +35,17 @@ The Pleuston application implements the following high-level functionality:
   - Filtering
   - User registration using specific KYC processes (to be added)
 
-Marketplaces will communicate with the following external components:
-
-- **Smart Contracts** enable interaction with the Ocean Keeper Contracts that provide the market business logic. This integration is implemented using the [Ethereum Javascript API (web3.js)](https://github.com/ethereum/web3.js/).
-- **Aquarius** enables access to assets made accessible to consumers, and facilitates the Metadata management of assets for the publishers. This communication happens using HTTP APIs.
-
-The frontend application will subscribe to the EVM transaction log, enabling the receipt of asynchronous messages. This will facilitate the triggering of automatic actions when some events are raised (e.g. the request of an asset is triggered automatically when the purchase has been confirmed).
+A frontend communicates with all the components in Tier 2 and Tier 1 (described later in this document).
 
 ![Frontend High-Level Architecture](architecture/img/frontend-hl-arch.png)
 
-The Squid library showed in the above diagram encapsulates the logic to deal with the Ocean components (such as Keeper nodes and Aquarius nodes). Squid libraries (written in various programming languages) are part of the Tier 2.
+The Squid library shown in the above diagram encapsulates the logic to deal with the Ocean components (such as Keeper nodes and Aquarius nodes). Squid libraries (written in various programming languages) are part of Tier 2.
+
+There are several example frontends. They can be used as a starting point for developing a new one.
+
+- Pleuston
+- Commons Marketplace
+- The app developed in [the React App Tutorial](https://docs.oceanprotocol.com/tutorials/react-setup/)
 
 #### Data Science Tools
 
@@ -60,7 +61,7 @@ Includes all the high-level libraries to interact with Ocean Protocol, and the e
 Squid is a High Level specification API abstracting the interaction with the most relevant Ocean Protocol components.
 It allows one to use Ocean capabilities without worrying about the details of the underlying Keeper Contracts or Metadata storage systems.
 
-The Squid API can be implemented in many different languages, initially [JavaScript](https://github.com/oceanprotocol/squid-js) (used in Pleuston) and [Python](https://github.com/oceanprotocol/squid-py) (used in the data science tools).
+The Squid API can be implemented in many different languages. It's currently implemented in [JavaScript](https://github.com/oceanprotocol/squid-js), [Python](https://github.com/oceanprotocol/squid-py) and [Java](https://github.com/oceanprotocol/squid-java).
 
 The complete specification of [the Squid API can be found in the oceanprotocol/dev-ocean repository on GitHub](https://github.com/oceanprotocol/dev-ocean/blob/master/doc/architecture/squid.md).
 
@@ -90,28 +91,8 @@ In addition to this, other extended services could also be offered, e.g.
 
 #### Keeper Contracts
 
-The Keeper Contracts are Solidity smart contracts deployed and running in the decentralized [Ethereum Virtual Machine (EVM)](https://github.com/ethereum/wiki/wiki/Ethereum-introduction#about-ethereum).
-
-The Ocean Keeper implementation is where we put the following modules together:
-
-- **Token Curated Registries (TCRs)** - Users create challenges and resolve them through voting to maintain registries.
-- **Ocean Tokens** - The intrinsic tokens circulated inside the Ocean Network, which is used when voting within TCRs.
-- **Curated Proofs Market** - The core component where people can transact with each other and curate assets through staking with Ocean tokens.
+The Keeper Contracts are Ocean-Protocol-specific smart contracts which can be deployed to run on any decentralized [Ethereum Virtual Machine (EVM)](https://github.com/ethereum/wiki/wiki/Ethereum-introduction#about-ethereum). You can find their source code in [the keeper-contracts repository](https://github.com/oceanprotocol/keeper-contracts).
 
 ## Interactions
 
-### Asset Registration
-
-![Asset Registration Flow](architecture/img/assets-registering.png)
-
-### Asset Consumption
-
-![Asset Consumption Flow](architecture/img/assets-consumption.png)
-
-The lower level details about the consumption are included in the On-Chain Access Control section below.
-
-### On-Chain Access Control
-
-![On-Chain Access Control Flow](architecture/img/onchain-acl.png)
-
-You can find more information about the complete On-Chain Access Control implementation in the [OEP-11](https://github.com/oceanprotocol/OEPs/tree/master/11). 
+See [OEP-11](https://github.com/oceanprotocol/OEPs/tree/master/11).
