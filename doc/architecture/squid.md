@@ -41,7 +41,7 @@ You can find older versions of the squid specifications in the [squid-specs fold
 
 * New methods
   - Get list of the Assets Published by an user
-  - Get list of the Assets Purchased by an user
+  - Get list of the Assets Received by an user
   - Get the SEA status
   - Get the Owner of an Asset
   - Expose an additional consume interface allowing to use `index` parameter
