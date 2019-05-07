@@ -31,6 +31,7 @@ The goal of this doc is to help a developer build a version of the Squid API in 
 * [ocean.services](#ocean.services)
 * [ocean.agreements](#ocean.agreements)
 * [ocean.agreements.conditions](#ocean.agreements.conditions)
+* [ocean.auth](#ocean.auth)
 
 
 ## Changelog
@@ -749,6 +750,108 @@ const rewardRefund = ocean.agreements.conditions.refundReward(agreementId, amoun
 
 ---
 
+## ocean.auth
+
+#### get
+Returns the signature of a shared constant that is used to authenticate a user.
+
+Parameters
+```
+account: Account that is going to sign the constant
+```
+
+Returns
+
+`string`
+
+Example
+```js
+const signer = ocean.accounts.list()[0]
+ocean.auth.get(signer)
+```
+
+---
+
+#### check
+Check the address that signed the constant and if it's expired.
+
+Parameters
+```
+signature: Signed constant
+```
+
+Returns
+
+`string`
+
+Example
+```js
+const signature = '0xABC...123-18928172718'
+ocean.auth.check(signature)
+```
+
+---
+
+#### store
+Generates and stores the signed constant that is gonna be used automatically on next .
+
+Parameters
+```
+account: Account that is going to sign the constant
+```
+
+Returns
+
+`bool to indicate success/failure of the operation`
+
+Example
+```js
+const signer = ocean.accounts.list()[0]
+ocean.auth.store(signer)
+```
+
+---
+
+#### restore
+Returns a stored signature.
+
+Parameters
+```
+account: Account that stored the data
+```
+
+Returns
+
+`string`
+
+Example
+```js
+const signer = ocean.accounts.list()[0]
+ocean.auth.restore(signer)
+```
+
+---
+
+#### isStored
+Checks if the signed constant is stored and is valid.
+
+Parameters
+```
+account: Account that stored the data
+```
+
+Returns
+
+`bool`
+
+Example
+```js
+const account = ocean.accounts.list()[0]
+ocean.auth.isStored(account)
+```
+
+---
+
 ## ocean.services
 
 #### createAccessSecretStoreService
@@ -912,6 +1015,18 @@ ocean.agreements.conditions
 | grantAccess      | boolean        |        |      |      |
 | releaseReward    | boolean        |        |      |      |
 | refundReward     | boolean        |        |      |      |
+
+---
+
+ocean.auth
+
+| Method           | Return Value   | Python | JS   | Java |
+| :--------------- | :------------- | :----- | :--- |:---- |
+| get              | string         |        |      |      |
+| check            | public key     |        |      |      |
+| store            | boolean        |        |      |      |
+| restore          | string         |        |      |      |
+| isStored         | boolean        |        |      |      |
 
 ---
 
