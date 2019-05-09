@@ -58,7 +58,7 @@ What authorities belong to the network and how are added/removed is managed on-c
 Current Options:
 
 * [poa-network-consensus-contracts](https://github.com/poanetwork/poa-network-consensus-contracts), already [audited](https://github.com/poanetwork/poa-network-consensus-contracts/tree/master/audit)
-* [Validator Sets](https://wiki.parity.io/Validator-Set)
+* [Validator Sets](https://wiki.parity.io/Validator-Set) + [PeerManager](https://wiki.parity.io/Permissioning#how-it-works)
 
 It's pending to define the requirements and the implementation on-chain of the governance.
 
