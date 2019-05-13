@@ -3,11 +3,14 @@
 Table of Contents
 =================
 
+
+
    * [Preparation for the Ocean Protocol Mainnet Security Audits](#preparation-for-the-ocean-protocol-mainnet-security-audits)
    * [Table of Contents](#table-of-contents)
       * [Code security review](#code-security-review)
          * [Goals of the security review](#goals-of-the-security-review)
          * [Network Governance](#network-governance)
+            * [Governance Framework](#governance-framework)
             * [Authorities/Network governance](#authoritiesnetwork-governance)
          * [Technical Components](#technical-components)
             * [Keeper Contracts](#keeper-contracts)
@@ -48,7 +51,19 @@ The main objective of the different security audits is to obtain information abo
 
 In the scope of the Ocean Protocol network we need to validate the governance approach including the network (authorities) and the software upgrades.
 
-**PENDING TO DETAIL**
+Here you can find the complete [Ocean Protocol Governance framework](https://github.com/oceanprotocol/governance).
+
+#### Governance Framework
+
+```
+Url: https://github.com/oceanprotocol/governance-contracts/
+Topic: POA Network Governance
+Version: 0.x
+Branch: develop
+Already audited?: no
+Need to be Audited?: yes, top priority
+```
+
 
 #### Authorities/Network governance
 
@@ -75,6 +90,8 @@ Url: https://github.com/oceanprotocol/keeper-contracts/
 Topic: Solidity Smart Contracts
 Version: 0.9.x
 Branch: develop
+Already audited?: yes, by Trail of Bits (Feb/2019)
+Need to be Audited?: yes, top priority
 ```
 
 It provides the core business logic of Ocean Protocol including the following modules:
@@ -121,8 +138,10 @@ Additional Details:
 ```
 Url: https://github.com/oceanprotocol/MultiSigWallet
 Forked from: https://github.com/gnosis/MultiSigWallet
-Topic: MultiSigWallet
+Topic: MultiSigWallet 
 Branch: master
+Already audited?: yes, by Trail of Bits (Feb/2019)
+Need to be Audited?: yes, Nope
 ```
 Cleaned and modularized for of the Gnosis MultiSigWallet v1.4.0
 
@@ -161,6 +180,8 @@ Url: https://github.com/oceanprotocol/poa-bridge-contracts
 Forked from: https://github.com/poanetwork/poa-bridge-contracts
 Topic: Solidity Smart Contracts
 Branch: master
+Already audited?: yes
+Need to be Audited?: nope
 ```
 
 ##### Token Bridge
@@ -184,6 +205,8 @@ Url: https://github.com/oceanprotocol/parity-ethereum
 Forked from: https://github.com/paritytech/parity-ethereum
 Topic: 
 Branch: master
+Already audited?: no
+Need to be Audited?: nice to have
 ```
 
 Parity Secret Store is a feature included as part of the Parity Ethereum client that allows users to store a fragmented ECDSA key on the blockchain, such that retrievals are controlled by a permissioned Smart Contract.
