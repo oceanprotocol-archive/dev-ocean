@@ -124,8 +124,9 @@ hosts = ["all"]
 [mining]
 engine_signer = "<ACCOUNT_ADDRESS>"
 force_sealing = true
-reseal_on_txs = "all"
+reseal_on_txs = "none" // Authorities reseal automatically. From https://bit.ly/2Jiw5SV
 gas_floor_target = "6666666"
+usd_per_tx = "0" // Allows for free transactions. From https://bit.ly/2Jiw5SV
 
 [account]
 password = ["/etc/parity/password"]
