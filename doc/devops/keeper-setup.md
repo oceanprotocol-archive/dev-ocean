@@ -4,7 +4,7 @@
 
 This guide started out as a guide to setting up and running a keeper node in the Nile Testnet. Its scope expanded to include other networks, including the Duero Testnet and production networks. Production networks have higher security requirements.
 
-A keeper node is basically a computer running [Parity Ethereum](https://www.parity.io/ethereum/), configured to be part of a particular Ethereum network: one where the Ocean Protocol keeper contracts have been (or will be) deployed. In particular, this guide is about how to set up an _authority node_ (not a user node, not a secret store node) in a ]Parity Proof of Authority (PoA) network](https://wiki.parity.io/Proof-of-Authority-Chains).
+A keeper node is basically a computer running [Parity Ethereum](https://www.parity.io/ethereum/), configured to be part of a particular Ethereum network: one where the Ocean Protocol keeper contracts have been (or will be) deployed. In particular, this guide is about how to set up an _authority node_ (not a user node, not a secret store node) in a [Parity Proof of Authority (PoA) network](https://wiki.parity.io/Proof-of-Authority-Chains).
 
 Note: Parity Ethereum is sometimes called just "Parity." Parity is also the name of the company behind Parity Ethereum, but the context should make it clear what is meant.
 
