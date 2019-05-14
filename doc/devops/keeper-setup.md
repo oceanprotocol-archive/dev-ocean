@@ -80,7 +80,7 @@ Please note:
 
 3. Add the Parity configuration file `/etc/parity/config.toml`. To understand the settings, see the [docs about configuring Parity Ethereum](https://wiki.parity.io/Configuring-Parity-Ethereum.html) and the [docs about Parity Proof-of-Authority Chains](https://wiki.parity.io/Proof-of-Authority-Chains).
 
-```bash
+```toml
 [parity]
 chain = "/etc/parity/chain.json"
 base_path = "/parity_data"
@@ -124,9 +124,9 @@ hosts = ["all"]
 [mining]
 engine_signer = "<ACCOUNT_ADDRESS>"
 force_sealing = true
-reseal_on_txs = "none" // Authorities reseal automatically. From https://bit.ly/2Jiw5SV
+reseal_on_txs = "none" # Authorities reseal automatically. From https://bit.ly/2Jiw5SV
 gas_floor_target = "6666666"
-usd_per_tx = "0" // Allows for free transactions. From https://bit.ly/2Jiw5SV
+usd_per_tx = "0" # Allows for free transactions. From https://bit.ly/2Jiw5SV
 
 [account]
 password = ["/etc/parity/password"]
