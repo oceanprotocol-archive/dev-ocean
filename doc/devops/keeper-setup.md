@@ -4,9 +4,9 @@
 
 This guide started out as a guide to setting up and running a keeper node in the Nile Testnet. Its scope expanded to include other networks, including the Duero Testnet and production networks. Production networks have higher security requirements.
 
-A keeper node is basically a computer running [Parity Ethereum](https://www.parity.io/ethereum/), configured to be part of a particular Ethereum network: one where the Ocean Protocol keeper contracts have been (or will be) deployed.
+A keeper node is basically a computer running [Parity Ethereum](https://www.parity.io/ethereum/), configured to be part of a particular Ethereum network: one where the Ocean Protocol keeper contracts have been (or will be) deployed. In particular, this guide is about how to set up an _authority node_ (not a user node, not a secret store node) in a ]Parity Proof of Authority (PoA) network](https://wiki.parity.io/Proof-of-Authority-Chains).
 
-Parity Ethereum is sometimes called just "Parity." Parity is also the name of the company behind Parity Ethereum, but the context should make it clear what is meant.
+Note: Parity Ethereum is sometimes called just "Parity." Parity is also the name of the company behind Parity Ethereum, but the context should make it clear what is meant.
 
 ## Requirements
 
@@ -78,7 +78,7 @@ Please note:
 - The volume /parity_data is the `base_path` folder for the parity client. All the data (chain data, keys, secret store data, etc.) will be stored here. You can change the host's folder (first part) if you want to allocate in a different host location.
 - The volume /etc/parity/ is the configuration folder for the parity client. The parity configuration file (`config.toml`) and the Ocean chain specification (`chain.json`), and the account password (for validators) are located in this folder. Again you can modify the local folder without mahor issue.
 
-3. Add the Parity configuration file `/etc/parity/config.toml`. To understand the settings, see [the docs about configuring Parity Ethereum](https://wiki.parity.io/Configuring-Parity-Ethereum.html).
+3. Add the Parity configuration file `/etc/parity/config.toml`. To understand the settings, see the [docs about configuring Parity Ethereum](https://wiki.parity.io/Configuring-Parity-Ethereum.html) and the [docs about Parity Proof-of-Authority Chains](https://wiki.parity.io/Proof-of-Authority-Chains).
 
 ```bash
 [parity]
