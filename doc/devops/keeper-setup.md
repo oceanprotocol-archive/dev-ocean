@@ -76,7 +76,7 @@ Please note:
 
 - The ports exposed from the container to the host are 30303/tcp (ethereum listener), 30303/udp (ethereum discovery) , 8545 (rpc interface) and 8546 (websocket interface). You can modify the host's ports (the first ports) if you want to modify the exposed ports in the host.
 - The volume /parity_data is the `base_path` folder for the parity client. All the data (chain data, keys, secret store data, etc.) will be stored here. You can change the host's folder (first part) if you want to allocate in a different host location.
-- The volume /etc/parity/ is the configuration folder for the parity client. The parity configuration file (`config.toml`) and the Ocean chain specification (`chain.json`), and the account password (for validators) are located in this folder. Again you can modify the local folder without mahor issue.
+- The volume /etc/parity/ is the configuration folder for the parity client. The parity configuration file (`config.toml`) and the Ocean chain specification (`chain.json`), and the account password (for validators) are located in this folder. Again you can modify the local folder without major issue.
 
 3. Add the Parity configuration file `/etc/parity/config.toml`. To understand the settings, see the [docs about configuring Parity Ethereum](https://wiki.parity.io/Configuring-Parity-Ethereum.html) and the [docs about Parity Proof-of-Authority Chains](https://wiki.parity.io/Proof-of-Authority-Chains).
 
