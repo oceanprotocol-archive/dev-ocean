@@ -119,9 +119,9 @@ no_persistent_txqueue = true
 [rpc]
 disable = false
 port = 8545
-interface = "all"
-cors = ["all"]
-hosts = ["all"]
+interface = "local"
+cors = []
+hosts = ["none"]
 apis = ["all"]
 
 [secretstore]
