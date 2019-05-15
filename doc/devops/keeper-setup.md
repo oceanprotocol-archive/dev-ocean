@@ -86,7 +86,7 @@ ExecStart=/usr/bin/docker run\
  --restart=always\
  -p 30303:30303/tcp\
  -p 30303:30303/udp\
- -p 8545:8545\
+ -p 127.0.0.1:8545:8545\
  -p 8546:8546/tcp\
  --volume=/parity_data/:/parity_data/\
  --volume=/etc/parity/:/etc/parity/\
@@ -119,7 +119,7 @@ no_persistent_txqueue = true
 [rpc]
 disable = false
 port = 8545
-interface = "local"
+interface = "all"
 cors = []
 hosts = ["none"]
 apis = ["all"]
