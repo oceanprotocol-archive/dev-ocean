@@ -119,7 +119,7 @@ no_persistent_txqueue = true
 [rpc]
 disable = false
 port = 8545
-interface = "all"
+interface = "all" # restrict to 127.0.0.1 (localhost) using Docker configs
 cors = []
 hosts = ["none"]
 apis = ["all"]
@@ -156,7 +156,8 @@ engine_signer = "<ACCOUNT_ADDRESS>"
 force_sealing = true
 reseal_on_txs = "none" # Authorities reseal automatically. From https://bit.ly/2Jiw5SV
 gas_floor_target = "6666666"
-usd_per_tx = "0" # Allows for free transactions. From https://bit.ly/2Jiw5SV
+min_gas_price = 0 #min gas price in WEI per GAS unit (0 Ether)
+# usd_per_tx doesn't mean anything on PoA networks. See https://bit.ly/2VEOwI7
 
 [account]
 password = ["/etc/parity/password"]
