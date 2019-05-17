@@ -4,9 +4,9 @@
 
 This guide started out as a guide to setting up and running a keeper node in the Nile Testnet. Its scope expanded to include other networks, including the Duero Testnet and production networks. Production networks have higher security requirements.
 
-A keeper node is basically a computer running [Parity Ethereum](https://www.parity.io/ethereum/), configured to be part of a particular Ethereum network: one where the Ocean Protocol keeper contracts have been (or will be) deployed. In particular, this guide is about how to set up an _authority node_ (not a user/non-authority node, not a secret store node) in a [Parity Proof of Authority (PoA) network](https://wiki.parity.io/Proof-of-Authority-Chains).
+A keeper node is basically a computer running [Parity Ethereum](https://www.parity.io/ethereum/), configured to be part of a particular [Proof-of-Authority (PoA)](https://wiki.parity.io/Proof-of-Authority-Chains) Ethereum network: one where the Ocean Protocol keeper contracts have been (or will be) deployed.
 
-If you want to set up a user/non-authority node, then one option is to use [Barge](https://github.com/oceanprotocol/barge). It always sets up a local user/non-authority node and connects it to the Ethereum network you want to interact with.
+In particular, this guide is about how to set up an _authority node_ (not a user/non-authority node, not a secret store node). Below we say more about the types of nodes and what they do.
 
 Note: Parity Ethereum is sometimes called just "Parity." Parity is also the name of the company behind Parity Ethereum, but the context should make it clear what is meant.
 
@@ -20,7 +20,19 @@ Note: Parity Ethereum is sometimes called just "Parity." Parity is also the name
 - [The paritytech/parity-poa support channel on Gitter](https://gitter.im/paritytech/parity-poa)
 - Parity (the company) offers enterprise support solutions. See [https://www.parity.io/solutions/](https://www.parity.io/solutions/)
 
-## Requirements
+## Types of Keeper Nodes
+
+A Parity Ethereum node can be configured to operate in many ways, including:
+
+- **An authority node** is one which can mine/sign new blocks. Generally speaking, public users of the network don't connect directly to authority nodes (except maybe via Websocket to subscribe to blockchain updates). The authority nodes all connect to each other via port 30303 (Ethereum listening and discovery).
+- **A user/non-authority node** can't mine/sign new blocks. It connects to one or more authority nodes via port 30303 (Ethereum) so it can keep in sync with the blockchain. Public users (including marketplaces) can connect to user/non-authority nodes via RPC/HTTP (usually port 8545) or Websocket (8546), e.g. to post new transactions.
+- **A secret store node** is a special case. In principle, every marketplace can set up its own network of secret store nodes. Secret store nodes aren't really involved with the blockchain aspects of the network. For more info about secret store nodes, see [the Parity wiki page about them](https://wiki.parity.io/Secret-Store.html).
+
+![Network Deployment](network-deployment.png)
+
+A production network should have 5 or more authority nodes (operated by at least 3 different organizations), and 2 or more user nodes. If a user node is exposing its RPC/HTTP or Websocket interfaces to the public internet, then there should be a reverse proxy (such as NGINX) in front of it, so that the public connections can use SSL/TLS (HTTPS or Websocket Secure).
+
+## Authority Node Requirements
 
 As stated [in the Parity documentation](https://wiki.parity.io/FAQ#what-are-the-parity-ethereum-disk-space-needs-and-overall-hardware-requirements):
 
@@ -32,7 +44,7 @@ As stated [in the Parity documentation](https://wiki.parity.io/FAQ#what-are-the-
 - A medium-size running instance (8 vCPUs & 16GB RAM) should be enough for executing an authority node in the network.
 - As stated in the Ethereum specification, the Enode URL format (https://github.com/ethereum/wiki/wiki/enode-url-format) does not allow DNS names. Due to this restriction, addresses must be specified using IP addresses. Make sure your cloud provider will let you use a public IP address.
 
-## Installation Guide
+## Authority Node Installation Guide
 
 The following instructions have been used to install a node in CentOS 7 and Ubuntu 18.04. The external technologies used are systemd and Docker, both widely used today. In any case, if there is any inconvenience in using these two technologies, there is not any technical limitation to run Parity without using them, so please feel free to deploy/configure it in the way you feel most comfortable.
 
@@ -46,9 +58,9 @@ We recommend using an SSH bastion host, so you would have two machines with the 
 1. **Authority Node**
    - It will use systemd to run Parity Ethereum in a Docker container.
    - Allow incoming traffic from anywhere on ports 30303/tcp (Ethereum listener), 30303/udp (Ethereum discovery), and 8546/tcp (Ethereum Websocket).
-   - Allow incoming traffic _from the second machine only_ on port 22/tcp (for SSH).
+   - Allow incoming traffic _from the SSH Bastion Host only_ on port 22/tcp (for SSH).
    - Don't allow incoming traffic on port 8545/tcp (the Ethereum HTTP JSON-RPC port).
-   - If you must send a JSON-RPC request to the authority node, just SSH into the machine and send the request to `http://localhost:8545`. Depending on what you want to do, it might be okay to send the request to a user/non-authority node instead.
+   - If you must send a JSON-RPC request to the authority node, just SSH into the machine and send the request to `http://localhost:8545`. Depending on what you want to do, it might be possible to send the request to a user/non-authority node instead.
 1. **SSH Bastion Host**
    - Allow incoming SSH traffic on port 22 (or some other port), but take steps to ensure that only authorized people/systems can connect via SSH (e.g. SSH with multi-factor authentication, or only allow port-22 connections from specific IP addresses).
    - The idea is to protect the authority node from brute-force SSH attacks (which can tie up the machine with useless work, if nothing else). To the outside world, the first machine doesn't even seem to _have_ an SSH port.
@@ -57,8 +69,6 @@ We recommend using an SSH bastion host, so you would have two machines with the 
      - [Secure your instances with multi-factor authentication](https://aws.amazon.com/blogs/startups/securing-ssh-to-amazon-ec2-linux-hosts/)
 
 If you don't want your authority node to serve websocket requests, then don't allow incoming traffic on port 8546 and remove/disable all the websocket and port 8546 stuff below.
-
-_Aside: If you were setting up a user/non-authority node, then you would ensure there are no unlocked accounts on the node, and you would connect its port 8545 traffic to an NGINX reverse proxy, with that reverse proxy accepting incoming HTTPS traffic from anywhere on port 443, and passing it through to port 8545 on your node._
 
 Below you will notice that we use the Docker image named:
 
