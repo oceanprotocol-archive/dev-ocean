@@ -53,22 +53,15 @@ Always follow the best practices to secure your machine (and to keep it secure).
 - [CentOS 7 Security](https://bobcares.com/blog/centos-security-hardening/)
 - [Ubuntu 18.04 Security](https://help.ubuntu.com/lts/serverguide/security.html.en)
 
-We recommend using an SSH bastion host, so you would have two machines with the following uses and network configuration:
+We recommend using an SSH bastion host, so the authority node doesn't have a publicly-exposed SSH port.
 
-1. **Authority Node**
-   - It will use systemd to run Parity Ethereum in a Docker container.
-   - Allow incoming traffic from anywhere on ports 30303/tcp (Ethereum listener), 30303/udp (Ethereum discovery), and 8546/tcp (Ethereum Websocket).
-   - Allow incoming traffic _from the SSH Bastion Host only_ on port 22/tcp (for SSH).
-   - Don't allow incoming traffic on port 8545/tcp (the Ethereum HTTP JSON-RPC port).
-   - If you must send a JSON-RPC request to the authority node, just SSH into the machine and send the request to `http://localhost:8545`. Depending on what you want to do, it might be possible to send the request to a user/non-authority node instead.
-1. **SSH Bastion Host**
-   - Allow incoming SSH traffic on port 22 (or some other port), but take steps to ensure that only authorized people/systems can connect via SSH (e.g. SSH with multi-factor authentication, or only allow port-22 connections from specific IP addresses).
-   - The idea is to protect the authority node from brute-force SSH attacks (which can tie up the machine with useless work, if nothing else). To the outside world, the first machine doesn't even seem to _have_ an SSH port.
-   - SSH bastion hosts are common. If you're using AWS, they have some tooling and blog posts to help:
-     - [Linux Bastion Hosts on the AWS Cloud: Quick Start Reference Deployment](https://docs.aws.amazon.com/quickstart/latest/linux-bastion/welcome.html)
-     - [Secure your instances with multi-factor authentication](https://aws.amazon.com/blogs/startups/securing-ssh-to-amazon-ec2-linux-hosts/)
+Here is how the authority node's firewall or security group could be set up:
 
-If you don't want your authority node to serve websocket requests, then don't allow incoming traffic on port 8546 and remove/disable all the websocket and port 8546 stuff below.
+- Allow incoming traffic from anywhere on ports 30303/tcp (Ethereum listener), 30303/udp (Ethereum discovery), and 8546/tcp (Ethereum Websocket).
+- Don't allow incoming traffic on port 8545/tcp (the Ethereum HTTP JSON-RPC port). If you must send a JSON-RPC request to the authority node, just SSH into it and send the request to `http://localhost:8545`. Depending on what you want to do, it might be possible to send the request to a user/non-authority node instead.
+- Allow incoming traffic from the SSH bastion host on port 22/tcp (SSH).
+
+If you don't want your authority node to serve Websocket requests (except on localhost), then change the websocket/8546 configuration to be similar to the rdp/8545 configuration below.
 
 Below you will notice that we use the Docker image named:
 
