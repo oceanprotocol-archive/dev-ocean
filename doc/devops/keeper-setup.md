@@ -63,6 +63,8 @@ Here is how the authority node's firewall or security group could be set up:
 
 If you don't want your authority node to serve Websocket requests (except on localhost), then change the websocket/8546 configuration to be similar to the rdp/8545 configuration below.
 
+The [Aura consensus protocol](https://wiki.parity.io/Aura) (which is the default used by Parity Ethereum for PoA networks) [requires all the clocks on the nodes to agree](https://github.com/poanetwork/wiki/wiki/Aura-Consensus-Protocol-Audit#risks-of-synchronized-time), roughly speaking. To accomplish that, you could install and run an NTP daemon on your node. Also make sure your node's firewall or security group lets it work, i.e. send requests and get responses (typically on port 123). For more tips, see [the blog post by the ZTC](https://zerotrustconsortium.org/ztc-series-1-the-quick-dos-and-donts-guide-to-parity-ethereum-blockchain/).
+
 Below you will notice that we use the Docker image named:
 
 `parity/parity:v2.3.3`
