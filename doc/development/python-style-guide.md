@@ -10,7 +10,16 @@ Most of the Ocean repositories containing Python code have [Flake8](http://flake
 
 We use Codacy to check the code style of all pull requests, and Codacy uses [PyLint](https://www.pylint.org/) to check Python code style.
 
-## Global imports
+## Docstrings
+
+We aren't super-strict about Python docstring formatting, but we try to follow the "reStructuredText Docstring Format" which is also known as the "Sphinx format" because it's the default format supported by Sphinx. We _don't_ use Google-style or NumPy-style docstrings. Some references:
+
+- [Sphinx-RTD-Tutorial on writing docstrings](https://sphinx-rtd-tutorial.readthedocs.io/en/latest/docstrings.html)
+- [PyCharm's help with documenting source code](https://www.jetbrains.com/help/pycharm/documenting-source-code.html)
+- [Python Developer's Guide - Documenting Python](https://devguide.python.org/documenting/)
+- [PEP 287 - reStructuredText Docstring Format](https://www.python.org/dev/peps/pep-0287/)
+
+## Global Imports
 
 Do not import modules and classes into the global namespace:
 
