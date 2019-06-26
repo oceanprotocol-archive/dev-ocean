@@ -11,6 +11,17 @@ contributors:
 Table of Contents
 =================
 
+   * [Table of Contents](#table-of-contents)
+   * [How to improve Brizo?](#how-to-improve-brizo)
+      * [Introduction](#introduction)
+      * [Refactoring tasks](#refactoring-tasks)
+         * [Separation of concerns](#separation-of-concerns)
+            * [Events Handler](#events-handler)
+            * [Assets Proxy](#assets-proxy)
+         * [Software architecture refactor](#software-architecture-refactor)
+            * [Separation of brizo and squid logic](#separation-of-brizo-and-squid-logic)
+            * [Separation of duties](#separation-of-duties)
+         * [Unification of events listening](#unification-of-events-listening)
 
 
 # How to improve Brizo?
