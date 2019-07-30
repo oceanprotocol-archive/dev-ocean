@@ -40,7 +40,7 @@ As stated in the [Parity documentation](https://wiki.parity.io/FAQ#what-are-the-
 
 > Running a full node with the standard configuration for the Ethereum Mainnet requires a lot of computer resources. The blockchain download and validation process are particularly heavy on CPU and disk IO. It is therefore recommended to run a full node on a computer with multi-core CPU, 4GB RAM and an SSD drive and at least 200GB free space. Internet connection can also be a limiting factor. A decent DSL connection is required.
 
-### Cloud Requirements
+#### Cloud Requirements
 
 - You can choose the cloud provider and service that best fits your needs. For simplicity and general support, we have used AWS EC2 and Azure VMs to set up our nodes, but other services could be used also.
 - A medium-size running instance (8 vCPUs & 16GB RAM) should be enough for executing an authority node in the network.
@@ -75,9 +75,13 @@ from Docker Hub. You might use a different Docker image, but you must ensure tha
 
 The steps to follow (on the authority node) are:
 
-1. Install Docker CE. Please check [the Docker official documentation](https://docs.docker.com/install/) for a detailed guide.
+#### 1. Install Docker CE
 
-2. Configure the `systemd` unit:
+Please check [the Docker official documentation](https://docs.docker.com/install/) for a detailed guide.
+
+#### 2. Configure `systemd`
+
+Configure the `systemd` unit:
 
 ```bash
 cat <<EOF | sudo tee /etc/systemd/system/parity.service
@@ -109,15 +113,17 @@ EOF
 sudo chmod 644 /etc/systemd/system/parity.service
 ```
 
-Please note:
+The ports exposed from the container to the host are `30303/tcp` (ethereum listener), `30303/udp` (ethereum discovery) , `8545` (rpc interface) and `8546` (websocket interface). You can modify the host's ports (the first ports) if you want to modify the exposed ports in the host.
 
-- The ports exposed from the container to the host are 30303/tcp (ethereum listener), 30303/udp (ethereum discovery) , 8545 (rpc interface) and 8546 (websocket interface). You can modify the host's ports (the first ports) if you want to modify the exposed ports in the host.
-- The volume /parity_data is the `base_path` folder for the parity client. All the data (chain data, keys, secret store data, etc.) will be stored here. You can change the host's folder (first part) if you want to allocate in a different host location.
-- The volume /etc/parity/ is the configuration folder for the parity client. The parity configuration file (`config.toml`) and the Ocean chain specification (`chain.json`), and the account password (for validators) are located in this folder. Again you can modify the local folder without major issue.
+The volume `/parity_data` is the `base_path` folder for the parity client. All the data (chain data, keys, secret store data, etc.) will be stored here. You can change the host's folder (first part) if you want to allocate in a different host location.
 
-3. Add the Parity configuration file `/etc/parity/config.toml`. To understand the settings, see the [docs about configuring Parity Ethereum](https://wiki.parity.io/Configuring-Parity-Ethereum.html) and the [docs about Parity Proof-of-Authority Chains](https://wiki.parity.io/Proof-of-Authority-Chains).
+The volume `/etc/parity/` is the configuration folder for the parity client. The parity configuration file (`config.toml`), the Ocean chain specification (`chain.json`), and the account password (for validators) are located in this folder. Again you can modify the local folder without major issue.
 
-```toml
+#### 3. Parity configuration
+
+Add the Parity configuration file `/etc/parity/config.toml`. To understand the settings, see the docs about [configuring Parity Ethereum](https://wiki.parity.io/Configuring-Parity-Ethereum.html) and the docs about [Parity Proof-of-Authority Chains](https://wiki.parity.io/Proof-of-Authority-Chains).
+
+```toml:title=/etc/parity/config.toml
 [parity]
 chain = "/etc/parity/chain.json"
 base_path = "/parity_data"
@@ -177,18 +183,22 @@ fat_db = "on"
 
 Where:
 
-- ACCOUNT_ADDRESS: Please put here your authority account address. Example: `0xdeadbeefcafe0000000000000000000000000001`
+- `ACCOUNT_ADDRESS`: Please put here your authority account address. Example: `0xdeadbeefcafe0000000000000000000000000001`
 - The file `/etc/parity/password` contains your authority account's password. You can change the location of this file, but take care that this location refers to a location inside the parity container, so you have to refer to the container location and mount the host's file to that location.
-- PUBLIC_IP: The external public IP address of your node. Example: `52.1.94.55`
-- ETHEREUM_NODE_KEY: The Ethereum node address. Example: `ade848e26c30d600da8207d0f8960d6abf125d1ac432bd42b020a98e10812f36`
+- `PUBLIC_IP`: The external public IP address of your node. Example: `52.1.94.55`
+- `ETHEREUM_NODE_KEY`: The Ethereum node address. Example: `ade848e26c30d600da8207d0f8960d6abf125d1ac432bd42b020a98e10812f36`
 
-4. Get the chain file for the network you're joining and save it in `/etc/parity/chain.json`. Here are some links to chain files:
+#### 4. Get chain files
+
+Get the chain file for the network you're joining and save it in `/etc/parity/chain.json`. Here are some links to chain files:
 
    - [Nile chain file](https://github.com/oceanprotocol/atlantic/blob/master/networks/nile/chain.json)
    - [Duero chain file](https://github.com/oceanprotocol/atlantic/blob/master/networks/duero/chain.json)
    - Ocean Network chain file - coming some day
 
-5. Once you have configured your files, you can enable and start the service:
+#### 5. Enable service
+
+Once you have configured your files, you can enable and start the service:
 
 ```bash
 systemctl enable parity-client.service && systemctl start parity-client.service
