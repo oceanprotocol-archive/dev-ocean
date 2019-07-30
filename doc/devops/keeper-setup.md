@@ -1,26 +1,26 @@
-# Ocean Parity Installation Guide
+---
+title: Set Up and Run a Keeper Node
+description: If you want to run a keeper node, you can do so with Docker or install a Parity node loaded with Ocean's keeper-contracts from scratch.
+slug: /setup/keeper/
+section: setup
+---
 
-## Introduction
+A keeper node (keeper) is basically a computer running [Parity Ethereum](https://www.parity.io/ethereum/), configured to be part of a particular [Proof-of-Authority (PoA)](https://wiki.parity.io/Proof-of-Authority-Chains) Ethereum network: one where the Ocean Protocol keeper contracts have been deployed.
 
-This guide started out as a guide to setting up and running a keeper node in the Nile Testnet. Its scope expanded to include other networks, including the Duero Testnet and production networks. Production networks have higher security requirements.
+> We are happy to assist you if you’re interested in running a keeper node (as a voting authority node) in the Pacific Network or the Nile Testnet. Get in touch via email under info@oceanprotocol.com.
 
-A keeper node is basically a computer running [Parity Ethereum](https://www.parity.io/ethereum/), configured to be part of a particular [Proof-of-Authority (PoA)](https://wiki.parity.io/Proof-of-Authority-Chains) Ethereum network: one where the Ocean Protocol keeper contracts have been (or will be) deployed.
+## Using Barge
 
-In particular, this guide is about how to set up an _authority node_ (not a user/non-authority node, not a secret store node). Below we say more about the types of nodes and what they do.
+[Barge](https://github.com/oceanprotocol/barge) uses Docker Compose to run one or more keeper nodes (and other components) in Docker containers on your local machine.
 
-Note: Parity Ethereum is sometimes called just "Parity." Parity is also the name of the company behind Parity Ethereum, but the context should make it clear what is meant.
+- If you use `--local-pacific-node`, or `--local-nile-node`, then it will run one local Parity Ethereum node (as a _user node_, i.e. a non-voting node) and it will connect that node to the [Pacific Network](/concepts/pacific-network/) or [Nile Testnet](/concepts/testnets/#the-nile-testnet), respectively.
+- If you use `--local-spree-node` or `--local-ganache-node`, then it will run a strictly-local [Spree Testnet](/concepts/testnets/#a-spree-testnet-for-local-development) or [Ganache-Based Testnet](/concepts/testnets/#a-ganache-based-testnet-for-local-development).
 
-## Additional Support Resources
+Barge deploys the keeper contracts to whatever keeper nodes are deployed locally.
 
-- The official Parity Ethereum docs, especially:
-  - [the Overview](https://wiki.parity.io/Parity-Ethereum)
-  - [Configuring Parity Ethereum](https://wiki.parity.io/Configuring-Parity-Ethereum)
-  - [Proof-of-Authority (PoA) Chains](https://wiki.parity.io/Proof-of-Authority-Chains)
-  - [Demo PoA Tutorial](https://wiki.parity.io/Demo-PoA-tutorial)
-- [The paritytech/parity-poa support channel on Gitter](https://gitter.im/paritytech/parity-poa)
-- Parity (the company) offers enterprise support solutions. See [https://www.parity.io/solutions/](https://www.parity.io/solutions/)
+## Ocean Parity Installation
 
-## Types of Keeper Nodes
+This guide is about how to set up an _authority node_ from scratch. It started out as a guide to setting up and running a keeper node in the Nile Testnet. Its scope expanded to include other networks, including the Duero Testnet and production networks. Production networks have higher security requirements.
 
 A Parity Ethereum node can be configured to operate in many ways, including:
 
@@ -32,19 +32,21 @@ A Parity Ethereum node can be configured to operate in many ways, including:
 
 A production network should have 5 or more authority nodes (operated by at least 3 different organizations), and 2 or more user nodes. If a user node is exposing its RPC/HTTP or Websocket interfaces to the public internet, then there should be a reverse proxy (such as NGINX) in front of it, so that the public connections can use SSL/TLS (HTTPS or Websocket Secure).
 
-## Authority Node Requirements
+> Parity Ethereum is sometimes called just "Parity." Parity is also the name of the company behind Parity Ethereum, but the context should make it clear what is meant.
 
-As stated [in the Parity documentation](https://wiki.parity.io/FAQ#what-are-the-parity-ethereum-disk-space-needs-and-overall-hardware-requirements):
+### Authority Node Requirements
+
+As stated in the [Parity documentation](https://wiki.parity.io/FAQ#what-are-the-parity-ethereum-disk-space-needs-and-overall-hardware-requirements):
 
 > Running a full node with the standard configuration for the Ethereum Mainnet requires a lot of computer resources. The blockchain download and validation process are particularly heavy on CPU and disk IO. It is therefore recommended to run a full node on a computer with multi-core CPU, 4GB RAM and an SSD drive and at least 200GB free space. Internet connection can also be a limiting factor. A decent DSL connection is required.
 
-### Cloud Requirements
+#### Cloud Requirements
 
 - You can choose the cloud provider and service that best fits your needs. For simplicity and general support, we have used AWS EC2 and Azure VMs to set up our nodes, but other services could be used also.
 - A medium-size running instance (8 vCPUs & 16GB RAM) should be enough for executing an authority node in the network.
-- As stated in the Ethereum specification, the Enode URL format (https://github.com/ethereum/wiki/wiki/enode-url-format) does not allow DNS names. Due to this restriction, addresses must be specified using IP addresses. Make sure your cloud provider will let you use a public IP address.
+- As stated in the Ethereum specification, the [Enode URL format](https://github.com/ethereum/wiki/wiki/enode-url-format) does not allow DNS names. Due to this restriction, addresses must be specified using IP addresses. Make sure your cloud provider will let you use a public IP address.
 
-## Authority Node Installation Guide
+### Authority Node Installation Guide
 
 The following instructions have been used to install a node in CentOS 7 and Ubuntu 18.04. The external technologies used are systemd and Docker, both widely used today. In any case, if there is any inconvenience in using these two technologies, there is not any technical limitation to run Parity without using them, so please feel free to deploy/configure it in the way you feel most comfortable.
 
@@ -73,9 +75,13 @@ from Docker Hub. You might use a different Docker image, but you must ensure tha
 
 The steps to follow (on the authority node) are:
 
-1. Install Docker CE. Please check [the Docker official documentation](https://docs.docker.com/install/) for a detailed guide.
+#### 1. Install Docker CE
 
-2. Configure the systemd unit:
+Please check [the Docker official documentation](https://docs.docker.com/install/) for a detailed guide.
+
+#### 2. Configure `systemd`
+
+Configure the `systemd` unit:
 
 ```bash
 cat <<EOF | sudo tee /etc/systemd/system/parity.service
@@ -107,15 +113,17 @@ EOF
 sudo chmod 644 /etc/systemd/system/parity.service
 ```
 
-Please note:
+The ports exposed from the container to the host are `30303/tcp` (ethereum listener), `30303/udp` (ethereum discovery) , `8545` (rpc interface) and `8546` (websocket interface). You can modify the host's ports (the first ports) if you want to modify the exposed ports in the host.
 
-- The ports exposed from the container to the host are 30303/tcp (ethereum listener), 30303/udp (ethereum discovery) , 8545 (rpc interface) and 8546 (websocket interface). You can modify the host's ports (the first ports) if you want to modify the exposed ports in the host.
-- The volume /parity_data is the `base_path` folder for the parity client. All the data (chain data, keys, secret store data, etc.) will be stored here. You can change the host's folder (first part) if you want to allocate in a different host location.
-- The volume /etc/parity/ is the configuration folder for the parity client. The parity configuration file (`config.toml`) and the Ocean chain specification (`chain.json`), and the account password (for validators) are located in this folder. Again you can modify the local folder without major issue.
+The volume `/parity_data` is the `base_path` folder for the parity client. All the data (chain data, keys, secret store data, etc.) will be stored here. You can change the host's folder (first part) if you want to allocate in a different host location.
 
-3. Add the Parity configuration file `/etc/parity/config.toml`. To understand the settings, see the [docs about configuring Parity Ethereum](https://wiki.parity.io/Configuring-Parity-Ethereum.html) and the [docs about Parity Proof-of-Authority Chains](https://wiki.parity.io/Proof-of-Authority-Chains).
+The volume `/etc/parity/` is the configuration folder for the parity client. The parity configuration file (`config.toml`), the Ocean chain specification (`chain.json`), and the account password (for validators) are located in this folder. Again you can modify the local folder without major issue.
 
-```toml
+#### 3. Parity configuration
+
+Add the Parity configuration file `/etc/parity/config.toml`. To understand the settings, see the docs about [configuring Parity Ethereum](https://wiki.parity.io/Configuring-Parity-Ethereum.html) and the docs about [Parity Proof-of-Authority Chains](https://wiki.parity.io/Proof-of-Authority-Chains).
+
+```toml:title=/etc/parity/config.toml
 [parity]
 chain = "/etc/parity/chain.json"
 base_path = "/parity_data"
@@ -175,18 +183,22 @@ fat_db = "on"
 
 Where:
 
-- ACCOUNT_ADDRESS: Please put here your authority account address. Example: `0xdeadbeefcafe0000000000000000000000000001`
+- `ACCOUNT_ADDRESS`: Please put here your authority account address. Example: `0xdeadbeefcafe0000000000000000000000000001`
 - The file `/etc/parity/password` contains your authority account's password. You can change the location of this file, but take care that this location refers to a location inside the parity container, so you have to refer to the container location and mount the host's file to that location.
-- PUBLIC_IP: The external public IP address of your node. Example: `52.1.94.55`
-- ETHEREUM_NODE_KEY: The Ethereum node address. Example: `ade848e26c30d600da8207d0f8960d6abf125d1ac432bd42b020a98e10812f36`
+- `PUBLIC_IP`: The external public IP address of your node. Example: `52.1.94.55`
+- `ETHEREUM_NODE_KEY`: The Ethereum node address. Example: `ade848e26c30d600da8207d0f8960d6abf125d1ac432bd42b020a98e10812f36`
 
-4. Get the chain file for the network you're joining and save it in `/etc/parity/chain.json`. Here are some links to chain files:
+#### 4. Get chain files
+
+Get the chain file for the network you're joining and save it in `/etc/parity/chain.json`. Here are some links to chain files:
 
    - [Nile chain file](https://github.com/oceanprotocol/atlantic/blob/master/networks/nile/chain.json)
    - [Duero chain file](https://github.com/oceanprotocol/atlantic/blob/master/networks/duero/chain.json)
    - Ocean Network chain file - coming some day
 
-5. Once you have configured your files, you can enable and start the service:
+#### 5. Enable service
+
+Once you have configured your files, you can enable and start the service:
 
 ```bash
 systemctl enable parity-client.service && systemctl start parity-client.service
@@ -197,3 +209,13 @@ And check the status of the service:
 ```bash
 systemctl status parity-client.service
 ```
+
+### Additional Support Resources
+
+- The official Parity Ethereum docs, especially:
+  - [the Overview](https://wiki.parity.io/Parity-Ethereum)
+  - [Configuring Parity Ethereum](https://wiki.parity.io/Configuring-Parity-Ethereum)
+  - [Proof-of-Authority (PoA) Chains](https://wiki.parity.io/Proof-of-Authority-Chains)
+  - [Demo PoA Tutorial](https://wiki.parity.io/Demo-PoA-tutorial)
+- [The paritytech/parity-poa support channel on Gitter](https://gitter.im/paritytech/parity-poa)
+- Parity (the company) offers enterprise support solutions. See [https://www.parity.io/solutions/](https://www.parity.io/solutions/)
