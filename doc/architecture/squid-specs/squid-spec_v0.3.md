@@ -2,7 +2,7 @@
 ```
 name: Squid API Specification
 shortname: squid-spec
-version: 0.4
+version: 0.3
 status: Draft
 ```
 
@@ -37,23 +37,9 @@ The goal of this doc is to help a developer build a version of the Squid API in 
 
 You can find older versions of the squid specifications in the [squid-specs folder](squid-specs).
 
-### Squid Spec 0.4 (latest)
+### Squid Spec 0.3 (latest)
 
-Modifications:
-
-* New `ocean.assets.execute` method
-* New `ocean.agreements.delegatePermissions` method
-* New `ocean.agreements.getPermissions` method
-* New `ocean.agreements.conditions.grantServiceExecution` method
-* New `ocean.services.createComputeServiceExecution`
-
-
-This version of the squid specification is based in the OEP-7 v0.2.
-
-### Squid Spec 0.3
-
-New methods:
-
+* New methods
   - Get list of the Assets Published by an user
   - Get list of the Assets Received by an user
   - Get the SEA status
@@ -240,30 +226,6 @@ Returns
 Example
 ```js
 const downloadsPath = ocean.assets.consume(agreementId, did, serviceDefinitionId, consumerAccount, resultPath)
-```
-
----
-
-#### execute
-
-Executes a remote service associated with an asset and serviceAgreementId
-
-Parameters
-```
-        agreementId: hex str representation of `bytes32` id
-                did: str the asset did which consist of `did:op:` and the assetId hex str (without `0x` prefix)
-serviceDefinitionId: str id of the service within the asset DDO
-    consumerAccount: Account instance of the consumer ordering the service
-        workflowDid: str the asset did (of `workflow` type) which consist of `did:op:` and the assetId hex str (without `0x` prefix)
-```
-
-Returns
-
-`str local path on the file system where the asset data files are downloaded` 
-
-Example
-```js
-const executionId = ocean.assets.execute(agreementId, did, serviceDefinitionId, consumerAccount, workflowDid)
 ```
 
 ---
@@ -665,63 +627,6 @@ const success = ocean.agreements.create(
 
 ---
 
-#### delegatePermissions
-
-For a existing and valid service agreement on-chain, the owner of the agreement can delegate permissions to other user account.
-
-
-Parameters
-```
-agreementId: hex str representation of `bytes32` id
-issuerAccount: Account instance of the creator of this agreement. Can be the consumer, publisher, 
-subjectAddress: hex str the ethereum account address of the subject who will receive the permissions
-permissions: uint representing the permissions given to the subject. Perimssions supported are read (R), update (U), deactivate (D). 
-Represented as UNIX file permissions (RUD):
-  - Read: R-- = 4
-  - Update: -U- = 2
-  - Read and Update: RU- = 6
-  - Read, Update, Deactivate: RUD = 7
-```
-
-**Return**
-
-`boolean`
-
-Example
-```js
-const issuerAccount = ocean.accounts.list()[0]
-const success = ocean.agreements.delegatePermissions(
-    agreementId, 
-    issuerAccount, 
-    subjectAddress, 
-    permissions
-    )
-```
-
----
-
-#### get permissions
-Get the permissions for an existing service agreement and user.
-
-Parameters:
-```
-agreementId: hex str representation of `bytes32` id
-subjectAddress: hex str the ethereum account address of the subject who will receive the permissions
-```
-
-Returns: 
-- permissions: uint representing the permissions given to the subject. Perimssions supported are read (R), update (U), deactivate (D). 
-
-
-
-Example
-```js
-const agreementId = ""
-const permissions = ocean.agreements.getPermissions(agreementId, subjectAddress)
-```
-
----
-
 #### status
 Get the status of a service agreement.
 
@@ -752,8 +657,6 @@ const agreementStatus = ocean.agreements.status(agreementId)
 ```
 
 ---
-
-
 
 ## ocean.agreements.conditions
 
@@ -795,25 +698,6 @@ Returns
 Example
 ```js
 ocean.agreements.conditions.grantAccess(agreementId, assetId, grantee)
-```
-
-#### grantServiceExecution
-Authorize the consumer defined in the agreement to execute a remote service associated with this asset.
-
-Parameters
-```
-agreementId: hex str representation of `bytes32` id
-    assetId: hex str representation of `bytes32` id
-    grantee: hexstr ethereum address of asset consumer
-```
-
-Returns
-
-`bool success/failure`
-
-Example
-```js
-ocean.agreements.conditions.grantServiceExecution(agreementId, assetId, grantee)
 ```
 
 ---
@@ -893,33 +777,7 @@ const service = ocean.services.createAccessSecretStoreService(
 
 ---
 
-
-#### createComputeServiceExecution
-Creates a `compute` type service to be included in asset DDO.
-
-Parameters
-```
-          price: int number of tokens
-executeEndpoint: str url of service endpoint
-```
-
-Returns
-
-`Service instance`
-
-Example
-```js
-const service = ocean.services.createComputeServiceExecution(
-    25, 
-    'http://brizo/services/compute/execute'
-    )
-```
-
-
----
-
-
-## Models
+Models
 
 ### Account
 | attribute   | type       |
