@@ -98,7 +98,7 @@ Modifications:
 * New `ocean.agreements.conditions.grantServiceExecution` method
 * New `ocean.services.createComputeServiceExecution`
 * `ocean.assets.create` allows to specify the address of the DID owner
-* New `` allowing to transfer the ownership of a DID
+* New `ocean.assets.transferOwnership` method allowing to transfer the ownership of a DID
 
 
 This version of the squid specification is based in the OEP-7 v0.2.
