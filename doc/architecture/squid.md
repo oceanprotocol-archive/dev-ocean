@@ -20,12 +20,11 @@ The goal of this doc is to help a developer build a version of the Squid API in 
 
 ---
 
-
 Table of Contents
 =================
 
    * [Squid API](#squid-api)
-      * [Summary of modules](#summary-of-modules)
+   * [Table of Contents](#table-of-contents)
       * [Changelog](#changelog)
          * [Squid Spec 0.4 (latest)](#squid-spec-04-latest)
          * [Squid Spec 0.3](#squid-spec-03)
@@ -34,6 +33,7 @@ Table of Contents
       * [ocean.assets](#oceanassets)
             * [create](#create)
             * [resolve](#resolve)
+            * [transfer ownership](#transfer-ownership)
             * [search](#search)
             * [query](#query)
             * [order](#order)
@@ -82,7 +82,6 @@ Table of Contents
          * [Error handling](#error-handling)
       * [Examples](#examples)
       * [Implementation status](#implementation-status)
-      
 
 
 ## Changelog
@@ -98,6 +97,8 @@ Modifications:
 * New `ocean.agreements.getPermissions` method
 * New `ocean.agreements.conditions.grantServiceExecution` method
 * New `ocean.services.createComputeServiceExecution`
+* `ocean.assets.create` allows to specify the address of the DID owner
+* New `` allowing to transfer the ownership of a DID
 
 
 This version of the squid specification is based in the OEP-7 v0.2.
@@ -142,6 +143,7 @@ Parameters
         metadata: JSON object describing various attributes of the asset data (see below for sample metadata attributes)
 publisherAccount: Account instance of who is publishing the asset
         services: list of Service instances (optional)
+        accountOwner: If is specified, the ownership of the DID will be assigned to this ethereum account (optional)
 ```
 
 Returns
@@ -163,7 +165,7 @@ const metadata = {
   }
 }
 
-const asset = ocean.assets.create(metadata, publisherAccount, services=[ocean.services.createAccessSecretStoreService(...)])
+const asset = ocean.assets.create(metadata, publisherAccount, services=[ocean.services.createAccessSecretStoreService(...)], accountOwner)
 ```
 
 The complete spec for assets metadata is here: [Asset Metadata Ontology](https://github.com/oceanprotocol/OEPs/tree/master/8)
@@ -188,6 +190,27 @@ Returns
 Example
 ```js
 const asset = ocean.assets.resolve(did)
+```
+
+---
+
+#### transfer ownership
+
+Given a DID, transfer the ownership to a new owner. This function only will work if is called by the DID owner.
+
+Parameters
+```
+did: str the asset did which consist of `did:op:` and the assetId hex str (without `0x` prefix)
+newOwner: the ethereum address of the new owner of the DID
+```
+
+Returns
+
+`Asset object`
+
+Example
+```js
+const asset = ocean.assets.transferOwnership(did, newOwner)
 ```
 
 ---
