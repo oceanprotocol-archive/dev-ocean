@@ -93,8 +93,9 @@ You can find older versions of the squid specifications in the [squid-specs fold
 Modifications:
 
 * New `ocean.assets.execute` method
-* New `ocean.agreements.delegatePermissions` method
-* New `ocean.agreements.getPermissions` method
+* New `ocean.assets.delegatePermissions` method
+* New `ocean.assets.revokePermissions` method
+* New `ocean.assets.getPermissions` method
 * New `ocean.agreements.conditions.grantServiceExecution` method
 * New `ocean.services.createComputeServiceExecution`
 * `ocean.assets.create` allows to specify the address of the DID owner
@@ -424,6 +425,84 @@ const assets = ocean.assets.consumerAssets(myAddress)
 
 ---
 
+#### delegatePermissions
+
+For a existing asset, the owner of the asset delegate to a subject read or access permissions.
+
+
+Parameters
+```
+did: DID of the asset
+issuerAccount: Account instance of the creator of this agreement
+subjectAddress: hex str the ethereum account address of the subject who will receive the permissions
+```
+
+**Return**
+
+`boolean`
+
+Example
+```js
+const issuerAccount = ocean.accounts.list()[0]
+const success = ocean.assets.delegatePermissions(
+    did,
+    issuerAccount, 
+    subjectAddress, 
+    )
+```
+
+---
+
+#### revokePermissions
+
+For a existing asset, the owner of the asset revoke the access grants of a subject.
+
+
+Parameters
+```
+did: DID of the asset
+issuerAccount: Account instance of the creator of this agreement
+subjectAddress: hex str the ethereum account address of the subject who will receive the permissions
+```
+
+**Return**
+
+`boolean`
+
+Example
+```js
+const issuerAccount = ocean.accounts.list()[0]
+const success = ocean.assets.revokePermissions(
+    did,
+    issuerAccount, 
+    subjectAddress, 
+    )
+```
+
+---
+
+#### get permissions
+Check if an user has permissions in a specific DID
+
+Parameters:
+```
+did: DID of the asset
+subjectAddress: hex str the ethereum account address of the subject who will receive the permissions
+```
+
+Returns: 
+- permissions: boolean true if has access and false if not
+
+
+
+Example
+```js
+const permissions = ocean.assets.getPermissions(did, subjectAddress)
+```
+
+---
+
+
 ## ocean.accounts
 
 #### list
@@ -740,62 +819,7 @@ const success = ocean.agreements.create(
 
 ---
 
-#### delegatePermissions
 
-For a existing and valid service agreement on-chain, the owner of the agreement can delegate permissions to other user account.
-
-
-Parameters
-```
-agreementId: hex str representation of `bytes32` id
-issuerAccount: Account instance of the creator of this agreement. Can be the consumer, publisher, 
-subjectAddress: hex str the ethereum account address of the subject who will receive the permissions
-permissions: uint representing the permissions given to the subject. Perimssions supported are read (R), update (U), deactivate (D). 
-Represented as UNIX file permissions (RUD):
-  - Read: R-- = 4
-  - Update: -U- = 2
-  - Read and Update: RU- = 6
-  - Read, Update, Deactivate: RUD = 7
-```
-
-**Return**
-
-`boolean`
-
-Example
-```js
-const issuerAccount = ocean.accounts.list()[0]
-const success = ocean.agreements.delegatePermissions(
-    agreementId, 
-    issuerAccount, 
-    subjectAddress, 
-    permissions
-    )
-```
-
----
-
-#### get permissions
-Get the permissions for an existing service agreement and user.
-
-Parameters:
-```
-agreementId: hex str representation of `bytes32` id
-subjectAddress: hex str the ethereum account address of the subject who will receive the permissions
-```
-
-Returns: 
-- permissions: uint representing the permissions given to the subject. Perimssions supported are read (R), update (U), deactivate (D). 
-
-
-
-Example
-```js
-const agreementId = ""
-const permissions = ocean.agreements.getPermissions(agreementId, subjectAddress)
-```
-
----
 
 #### status
 Get the status of a service agreement.
