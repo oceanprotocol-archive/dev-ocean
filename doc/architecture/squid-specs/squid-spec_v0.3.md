@@ -2,7 +2,7 @@
 ```
 name: Squid API Specification
 shortname: squid-spec
-version: 0.4
+version: 0.3
 status: Draft
 ```
 
@@ -20,94 +20,26 @@ The goal of this doc is to help a developer build a version of the Squid API in 
 
 ---
 
-Table of Contents
-=================
 
-   * [Squid API](#squid-api)
-   * [Table of Contents](#table-of-contents)
-      * [Changelog](#changelog)
-         * [Squid Spec 0.4 (latest)](#squid-spec-04-latest)
-         * [Squid Spec 0.3](#squid-spec-03)
-         * [Squid Spec 0.2](#squid-spec-02)
-      * [Ocean](#ocean)
-      * [ocean.assets](#oceanassets)
-            * [create](#create)
-            * [resolve](#resolve)
-            * [transfer ownership](#transfer-ownership)
-            * [search](#search)
-            * [query](#query)
-            * [order](#order)
-            * [consume](#consume)
-            * [execute](#execute)
-            * [validate](#validate)
-            * [owner](#owner)
-            * [ownerAssets](#ownerassets)
-            * [consumerAssets](#consumerassets)
-      * [ocean.accounts](#oceanaccounts)
-            * [list](#list)
-            * [balance](#balance)
-            * [requestTokens](#requesttokens)
-      * [ocean.secret_store](#oceansecret_store)
-            * [encrypt](#encrypt)
-            * [decrypt](#decrypt)
-      * [ocean.tokens](#oceantokens)
-            * [request](#request)
-            * [transfer](#transfer)
-      * [ocean.templates](#oceantemplates)
-            * [propose](#propose)
-            * [approve](#approve)
-            * [revoke](#revoke)
-      * [ocean.agreements](#oceanagreements)
-            * [prepare](#prepare)
-            * [send](#send)
-            * [create](#create-1)
-            * [delegatePermissions](#delegatepermissions)
-            * [get permissions](#get-permissions)
-            * [status](#status)
-      * [ocean.agreements.conditions](#oceanagreementsconditions)
-            * [lockReward](#lockreward)
-            * [grantAccess](#grantaccess)
-            * [grantServiceExecution](#grantserviceexecution)
-            * [releaseReward](#releasereward)
-            * [refundReward](#refundreward)
-      * [ocean.services](#oceanservices)
-            * [createAccessSecretStoreService](#createaccesssecretstoreservice)
-            * [createComputeServiceExecution](#createcomputeserviceexecution)
-      * [Models](#models)
-         * [Account](#account)
-         * [Asset](#asset)
-         * [Service](#service)
-         * [Agreement](#agreement)
-         * [Endpoints](#endpoints)
-         * [Error handling](#error-handling)
-      * [Examples](#examples)
-      * [Implementation status](#implementation-status)
+## Summary of modules
+* [ocean](#ocean)
+* [ocean.assets](#ocean.assets)
+* [ocean.accounts](#ocean.accounts)
+* [ocean.secret_store](#ocean.secret_store)
+* [ocean.tokens](#ocean.tokens)
+* [ocean.templates](#ocean.templates)
+* [ocean.services](#ocean.services)
+* [ocean.agreements](#ocean.agreements)
+* [ocean.agreements.conditions](#ocean.agreements.conditions)
 
 
 ## Changelog
 
 You can find older versions of the squid specifications in the [squid-specs folder](squid-specs).
 
-### Squid Spec 0.4 (latest)
+### Squid Spec 0.3 (latest)
 
-Modifications:
-
-* New `ocean.assets.execute` method
-* New `ocean.assets.delegatePermissions` method
-* New `ocean.assets.revokePermissions` method
-* New `ocean.assets.getPermissions` method
-* New `ocean.agreements.conditions.grantServiceExecution` method
-* New `ocean.services.createComputeServiceExecution`
-* `ocean.assets.create` allows to specify the address of the DID owner
-* New `ocean.assets.transferOwnership` method allowing to transfer the ownership of a DID
-
-
-This version of the squid specification is based in the OEP-7 v0.2.
-
-### Squid Spec 0.3
-
-New methods:
-
+* New methods
   - Get list of the Assets Published by an user
   - Get list of the Assets Received by an user
   - Get the SEA status
@@ -144,7 +76,6 @@ Parameters
         metadata: JSON object describing various attributes of the asset data (see below for sample metadata attributes)
 publisherAccount: Account instance of who is publishing the asset
         services: list of Service instances (optional)
-        accountOwner: If is specified, the ownership of the DID will be assigned to this ethereum account (optional)
 ```
 
 Returns
@@ -166,7 +97,7 @@ const metadata = {
   }
 }
 
-const asset = ocean.assets.create(metadata, publisherAccount, services=[ocean.services.createAccessSecretStoreService(...)], accountOwner)
+const asset = ocean.assets.create(metadata, publisherAccount, services=[ocean.services.createAccessSecretStoreService(...)])
 ```
 
 The complete spec for assets metadata is here: [Asset Metadata Ontology](https://github.com/oceanprotocol/OEPs/tree/master/8)
@@ -191,27 +122,6 @@ Returns
 Example
 ```js
 const asset = ocean.assets.resolve(did)
-```
-
----
-
-#### transfer ownership
-
-Given a DID, transfer the ownership to a new owner. This function only will work if is called by the DID owner.
-
-Parameters
-```
-did: str the asset did which consist of `did:op:` and the assetId hex str (without `0x` prefix)
-newOwner: the ethereum address of the new owner of the DID
-```
-
-Returns
-
-`Asset object`
-
-Example
-```js
-const asset = ocean.assets.transferOwnership(did, newOwner)
 ```
 
 ---
@@ -320,30 +230,6 @@ const downloadsPath = ocean.assets.consume(agreementId, did, serviceDefinitionId
 
 ---
 
-#### execute
-
-Executes a remote service associated with an asset and serviceAgreementId
-
-Parameters
-```
-        agreementId: hex str representation of `bytes32` id
-                did: str the asset did which consist of `did:op:` and the assetId hex str (without `0x` prefix)
-serviceDefinitionId: str id of the service within the asset DDO
-    consumerAccount: Account instance of the consumer ordering the service
-        workflowDid: str the asset did (of `workflow` type) which consist of `did:op:` and the assetId hex str (without `0x` prefix)
-```
-
-Returns
-
-`str local path on the file system where the asset data files are downloaded` 
-
-Example
-```js
-const executionId = ocean.assets.execute(agreementId, did, serviceDefinitionId, consumerAccount, workflowDid)
-```
-
----
-
 #### validate
 Validate the integrity of an asset after consuming. This is achieved by regenerating 
 the checksum of the ddo document and comparing to the registered checksum that was 
@@ -424,84 +310,6 @@ const assets = ocean.assets.consumerAssets(myAddress)
 ```
 
 ---
-
-#### delegatePermissions
-
-For a existing asset, the owner of the asset delegate to a subject read or access permissions.
-
-
-Parameters
-```
-did: DID of the asset
-issuerAccount: Account instance of the creator of this agreement
-subjectAddress: hex str the ethereum account address of the subject who will receive the permissions
-```
-
-**Return**
-
-`boolean`
-
-Example
-```js
-const issuerAccount = ocean.accounts.list()[0]
-const success = ocean.assets.delegatePermissions(
-    did,
-    issuerAccount, 
-    subjectAddress, 
-    )
-```
-
----
-
-#### revokePermissions
-
-For a existing asset, the owner of the asset revoke the access grants of a subject.
-
-
-Parameters
-```
-did: DID of the asset
-issuerAccount: Account instance of the creator of this agreement
-subjectAddress: hex str the ethereum account address of the subject who will receive the permissions
-```
-
-**Return**
-
-`boolean`
-
-Example
-```js
-const issuerAccount = ocean.accounts.list()[0]
-const success = ocean.assets.revokePermissions(
-    did,
-    issuerAccount, 
-    subjectAddress, 
-    )
-```
-
----
-
-#### get permissions
-Check if an user has permissions in a specific DID
-
-Parameters:
-```
-did: DID of the asset
-subjectAddress: hex str the ethereum account address of the subject who will receive the permissions
-```
-
-Returns: 
-- permissions: boolean true if has access and false if not
-
-
-
-Example
-```js
-const permissions = ocean.assets.getPermissions(did, subjectAddress)
-```
-
----
-
 
 ## ocean.accounts
 
@@ -819,8 +627,6 @@ const success = ocean.agreements.create(
 
 ---
 
-
-
 #### status
 Get the status of a service agreement.
 
@@ -851,8 +657,6 @@ const agreementStatus = ocean.agreements.status(agreementId)
 ```
 
 ---
-
-
 
 ## ocean.agreements.conditions
 
@@ -894,25 +698,6 @@ Returns
 Example
 ```js
 ocean.agreements.conditions.grantAccess(agreementId, assetId, grantee)
-```
-
-#### grantServiceExecution
-Authorize the consumer defined in the agreement to execute a remote service associated with this asset.
-
-Parameters
-```
-agreementId: hex str representation of `bytes32` id
-    assetId: hex str representation of `bytes32` id
-    grantee: hexstr ethereum address of asset consumer
-```
-
-Returns
-
-`bool success/failure`
-
-Example
-```js
-ocean.agreements.conditions.grantServiceExecution(agreementId, assetId, grantee)
 ```
 
 ---
@@ -992,33 +777,7 @@ const service = ocean.services.createAccessSecretStoreService(
 
 ---
 
-
-#### createComputeServiceExecution
-Creates a `compute` type service to be included in asset DDO.
-
-Parameters
-```
-          price: int number of tokens
-executeEndpoint: str url of service endpoint
-```
-
-Returns
-
-`Service instance`
-
-Example
-```js
-const service = ocean.services.createComputeServiceExecution(
-    25, 
-    'http://brizo/services/compute/execute'
-    )
-```
-
-
----
-
-
-## Models
+Models
 
 ### Account
 | attribute   | type       |
