@@ -4,6 +4,7 @@ name: Squid API Specification
 shortname: squid-spec
 version: 0.4
 status: Draft
+date: Sep.2019
 ```
 
 The Squid API is a Level-2 API built on top of core Ocean components. It's a facilitator or enabler, but it's not the only way to interact with Ocean.
@@ -71,6 +72,7 @@ Table of Contents
             * [releaseReward](#releasereward)
             * [refundReward](#refundreward)
       * [ocean.services](#oceanservices)
+			* [order](#order-1)
             * [createAccessSecretStoreService](#createaccesssecretstoreservice)
             * [createComputeServiceExecution](#createcomputeserviceexecution)
       * [Models](#models)
@@ -966,6 +968,31 @@ const rewardRefund = ocean.agreements.conditions.refundReward(agreementId, amoun
 
 ## ocean.services
 
+#### order
+
+Create a Service Execution Agreement (SEA) on-chain.
+
+It has 2 different "facades" (createAccessSecretStoreService and createComputeServiceExecution)
+to facilitate the invocation of different services regarding different templates.
+
+Parameters:
+```
+          price: int number of tokens
+serviceEndpoint: str url of service endpoint
+```
+
+Returns:
+`Service instance`
+
+Example:
+```js
+const service = ocean.services.order(
+    25, 
+    'http://brizo/services/access/consume' 
+    )
+```
+
+
 #### createAccessSecretStoreService
 Creates an `Access` type service to be included in asset DDO.
 
@@ -973,18 +1000,16 @@ Parameters
 ```
           price: int number of tokens
 serviceEndpoint: str url of service endpoint
-consumeEndpoint: str url of consume endpoint
 ```
 
-Returns
+Returns:
 
 `Service instance`
 
-Example
+Example:
 ```js
 const service = ocean.services.createAccessSecretStoreService(
     25, 
-    'http://brizo/services/access/initialize', 
     'http://brizo/services/access/consume'
     )
 ```
@@ -1002,7 +1027,7 @@ Parameters
 executeEndpoint: str url of service endpoint
 ```
 
-Returns
+Returns:
 
 `Service instance`
 
