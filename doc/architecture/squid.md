@@ -71,10 +71,6 @@ Table of Contents
             * [grantServiceExecution](#grantserviceexecution)
             * [releaseReward](#releasereward)
             * [refundReward](#refundreward)
-      * [ocean.services](#oceanservices)
-			* [order](#order-1)
-            * [createAccessSecretStoreService](#createaccesssecretstoreservice)
-            * [createComputeServiceExecution](#createcomputeserviceexecution)
       * [Models](#models)
          * [Account](#account)
          * [Asset](#asset)
@@ -99,7 +95,6 @@ Modifications:
 * New `ocean.assets.revokePermissions` method
 * New `ocean.assets.getPermissions` method
 * New `ocean.agreements.conditions.grantServiceExecution` method
-* New `ocean.services.createComputeServiceExecution`
 * `ocean.assets.create` allows to specify the address of the DID owner
 * New `ocean.assets.transferOwnership` method allowing to transfer the ownership of a DID
 
@@ -962,81 +957,6 @@ Returns
 Example
 ```js
 const rewardRefund = ocean.agreements.conditions.refundReward(agreementId, amount)
-```
-
----
-
-## ocean.services
-
-#### order
-
-Create a Service Execution Agreement (SEA) on-chain.
-
-It has 2 different "facades" (createAccessSecretStoreService and createComputeServiceExecution)
-to facilitate the invocation of different services regarding different templates.
-
-Parameters:
-```
-          price: int number of tokens
-serviceEndpoint: str url of service endpoint
-```
-
-Returns:
-`Service instance`
-
-Example:
-```js
-const service = ocean.services.order(
-    25, 
-    'http://brizo/services/access/consume' 
-    )
-```
-
-
-#### createAccessSecretStoreService
-Creates an `Access` type service to be included in asset DDO.
-
-Parameters
-```
-          price: int number of tokens
-serviceEndpoint: str url of service endpoint
-```
-
-Returns:
-
-`Service instance`
-
-Example:
-```js
-const service = ocean.services.createAccessSecretStoreService(
-    25, 
-    'http://brizo/services/access/consume'
-    )
-```
-
-
----
-
-
-#### createComputeServiceExecution
-Creates a `compute` type service to be included in asset DDO.
-
-Parameters
-```
-          price: int number of tokens
-executeEndpoint: str url of service endpoint
-```
-
-Returns:
-
-`Service instance`
-
-Example
-```js
-const service = ocean.services.createComputeServiceExecution(
-    25, 
-    'http://brizo/services/compute/execute'
-    )
 ```
 
 
