@@ -204,11 +204,11 @@ newOwner: the ethereum address of the new owner of the DID
 
 Returns
 
-`Asset object`
+`boolean specifying if the operation was executed successfully`
 
 Example
 ```js
-const asset = ocean.assets.transferOwnership(did, newOwner)
+const result= ocean.assets.transferOwnership(did, newOwner)
 ```
 
 ---
@@ -425,12 +425,12 @@ const assets = ocean.assets.consumerAssets(myAddress)
 #### delegatePermissions
 
 For a existing asset, the owner of the asset delegate to a subject read or access permissions.
+This method will use the `msg.sender` as issuer.
 
 
 Parameters
 ```
 did: DID of the asset
-issuerAccount: Account instance of the creator of this agreement
 subjectAddress: hex str the ethereum account address of the subject who will receive the permissions
 ```
 
@@ -443,7 +443,6 @@ Example
 const issuerAccount = ocean.accounts.list()[0]
 const success = ocean.assets.delegatePermissions(
     did,
-    issuerAccount, 
     subjectAddress, 
     )
 ```
@@ -453,12 +452,12 @@ const success = ocean.assets.delegatePermissions(
 #### revokePermissions
 
 For a existing asset, the owner of the asset revoke the access grants of a subject.
+This method will use the `msg.sender` as issuer.
 
 
 Parameters
 ```
 did: DID of the asset
-issuerAccount: Account instance of the creator of this agreement
 subjectAddress: hex str the ethereum account address of the subject who will receive the permissions
 ```
 
@@ -471,7 +470,6 @@ Example
 const issuerAccount = ocean.accounts.list()[0]
 const success = ocean.assets.revokePermissions(
     did,
-    issuerAccount, 
     subjectAddress, 
     )
 ```
