@@ -15,6 +15,7 @@ In the above diagram you can see the following components (from top to bottom):
 - **Data Science Tools** (Tier 3)
 - **Aquarius** (Tier 2)
 - **Brizo** (Tier 2)
+- **Events Handler** (Tier 2)
 - **Keeper Contracts** (Tier 1)
 
 Below, we describe what those components do.
@@ -83,9 +84,22 @@ In addition to this, other extended services could also be offered, e.g.
 - Computing on top of the data without moving the data
 - Storage services for newly derived assets
 - Gathering of Service Proofs - Enables different kinds of service proofs from different providers. For example - allowing the retrieval of receipts from cloud providers to validate service delivery.
-- On-Chain Access Control - Brizo is in charge of the on-chain validation, controlling the assets or services that a consumer is entitled to get access to. This happens by integrating with the Keeper from the Brizo side.
 
 ![Brizo High-Level Architecture](architecture/img/brizo-hl-arch.png)
+
+#### Events Handler
+
+Events Handler is a stand-alone tool that needs to be run by a provider to 
+fulfill the provider role of responding to new service agreements and 
+granting access as part of those service agreements. The Events Handler does 
+the following tasks:
+- Monitor new service agreement events addressed to a specific provider account (providers ethereum address)
+- On-Chain Access Control - Events Handler is in charge of the on-chain access control.
+- Release payment/reward that is set in a service agreement after access permission is provided to the consumer
+
+This tool interacts directly with the Ocean Protocol keeper network by watching events, making queries, 
+and submitting transactions related to SEA (Service Execution Agreements). It also queries the metadata store (Aquarius) to 
+fetch the DDO document associated with a service agreement.
 
 ### Tier 1 - Decentralized VM Layer
 
