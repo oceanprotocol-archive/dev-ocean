@@ -1,19 +1,22 @@
-# Squid API
+---
+title: Squid API Specification
+description: The Squid API is a Level-2 API built on top of core Ocean components. It's a facilitator or enabler, but it's not the only way to interact with Ocean.
+slug: /concepts/squid/
+section: concepts
+---
+
 ```
-name: Squid API Specification
 shortname: squid-spec
 version: 0.5
 status: Draft
 date: January 2020
 ```
 
-The Squid API is a Level-2 API built on top of core Ocean components. It's a facilitator or enabler, but it's not the only way to interact with Ocean.
+The goal of this doc is to help a developer build a version of the Squid API in any programming language. Currently, the Squid API is defined for Object-Oriented languages such as JavaScript, Java, and Python (which are the three initial implementation languages).
 
 - [squid-js](https://github.com/oceanprotocol/squid-js)
 - [squid-py](https://github.com/oceanprotocol/squid-py)
 - [squid-java](https://github.com/oceanprotocol/squid-java)
-
-The goal of this doc is to help a developer build a version of the Squid API in any programming language. Currently, the Squid API is defined for Object-Oriented languages such as JavaScript, Java, and Python (which are the three initial implementation languages).
 
 Table of Contents
 =================
@@ -82,7 +85,7 @@ Table of Contents
 
 This is the main class to interact with the Ocean network. 
 
-All ocean protocol features are accessed through this module.
+All Ocean Protocol features are accessed through this module.
 
 ---
 
@@ -90,8 +93,7 @@ All ocean protocol features are accessed through this module.
 
 #### create
 
-High-level method publishing the metadata off-chain and registering the Service Agreement on-chain. It creates a 
-DID Document (DDO) that represent the registered asset.
+High-level method publishing the metadata off-chain and registering the Service Agreement on-chain. It creates a DID Document (DDO) that represent the registered asset.
 
 Parameters
 ```
