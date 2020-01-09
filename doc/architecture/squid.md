@@ -2,9 +2,9 @@
 ```
 name: Squid API Specification
 shortname: squid-spec
-version: 0.4
+version: 0.5
 status: Draft
-date: Sep.2019
+date: January 2020
 ```
 
 The Squid API is a Level-2 API built on top of core Ocean components. It's a facilitator or enabler, but it's not the only way to interact with Ocean.
@@ -15,111 +15,68 @@ The Squid API is a Level-2 API built on top of core Ocean components. It's a fac
 
 The goal of this doc is to help a developer build a version of the Squid API in any programming language. Currently, the Squid API is defined for Object-Oriented languages such as JavaScript, Java, and Python (which are the three initial implementation languages).
 
----
-
-**🐲🦑 THERE BE DRAGONS AND SQUIDS. This is in alpha state and you can expect running into problems. If you run into them, please open up [a new issue](https://github.com/oceanprotocol/dev-ocean/issues). 🦑🐲**
-
----
-
 Table of Contents
 =================
 
-   * [Squid API](#squid-api)
-   * [Table of Contents](#table-of-contents)
-      * [Changelog](#changelog)
-         * [Squid Spec 0.4 (latest)](#squid-spec-04-latest)
-         * [Squid Spec 0.3](#squid-spec-03)
-         * [Squid Spec 0.2](#squid-spec-02)
-      * [Ocean](#ocean)
-      * [ocean.assets](#oceanassets)
-            * [create](#create)
-            * [resolve](#resolve)
-            * [transfer ownership](#transfer-ownership)
-            * [search](#search)
-            * [query](#query)
-            * [order](#order)
-            * [consume](#consume)
-            * [execute](#execute)
-            * [validate](#validate)
-            * [owner](#owner)
-            * [ownerAssets](#ownerassets)
-            * [consumerAssets](#consumerassets)
-      * [ocean.accounts](#oceanaccounts)
-            * [list](#list)
-            * [balance](#balance)
-            * [requestTokens](#requesttokens)
-      * [ocean.secret_store](#oceansecret_store)
-            * [encrypt](#encrypt)
-            * [decrypt](#decrypt)
-      * [ocean.tokens](#oceantokens)
-            * [request](#request)
-            * [transfer](#transfer)
-      * [ocean.templates](#oceantemplates)
-            * [propose](#propose)
-            * [approve](#approve)
-            * [revoke](#revoke)
-      * [ocean.agreements](#oceanagreements)
-            * [prepare](#prepare)
-            * [send](#send)
-            * [create](#create-1)
-            * [delegatePermissions](#delegatepermissions)
-            * [get permissions](#get-permissions)
-            * [status](#status)
-      * [ocean.agreements.conditions](#oceanagreementsconditions)
-            * [lockReward](#lockreward)
-            * [grantAccess](#grantaccess)
-            * [grantServiceExecution](#grantserviceexecution)
-            * [releaseReward](#releasereward)
-            * [refundReward](#refundreward)
-      * [Models](#models)
-         * [Account](#account)
-         * [Asset](#asset)
-         * [Service](#service)
-         * [Agreement](#agreement)
-         * [Endpoints](#endpoints)
-         * [Error handling](#error-handling)
-      * [Examples](#examples)
-      * [Implementation status](#implementation-status)
-
-
-## Changelog
-
-You can find older versions of the squid specifications in the [squid-specs folder](squid-specs).
-
-### Squid Spec 0.4 (latest)
-
-Modifications:
-
-* New `ocean.assets.execute` method
-* New `ocean.assets.delegatePermissions` method
-* New `ocean.assets.revokePermissions` method
-* New `ocean.assets.getPermissions` method
-* New `ocean.agreements.conditions.grantServiceExecution` method
-* `ocean.assets.create` allows to specify the address of the DID owner
-* New `ocean.assets.transferOwnership` method allowing to transfer the ownership of a DID
-
-
-This version of the squid specification is based in the OEP-7 v0.2.
-
-### Squid Spec 0.3
-
-New methods:
-
-  - Get list of the Assets Published by an user
-  - Get list of the Assets Received by an user
-  - Get the SEA status
-  - Get the Owner of an Asset
-  - Expose an additional consume interface allowing to use `index` parameter
-  - Consumer can initialize a SEA on-chain
-  - Validate an Asset Data integrity
-
-
-### Squid Spec 0.2
-
-* Service Execution Agreements
-* Assets Management
-* Tokens request and transfer
-* Secret Store API
+- [Ocean](#ocean)
+- [ocean.assets](#oceanassets)
+    - [create](#create)
+    - [resolve](#resolve)
+    - [transfer ownership](#transfer-ownership)
+    - [search](#search)
+    - [query](#query)
+    - [order](#order)
+    - [consume](#consume)
+    - [validate](#validate)
+    - [owner](#owner)
+    - [ownerAssets](#ownerassets)
+    - [consumerAssets](#consumerassets)
+    - [delegatePermissions](#delegatepermissions)
+    - [revokePermissions](#revokepermissions)
+    - [get permissions](#get-permissions)
+- [ocean.accounts](#oceanaccounts)
+    - [list](#list)
+    - [balance](#balance)
+    - [requestTokens](#requesttokens)
+- [ocean.compute](#oceancompute)
+    - [execute](#execute)
+    - [status](#status)
+    - [result](#result)
+- [ocean.secret_store](#oceansecret_store)
+    - [encrypt](#encrypt)
+    - [decrypt](#decrypt)
+- [ocean.tokens](#oceantokens)
+    - [request](#request)
+    - [transfer](#transfer)
+- [ocean.templates](#oceantemplates)
+    - [propose](#propose)
+    - [approve](#approve)
+    - [revoke](#revoke)
+- [ocean.agreements](#oceanagreements)
+    - [prepare](#prepare)
+    - [send](#send)
+    - [create](#create-1)
+    - [status](#status-1)
+- [ocean.agreements.conditions](#oceanagreementsconditions)
+    - [lockReward](#lockreward)
+    - [grantAccess](#grantaccess)
+    - [grantServiceExecution](#grantserviceexecution)
+    - [releaseReward](#releasereward)
+    - [refundReward](#refundreward)
+- [Models](#models)
+  - [Account](#account)
+  - [Asset](#asset)
+  - [Service](#service)
+  - [Agreement](#agreement)
+  - [Endpoints](#endpoints)
+  - [Error handling](#error-handling)
+- [Examples](#examples)
+- [Implementation status](#implementation-status)
+- [Changelog](#changelog)
+  - [Squid Spec 0.5](#squid-spec-05)
+  - [Squid Spec 0.4](#squid-spec-04)
+  - [Squid Spec 0.3](#squid-spec-03)
+  - [Squid Spec 0.2](#squid-spec-02)
 
 ## Ocean
 
@@ -317,31 +274,8 @@ const downloadsPath = ocean.assets.consume(agreementId, did, serviceDefinitionId
 
 ---
 
-#### execute
-
-Executes a remote service associated with an asset and serviceAgreementId
-
-Parameters
-```
-        agreementId: hex str representation of `bytes32` id
-                did: str the asset did which consist of `did:op:` and the assetId hex str (without `0x` prefix)
-serviceDefinitionId: str id of the service within the asset DDO
-    consumerAccount: Account instance of the consumer ordering the service
-        workflowDid: str the asset did (of `workflow` type) which consist of `did:op:` and the assetId hex str (without `0x` prefix)
-```
-
-Returns
-
-`str local path on the file system where the asset data files are downloaded` 
-
-Example
-```js
-const executionId = ocean.assets.execute(agreementId, did, serviceDefinitionId, consumerAccount, workflowDid)
-```
-
----
-
 #### validate
+
 Validate the integrity of an asset after consuming. This is achieved by regenerating 
 the checksum of the ddo document and comparing to the registered checksum that was 
 generated at time of publishing the asset. 
@@ -477,6 +411,7 @@ const success = ocean.assets.revokePermissions(
 ---
 
 #### get permissions
+
 Check if an user has permissions in a specific DID
 
 Parameters:
@@ -555,6 +490,75 @@ Example
 const amount = 30
 const account = ocean.accounts.list()[0]
 const success = ocean.accounts.requestTokens(account, amount)
+```
+
+---
+
+## ocean.compute
+
+#### execute
+
+Executes a remote compute service associated with an asset and serviceAgreementId
+
+Parameters
+```
+        agreementId: hex str representation of `bytes32` id
+                did: str the asset did which consist of `did:op:` and the assetId hex str (without `0x` prefix)
+serviceDefinitionId: str id of the service within the asset DDO
+    consumerAccount: Account instance of the consumer ordering the service
+        workflowDid: str the asset did (of `workflow` type) which consist of `did:op:` and the assetId hex str (without `0x` prefix)
+```
+
+Returns
+
+`str the workflow ID` 
+
+Example
+
+```js
+const workflowId = ocean.compute.execute(agreementId, did, serviceDefinitionId, consumerAccount, workflowDid)
+```
+
+#### status
+
+Returns information about the status of a compute job
+
+Parameters
+```
+workflowId: str The ID of the workflow.
+```
+
+Returns
+
+```
+{
+  status: 'running'
+}
+```
+
+Example
+
+```js
+const jobStatus = ocean.compute.status(workflowId)
+```
+
+#### result
+
+Returns the final result of a compute job published as an asset.
+
+Parameters
+```
+workflowId: str The ID of the workflow.
+```
+
+Returns
+
+`DDO`
+
+Example
+
+```js
+const jobResult = ocean.compute.result(workflowId)
 ```
 
 ---
@@ -1105,3 +1109,46 @@ ocean.services
 | :--------------------------------- | :---------------------- | :----- | :--- |:---- |
 | createAccessSecretStoreService                | Service instance        |        |      |      |
 
+## Changelog
+
+You can find older versions of the squid specifications in the [squid-specs folder](squid-specs).
+
+### Squid Spec 0.5
+
+Modifications:
+
+* New `ocean.compute` methods
+
+### Squid Spec 0.4
+
+Modifications:
+
+* New `ocean.assets.execute` method
+* New `ocean.assets.delegatePermissions` method
+* New `ocean.assets.revokePermissions` method
+* New `ocean.assets.getPermissions` method
+* New `ocean.agreements.conditions.grantServiceExecution` method
+* `ocean.assets.create` allows to specify the address of the DID owner
+* New `ocean.assets.transferOwnership` method allowing to transfer the ownership of a DID
+
+This version of the squid specification is based in the OEP-7 v0.2.
+
+### Squid Spec 0.3
+
+New methods:
+
+  - Get list of the Assets Published by an user
+  - Get list of the Assets Received by an user
+  - Get the SEA status
+  - Get the Owner of an Asset
+  - Expose an additional consume interface allowing to use `index` parameter
+  - Consumer can initialize a SEA on-chain
+  - Validate an Asset Data integrity
+
+
+### Squid Spec 0.2
+
+* Service Execution Agreements
+* Assets Management
+* Tokens request and transfer
+* Secret Store API
