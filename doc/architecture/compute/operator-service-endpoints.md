@@ -75,7 +75,7 @@ Output:
         "owner":"0x1111",
         "agreementID":"0x2222",
         "workflowID":"3333",
-        "createdat":"2020-10-01T01:00:00Z",
+        "dateCreated":"2020-10-01T01:00:00Z",
         "finishedat":"2020-10-01T01:00:00Z",
         "status":5,
         "configlogURL":"http://example.net/logs2/config.log",
