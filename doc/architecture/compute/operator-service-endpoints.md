@@ -78,7 +78,7 @@ Output:
         "agreementID":"0x2222",
         "workflowID":"3333",
         "dateCreated":"2020-10-01T01:00:00Z",
-        "finishedat":"2020-10-01T01:00:00Z",
+        "dateFinished":"2020-10-01T01:00:00Z",
         "status":5,
         "statusText":"Job finished",
         "configlogURL":"http://example.net/logs2/config.log",
