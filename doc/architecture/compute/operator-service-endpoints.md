@@ -11,8 +11,8 @@ Get all workflows and corresponding stats
 Parameters
 ```
         owner: String object containg user ETH address (optional)
-        agreementID: String object containing agreementID (optional)
-        workflowID: String object containing workflowID (optional)
+        agreementId: String object containing agreementID (optional)
+        workflowId: String object containing workflowID (optional)
         
         At least one parameter is required (can be any of them)
 ```
@@ -24,8 +24,8 @@ An Array of objects, each object describing a workflow. If the array is empty, t
 Each object will contain:
 ```
         owner:The owner of this compute job
-        agreementID:
-        workflowID:
+        agreementId:
+        workflowId:
         createdat:Date/Time of job creation
         finishedat:Date/Time when job finished
         status:  Int, see below for list
@@ -57,8 +57,8 @@ Output:
 [
       {
         "owner":"0x1111",
-        "agreementID":"0x2222",
-        "workflowID":"3333",
+        "agreementId":"0x2222",
+        "workflowId":"3333",
         "dateCreated":"2020-10-01T01:00:00Z",
         "dateFinished":"2020-10-01T01:00:00Z",
         "status":5,
@@ -75,8 +75,8 @@ Output:
        },
        {
         "owner":"0x1111",
-        "agreementID":"0x2222",
-        "workflowID":"3333",
+        "agreementId":"0x2222",
+        "workflowId":"3333",
         "dateCreated":"2020-10-01T01:00:00Z",
         "dateFinished":"2020-10-01T01:00:00Z",
         "status":5,
