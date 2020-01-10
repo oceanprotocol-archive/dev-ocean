@@ -470,11 +470,11 @@ _Parameters_
 
 ```
         agreementId: hex str -- The service agreement ID, representation of `bytes32` ID.
-                did: str -- The DID of the asset to run the algorithm on.
-       serviceIndex: str -- ID of the service within the asset DDO
+         datasetDid: str -- The DID of the asset (of type `dataset`) to run the algorithm on.
+       serviceIndex: int -- ID of the compute service within the dataset DDO
     consumerAccount: `Account` instance -- The account of the consumer ordering the service.
        algorithmDid: str -- The DID of the algorithm asset (of type `algorithm`) to run on the asset.
-          algorithm: str -- The raw text of the algorithm to run in the compute job (e.g. a jupyter notebook) or a valid URL to fetch the algorithm.
+       algorithmRaw: str -- The raw text of the algorithm to run in the compute job (e.g. a jupyter notebook) or a valid URL to fetch the algorithm.
       algorithmMeta: `AlgorithmMetadata` instance -- Metadata about the algorithm being run if `algorithm` is being used. This is ignored when `algorithmDid` is specified.
 ```
 
@@ -497,7 +497,7 @@ Returns information about the status of a compute job
 _Parameters_
 
 ```
-agreementId: str -- The ID of the agreement.
+agreementId: str -- The ID of the service agreement.
 jobId: str -- The ID of the job.
 ```
 
@@ -534,7 +534,7 @@ Returns the final result of a compute job published as an asset.
 _Parameters_
 
 ```
-agreementId: str -- The ID of the agreement.
+agreementId: str -- The ID of the service agreement.
 jobId: str -- The ID of the compute job.
 ```
 
