@@ -503,7 +503,7 @@ _Returns_
 {
   ok: true,
   status: 1,
-  statusText: 'Workflow started.'
+  statusText: 'Job started.'
 }
 ```
 
