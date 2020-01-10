@@ -13,6 +13,8 @@ Parameters
         owner: String object containg user ETH address (optional)
         agreementID: String object containing agreementID (optional)
         workflowID: String object containing workflowID (optional)
+        
+        At least one parameter is required (can be any of them)
 ```
 
 Returns
