@@ -464,7 +464,7 @@ const success = ocean.accounts.requestTokens(account, amount)
 
 ### execute
 
-Executes a compute job in a remote compute service associated with an asset and serviceAgreementId.
+Executes a compute job in a remote compute service associated with an asset and a service agreement ID.
 
 _Parameters_
 
@@ -485,7 +485,7 @@ _Returns_
 _Example_
 
 ```js
-const jobId = ocean.compute.execute(agreementId, did, serviceDefinitionId, consumerAccount, algorithmDid)
+const jobId = ocean.compute.execute(agreementId, did, serviceIndex, consumerAccount, algorithmDid)
 ```
 
 ### status
