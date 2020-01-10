@@ -462,30 +462,32 @@ const success = ocean.accounts.requestTokens(account, amount)
 
 ## ocean.compute
 
-### execute
+### run
 
 Executes a compute job in a remote compute service associated with an asset and a service agreement ID.
 
 _Parameters_
 
 ```
-        agreementId: hex str representation of `bytes32` id
-                did: str the asset did which consist of `did:op:` and the assetId hex str (without `0x` prefix)
-       serviceIndex: str -- id of the service within the asset DDO
+        agreementId: hex str The service agreement ID, representation of `bytes32` id
+                did: str The DID of the asset to run the compute job on.
+       serviceIndex: str -- ID of the service within the asset DDO
     consumerAccount: Account instance of the consumer ordering the service
-       algorithmDid: str the DID of the algorithm asset which consist of `did:op:` and the assetId hex str (without `0x` prefix)
-        algorithm: str the text of the algorithm to run in the compute job (e.g. a jupyter notebook) or a valid url to fetch the algorithm
-    algorithmMeta: str `AlgorithmMetadata` instance -- metadata about the algorithm being run if `algorithm` is being used. This is ignored when `algorithmDid` is specified.
+       algorithmDid: str The DID of the algorithm asset (of type `algorithm`) to run on the asset.
+          algorithm: str the text of the algorithm to run in the compute job (e.g. a jupyter notebook) or a valid url to fetch the algorithm
+      algorithmMeta: str `AlgorithmMetadata` instance -- metadata about the algorithm being run if `algorithm` is being used. This is ignored when `algorithmDid` is specified.
 ```
 
 _Returns_
 
-`str The ID of the job.` 
+```json
+{ "jobId": "fegwufe324t3y2frvyii23gr2ig" }
+``` 
 
 _Example_
 
 ```js
-const jobId = ocean.compute.execute(agreementId, did, serviceIndex, consumerAccount, algorithmDid)
+const { jobId } = ocean.compute.run(agreementId, did, serviceIndex, consumerAccount, algorithmDid)
 ```
 
 ### status
@@ -501,21 +503,21 @@ jobId: str The ID of the job.
 
 _Returns_
 
-```
+```json
 {
-  ok: true,
-  status: 1,
-  statusText: 'Job started.'
+  "ok": true,
+  "status": 1,
+  "statusText": "Job started."
 }
 ```
 
 _Errors_
 
-```
+```json
 {
-  ok: false,
-  status: 404,
-  statusText: 'Job does not exist.'
+  "ok": false,
+  "status": 404,
+  "statusText": "Job does not exist."
 }
 ```
 
@@ -533,7 +535,7 @@ _Parameters_
 
 ```
 agreementId: str The ID of the agreement.
-jobId: str The ID of the job.
+jobId: str The ID of the compute job.
 ```
 
 _Returns_
