@@ -1,12 +1,11 @@
 # Compute Service Endpoints
 
 ## Status
-
-GET /api/v1/operator/status
-
-
-#### status
-
+  
+  
+### GET /api/v1/operator/status
+   
+   
 Get all workflows and corresponding stats
 
 Parameters
