@@ -43,3 +43,51 @@ Status description:
 |  4       | Uploading results  |
 |  5       | Job finished       |
 
+
+Example:
+```
+GET /api/v1/operator/status?owner=0x1111
+```
+
+Output:
+```
+[
+      {
+        "owner":"0x1111",
+        "agreementID":"0x2222",
+        "workflowID":"3333",
+        "createdat":"2020-10-01T01:00:00Z",
+        "finishedat":"2020-10-01T01:00:00Z",
+        "status":5,
+        "configlogURL":"http://example.net/logs/config.log",
+        "publishlogURL":"http://example.net/logs/publish.log",
+        "algologURL":"http://example.net/logs/algo.log",
+        "outputsURL":[
+            {
+            "http://example.net/logs/output/0",
+            "http://example.net/logs/output/1"
+            }
+         ]
+       },
+       {
+        "owner":"0x1111",
+        "agreementID":"0x2222",
+        "workflowID":"3333",
+        "createdat":"2020-10-01T01:00:00Z",
+        "finishedat":"2020-10-01T01:00:00Z",
+        "status":5,
+        "configlogURL":"http://example.net/logs2/config.log",
+        "publishlogURL":"http://example.net/logs2/cpublish.log",
+        "algologURL":"http://example.net/logs2/algo.log",
+        "outputsURL":[
+            {
+            "http://example.net/logs2/output/0",
+            "http://example.net/logs2/output/1"
+            }
+         ]
+       }
+ ]
+ ```
+       
+        
+        },
