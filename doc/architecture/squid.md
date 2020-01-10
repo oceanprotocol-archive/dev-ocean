@@ -467,6 +467,7 @@ const success = ocean.accounts.requestTokens(account, amount)
 Executes a remote compute service associated with an asset and serviceAgreementId
 
 _Parameters_
+
 ```
         agreementId: hex str representation of `bytes32` id
                 did: str the asset did which consist of `did:op:` and the assetId hex str (without `0x` prefix)
@@ -477,7 +478,7 @@ serviceDefinitionId: str id of the service within the asset DDO
 
 _Returns_
 
-`str the workflow ID` 
+`str The ID of the workflow.` 
 
 _Example_
 
@@ -492,6 +493,7 @@ Returns information about the status of a compute job
 _Parameters_
 
 ```
+agreementId: str The ID of the agreement.
 workflowId: str The ID of the workflow.
 ```
 
@@ -499,14 +501,26 @@ _Returns_
 
 ```
 {
-  status: 'running'
+  ok: true,
+  status: 1,
+  statusText: 'Workflow started.'
+}
+```
+
+_Errors_
+
+```
+{
+  ok: false,
+  status: 404,
+  statusText: 'Workflow does not exist.'
 }
 ```
 
 _Example_
 
 ```js
-const jobStatus = ocean.compute.status(workflowId)
+const jobStatus = ocean.compute.status(agreementId, workflowId)
 ```
 
 ### result
@@ -516,6 +530,7 @@ Returns the final result of a compute job published as an asset.
 _Parameters_
 
 ```
+agreementId: str The ID of the agreement.
 workflowId: str The ID of the workflow.
 ```
 
@@ -526,7 +541,7 @@ _Returns_
 _Example_
 
 ```js
-const jobResult = ocean.compute.result(workflowId)
+const jobResult = ocean.compute.result(agreementId, workflowId)
 ```
 
 ---
@@ -962,6 +977,7 @@ _Returns_
 `bool success/failure`
 
 _Example_
+
 ```js
 const rewardRefund = ocean.agreements.conditions.refundReward(agreementId, amount)
 ```
