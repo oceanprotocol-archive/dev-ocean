@@ -59,7 +59,7 @@ Output:
         "agreementID":"0x2222",
         "workflowID":"3333",
         "dateCreated":"2020-10-01T01:00:00Z",
-        "finishedat":"2020-10-01T01:00:00Z",
+        "dateFinished":"2020-10-01T01:00:00Z",
         "status":5,
         "configlogURL":"http://example.net/logs/config.log",
         "publishlogURL":"http://example.net/logs/publish.log",
