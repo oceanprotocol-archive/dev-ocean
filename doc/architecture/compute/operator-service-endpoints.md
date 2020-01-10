@@ -29,6 +29,7 @@ Each object will contain:
         createdat:Date/Time of job creation
         finishedat:Date/Time when job finished
         status:  Int, see below for list
+        statusText: String, see below
         configlogURL: URL to get the configuration log (for admins only)
         publishlogURL: URL to get the publish log (for admins only)
         algologURL: URL to get the algo log (for user)
@@ -61,6 +62,7 @@ Output:
         "dateCreated":"2020-10-01T01:00:00Z",
         "dateFinished":"2020-10-01T01:00:00Z",
         "status":5,
+        "statusText":"Job finished",
         "configlogURL":"http://example.net/logs/config.log",
         "publishlogURL":"http://example.net/logs/publish.log",
         "algologURL":"http://example.net/logs/algo.log",
@@ -78,6 +80,7 @@ Output:
         "dateCreated":"2020-10-01T01:00:00Z",
         "finishedat":"2020-10-01T01:00:00Z",
         "status":5,
+        "statusText":"Job finished",
         "configlogURL":"http://example.net/logs2/config.log",
         "publishlogURL":"http://example.net/logs2/cpublish.log",
         "algologURL":"http://example.net/logs2/algo.log",
