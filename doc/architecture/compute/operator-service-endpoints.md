@@ -26,8 +26,8 @@ Each object will contain:
         owner:The owner of this compute job
         agreementId:
         workflowId:
-        createdat:Date/Time of job creation
-        finishedat:Date/Time when job finished
+        dateCreated:Date/Time of job creation
+        dateFinished:Date/Time when job finished
         status:  Int, see below for list
         statusText: String, see below
         configlogURL: URL to get the configuration log (for admins only)
