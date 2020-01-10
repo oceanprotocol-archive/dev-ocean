@@ -464,7 +464,7 @@ const success = ocean.accounts.requestTokens(account, amount)
 
 ### execute
 
-Executes a remote compute service associated with an asset and serviceAgreementId
+Executes a compute job in a remote compute service associated with an asset and serviceAgreementId.
 
 _Parameters_
 
@@ -473,17 +473,17 @@ _Parameters_
                 did: str the asset did which consist of `did:op:` and the assetId hex str (without `0x` prefix)
 serviceDefinitionId: str id of the service within the asset DDO
     consumerAccount: Account instance of the consumer ordering the service
-        workflowDid: str the asset did (of `workflow` type) which consist of `did:op:` and the assetId hex str (without `0x` prefix)
+        algorithmDid: str the DID of the algorithm asset which consist of `did:op:` and the assetId hex str (without `0x` prefix)
 ```
 
 _Returns_
 
-`str The ID of the workflow.` 
+`str The ID of the job.` 
 
 _Example_
 
 ```js
-const workflowId = ocean.compute.execute(agreementId, did, serviceDefinitionId, consumerAccount, workflowDid)
+const jobId = ocean.compute.execute(agreementId, did, serviceDefinitionId, consumerAccount, algorithmDid)
 ```
 
 ### status
@@ -494,7 +494,7 @@ _Parameters_
 
 ```
 agreementId: str The ID of the agreement.
-workflowId: str The ID of the workflow.
+jobId: str The ID of the job.
 ```
 
 _Returns_
@@ -513,14 +513,14 @@ _Errors_
 {
   ok: false,
   status: 404,
-  statusText: 'Workflow does not exist.'
+  statusText: 'Job does not exist.'
 }
 ```
 
 _Example_
 
 ```js
-const jobStatus = ocean.compute.status(agreementId, workflowId)
+const jobStatus = ocean.compute.status(agreementId, jobId)
 ```
 
 ### result
@@ -531,7 +531,7 @@ _Parameters_
 
 ```
 agreementId: str The ID of the agreement.
-workflowId: str The ID of the workflow.
+jobId: str The ID of the job.
 ```
 
 _Returns_
@@ -541,7 +541,7 @@ _Returns_
 _Example_
 
 ```js
-const jobResult = ocean.compute.result(agreementId, workflowId)
+const jobResult = ocean.compute.result(agreementId, jobId)
 ```
 
 ---
