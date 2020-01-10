@@ -471,9 +471,11 @@ _Parameters_
 ```
         agreementId: hex str representation of `bytes32` id
                 did: str the asset did which consist of `did:op:` and the assetId hex str (without `0x` prefix)
-serviceDefinitionId: str id of the service within the asset DDO
+       serviceIndex: str -- id of the service within the asset DDO
     consumerAccount: Account instance of the consumer ordering the service
-        algorithmDid: str the DID of the algorithm asset which consist of `did:op:` and the assetId hex str (without `0x` prefix)
+       algorithmDid: str the DID of the algorithm asset which consist of `did:op:` and the assetId hex str (without `0x` prefix)
+        algorithm: str the text of the algorithm to run in the compute job (e.g. a jupyter notebook) or a valid url to fetch the algorithm
+    algorithmMeta: str `AlgorithmMetadata` instance -- metadata about the algorithm being run if `algorithm` is being used. This is ignored when `algorithmDid` is specified.
 ```
 
 _Returns_
