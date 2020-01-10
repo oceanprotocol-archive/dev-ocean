@@ -34,11 +34,12 @@ Each object will contain:
 ```
 
 Status description:
-| status   | Description|
-|----------|------------|
+
+| status   | Description        |
+|----------|--------------------|
 |  1       | Job started        |
 |  2       | Configuring volumes|
-|  3       | Running algorith|
-|  4       | Uploading results |
-|  5       | Job finished |
+|  3       | Running algorith   |
+|  4       | Uploading results  |
+|  5       | Job finished       |
 
