@@ -104,7 +104,7 @@ const asset = ocean.assets.resolve(did)
 
 ---
 
-### transfer ownership
+### transferOwnership
 
 Given a DID, transfer the ownership to a new owner. This function only will work if is called by the DID owner.
 
@@ -331,14 +331,15 @@ const assets = ocean.assets.consumerAssets(myAddress)
 
 ### grantPermissions
 
-For a existing asset, the owner of the asset delegate to a subject read or access permissions. This method will use the `msg.sender` as issuer.
+For a existing asset, the owner of the asset delegate to a subject read or access permissions.
 
 
 _Parameters_
 
 ```
-did: DID of the asset
+           did: DID of the asset
 subjectAddress: hex str the ethereum account address of the subject who will receive the permissions
+ issuerAccount: Account instance of the asset owner (optional, depends on the Web3 implementation)
 ```
 
 _Returns_
@@ -351,7 +352,8 @@ _Example_
 const issuerAccount = ocean.accounts.list()[0]
 const success = ocean.assets.grantPermissions(
     did,
-    subjectAddress, 
+    subjectAddress,
+    issuerAccount
     )
 ```
 
@@ -360,14 +362,14 @@ const success = ocean.assets.grantPermissions(
 ### revokePermissions
 
 For a existing asset, the owner of the asset revoke the access grants of a subject.
-This method will use the `msg.sender` as issuer.
 
 
 _Parameters_
 
 ```
-did: DID of the asset
+           did: DID of the asset
 subjectAddress: hex str the ethereum account address of the subject who will receive the permissions
+ issuerAccount: Account instance of the asset owner (optional, depends on the Web3 implementation)
 ```
 
 _Returns_
@@ -381,6 +383,7 @@ const issuerAccount = ocean.accounts.list()[0]
 const success = ocean.assets.revokePermissions(
     did,
     subjectAddress, 
+    issuerAccount
     )
 ```
 
@@ -392,7 +395,7 @@ Check if an user has permissions in a specific DID
 _Parameters_
 
 ```
-did: DID of the asset
+           did: DID of the asset
 subjectAddress: hex str the ethereum account address of the subject who will receive the permissions
 ```
 
