@@ -478,7 +478,34 @@ const success = ocean.accounts.requestTokens(account, amount)
 
 ## ocean.compute
 
-### run
+### order
+
+Starts an order of a compute service that is defined in an asset's services.
+
+_Parameters_
+
+```
+         datasetDid: str -- The DID of the asset (of type `dataset`) to run the algorithm on.
+       serviceIndex: int -- ID of the compute service within the dataset DDO
+    consumerAccount: `Account` instance -- The account of the consumer ordering the service (optional, depends on Web3 implementation)
+```
+
+_Returns_
+
+```
+agreementId: hex str -- The service agreement ID, representation of `bytes32` ID.
+
+``` 
+
+_Example_
+
+```js
+const agreementId = ocean.compute.order(did, serviceIndex, consumerAccount)
+```
+
+---
+
+### start
 
 Executes a compute job in a remote compute service associated with an asset and a service agreement ID.
 
@@ -503,7 +530,7 @@ str -- The ID of the compute job.
 _Example_
 
 ```js
-const jobId = ocean.compute.run(agreementId, did, serviceIndex, consumerAccount, algorithmDid)
+const jobId = ocean.compute.start(agreementId, did, serviceIndex, consumerAccount, algorithmDid)
 ```
 
 ### status
@@ -612,9 +639,9 @@ const jobStatus = ocean.compute.restart(agreementId, jobId)
 
 ---
 
-## list
+### delete
 
-Returns the list of compute jobs that were run under `agreement_id`.
+Delete a compute job or stop then delete a running compute job.
 
 _Parameters_
 
@@ -625,12 +652,12 @@ jobId: str -- The ID of the compute job.
 
 _Returns_
 
-list of `jobId`
+bool `status` of deletion
 
 _Example_
 
 ```js
-const jobIds = ocean.compute.list(agreementId)
+const deleted = ocean.compute.delete(agreementId, jobId)
 ```
 
 ---
