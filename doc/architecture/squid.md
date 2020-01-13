@@ -30,7 +30,9 @@ All Ocean Protocol features are accessed through this module.
 
 ### create
 
-High-level method publishing the metadata off-chain and registering the Service Agreement on-chain. It creates a DID Document (DDO) that represent the registered asset.
+High-level method publishing the metadata off-chain and registering the 
+Service Agreement on-chain. It creates a DID Document (DDO) that 
+represent the registered asset.
 
 _Parameters_
 
@@ -38,7 +40,7 @@ _Parameters_
         metadata: JSON object describing various attributes of the asset data (see below for sample metadata attributes)
 publisherAccount: Account instance of who is publishing the asset
         services: list of Service instances (optional)
-        accountOwner: If is specified, the ownership of the DID will be assigned to this ethereum account (optional)
+    accountOwner: If is specified, the ownership of the DID will be assigned to this ethereum account (optional)
 ```
 
 _Returns_
@@ -48,15 +50,27 @@ _Returns_
 _Example_
 ```js
 const metadata = {
-  "assetId": "0x123412341234",
-  "publisherId": "0x00000000000",
-  "base":{
+  "main":{
     "name": "name",
-    "size": "5gb",
+    "type": "dataset",
     "author": "someone",
+    "dateCreated": "2019-02-08T08:13:49Z",
     "license": "public domain",
-    "contentType": '',
-    "files": ["/url/dataset-name"],
+    "price": "30",
+    "files": [{
+        "url": "/url/dataset-name",
+        "index": 0,
+        "checksum": "efb2c764274b745f5fc37f97c6b0e761",
+        "contentLength": "4535431",
+        "contentType": "text/csv",
+        "encoding": "UTF-8",
+        "compression": "zip"
+        },{
+        "url": "/url/dataset-name",
+        "index": 0,
+        "contentType": "text/csv",
+        }
+    ]
   }
 }
 
@@ -315,7 +329,7 @@ const assets = ocean.assets.consumerAssets(myAddress)
 
 ---
 
-### delegatePermissions
+### grantPermissions
 
 For a existing asset, the owner of the asset delegate to a subject read or access permissions. This method will use the `msg.sender` as issuer.
 
@@ -335,7 +349,7 @@ _Example_
 
 ```js
 const issuerAccount = ocean.accounts.list()[0]
-const success = ocean.assets.delegatePermissions(
+const success = ocean.assets.grantPermissions(
     did,
     subjectAddress, 
     )
@@ -372,8 +386,7 @@ const success = ocean.assets.revokePermissions(
 
 ---
 
-### get permissions
-
+### getPermissions
 Check if an user has permissions in a specific DID
 
 _Parameters_
@@ -546,6 +559,75 @@ _Example_
 
 ```js
 const jobResult = ocean.compute.result(agreementId, jobId)
+```
+
+---
+
+### stop
+
+Ends a running compute job.
+
+_Parameters_
+
+```
+agreementId: str -- The ID of the service agreement.
+jobId: str -- The ID of the compute job to be stopped
+```
+
+_Returns_
+
+`status` of job
+
+_Example_
+
+```js
+const jobStatus = ocean.compute.stop(agreementId, jobId)
+```
+
+---
+
+### restart
+
+Stop a running compute job and restart it again.
+
+_Parameters_
+
+```
+agreementId: str -- The ID of the service agreement.
+jobId: str -- The ID of the compute job.
+```
+
+_Returns_
+
+`status` of job
+
+_Example_
+
+```js
+const jobStatus = ocean.compute.restart(agreementId, jobId)
+```
+
+---
+
+## list
+
+Returns the list of compute jobs that were run under `agreement_id`.
+
+_Parameters_
+
+```
+agreementId: str -- The ID of the service agreement.
+jobId: str -- The ID of the compute job.
+```
+
+_Returns_
+
+list of `jobId`
+
+_Example_
+
+```js
+const jobIds = ocean.compute.list(agreementId)
 ```
 
 ---
@@ -915,8 +997,8 @@ _Example_
 ocean.agreements.conditions.grantAccess(agreementId, assetId, grantee)
 ```
 
-### grantServiceExecution
-Authorize the consumer defined in the agreement to execute a remote service associated with this asset.
+### grantCompute
+Authorize the consumer defined in the agreement to run a remote compute job this asset's dataset.
 
 _Parameters_
 ```
@@ -932,7 +1014,7 @@ _Returns_
 _Example_
 
 ```js
-ocean.agreements.conditions.grantServiceExecution(agreementId, assetId, grantee)
+ocean.agreements.conditions.grantCompute(agreementId, assetId, grantee)
 ```
 
 ---
@@ -1051,7 +1133,9 @@ You can find older versions of the squid specifications in the [squid-specs fold
 
 Modifications:
 
-* New `ocean.compute` methods
+* New `ocean.compute` methods: `run`, `status` and `result`
+* Update `ocean.assets.delegatePermissions` method to `ocean.assets.grantPermissions`
+* Update `ocean.agreements.conditions.grantServiceExecution` method to `ocean.agreements.conditions.grantCompute`
 
 ### Squid Spec 0.4
 
