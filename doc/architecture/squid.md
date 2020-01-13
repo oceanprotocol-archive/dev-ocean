@@ -1163,7 +1163,7 @@ You can find older versions of the squid specifications in the [squid-specs fold
 
 Modifications:
 
-* New `ocean.compute` methods: `run`, `status` and `result`
+* New `ocean.compute` methods: `order`, `start`, `status`, `result`, `stop`, `restart`, `delete`
 * Update `ocean.assets.delegatePermissions` method to `ocean.assets.grantPermissions`
 * Update `ocean.agreements.conditions.grantServiceExecution` method to `ocean.agreements.conditions.grantCompute`
 
