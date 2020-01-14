@@ -486,7 +486,6 @@ _Parameters_
 
 ```
          datasetDid: str -- The DID of the asset (of type `dataset`) to run the algorithm on.
-       serviceIndex: int -- ID of the compute service within the dataset DDO
     consumerAccount: `Account` instance -- The account of the consumer ordering the service (optional, depends on Web3 implementation)
 ```
 
@@ -500,7 +499,7 @@ agreementId: hex str -- The service agreement ID, representation of `bytes32` ID
 _Example_
 
 ```js
-const agreementId = ocean.compute.order(did, serviceIndex, consumerAccount)
+const agreementId = ocean.compute.order(did, consumerAccount)
 ```
 
 ---
@@ -514,7 +513,6 @@ _Parameters_
 ```
         agreementId: hex str -- The service agreement ID, representation of `bytes32` ID.
          datasetDid: str -- The DID of the asset (of type `dataset`) to run the algorithm on.
-       serviceIndex: int -- ID of the compute service within the dataset DDO
     consumerAccount: `Account` instance -- The account of the consumer ordering the service.
        algorithmDid: str -- The DID of the algorithm asset (of type `algorithm`) to run on the asset.
        algorithmRaw: str -- The raw text of the algorithm to run in the compute job (e.g. a jupyter notebook) or a valid URL to fetch the algorithm.
@@ -530,7 +528,7 @@ str -- The ID of the compute job.
 _Example_
 
 ```js
-const jobId = ocean.compute.start(agreementId, did, serviceIndex, consumerAccount, algorithmDid)
+const jobId = ocean.compute.start(agreementId, did, consumerAccount, algorithmDid)
 ```
 
 ### status
