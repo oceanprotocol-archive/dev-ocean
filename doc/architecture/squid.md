@@ -511,12 +511,10 @@ Executes a compute job in a remote compute service associated with an asset and 
 _Parameters_
 
 ```
-        agreementId: hex str -- The service agreement ID, representation of `bytes32` ID.
-         datasetDid: str -- The DID of the asset (of type `dataset`) to run the algorithm on.
-    consumerAccount: `Account` instance -- The account of the consumer ordering the service.
-       algorithmDid: str -- The DID of the algorithm asset (of type `algorithm`) to run on the asset.
-       algorithmRaw: str -- The raw text of the algorithm to run in the compute job (e.g. a jupyter notebook) or a valid URL to fetch the algorithm.
-      algorithmMeta: `AlgorithmMetadata` instance -- Metadata about the algorithm being run if `algorithm` is being used. This is ignored when `algorithmDid` is specified.
+      agreementId: hex str -- The service agreement ID, representation of `bytes32` ID.
+  consumerAccount: `Account` instance -- The account of the consumer ordering the service.
+     algorithmDid: str -- The DID of the algorithm asset (of type `algorithm`) to run on the asset.
+    algorithmMeta: `AlgorithmMetadata` instance -- Metadata about the algorithm being run if `algorithm` is being used. This is ignored when `algorithmDid` is specified.
 ```
 
 _Returns_
@@ -540,6 +538,7 @@ _Parameters_
 ```
 agreementId: str -- The ID of the service agreement.
 jobId: str -- The ID of the job.
+consumerAccount: `Account` instance -- The account of the consumer ordering the service.
 ```
 
 _Returns_
@@ -577,6 +576,7 @@ _Parameters_
 ```
 agreementId: str -- The ID of the service agreement.
 jobId: str -- The ID of the compute job.
+consumerAccount: `Account` instance -- The account of the consumer ordering the service.
 ```
 
 _Returns_
@@ -599,7 +599,8 @@ _Parameters_
 
 ```
 agreementId: str -- The ID of the service agreement.
-jobId: str -- The ID of the compute job to be stopped
+jobId: str -- The ID of the compute job to be stopped.
+consumerAccount: `Account` instance -- The account of the consumer ordering the service.
 ```
 
 _Returns_
@@ -623,6 +624,7 @@ _Parameters_
 ```
 agreementId: str -- The ID of the service agreement.
 jobId: str -- The ID of the compute job.
+consumerAccount: `Account` instance -- The account of the consumer ordering the service.
 ```
 
 _Returns_
@@ -646,6 +648,7 @@ _Parameters_
 ```
 agreementId: str -- The ID of the service agreement.
 jobId: str -- The ID of the compute job.
+consumerAccount: `Account` instance -- The account of the consumer ordering the service.
 ```
 
 _Returns_
