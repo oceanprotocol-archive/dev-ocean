@@ -519,9 +519,7 @@ _Parameters_
 
 _Returns_
 
-```
-str -- The ID of the compute job.
-``` 
+`status` of job
 
 _Example_
 
