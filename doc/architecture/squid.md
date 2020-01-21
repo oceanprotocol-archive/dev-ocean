@@ -543,22 +543,27 @@ consumerAccount: `Account` instance -- The account of the consumer ordering the 
 
 _Returns_
 
-```js
-{
-  ok: true,
-  status: 1,
-  statusText: 'Job started.'
-}
-```
+An Array of objects, each object describing a workflow. If the array is empty, then the search yields no results.
 
-_Errors_
-
-```js
-{
-  ok: false,
-  status: 404,
-  statusText: 'Job does not exist.'
-}
+```json
+[
+  {
+    "owner": "0x1111",
+    "agreementId": "0x2222",
+    "jobId": "3333",
+    "dateCreated": "2020-10-01T01:00:00Z",
+    "dateFinished": "2020-10-01T01:00:00Z",
+    "status": 5,
+    "statusText": "Job finished",
+    "configlogUrl": "http://example.net/logs/config.log",
+    "publishlogUrl": "http://example.net/logs/publish.log",
+    "algologUrl": "http://example.net/logs/algo.log",
+    "outputsUrl": [
+      "http://example.net/logs/output/0",
+      "http://example.net/logs/output/1"
+    ]
+  }
+]
 ```
 
 _Example_
