@@ -493,7 +493,6 @@ _Returns_
 
 ```
 agreementId: hex str -- The service agreement ID, representation of `bytes32` ID.
-
 ``` 
 
 _Example_
@@ -553,13 +552,12 @@ An Array of objects, each object describing a workflow. If the array is empty, t
     "dateFinished": "2020-10-01T01:00:00Z",
     "status": 5,
     "statusText": "Job finished",
-    "configlogUrl": "http://example.net/logs/config.log",
-    "publishlogUrl": "http://example.net/logs/publish.log",
     "algologUrl": "http://example.net/logs/algo.log",
     "outputsUrl": [
       "http://example.net/logs/output/0",
       "http://example.net/logs/output/1"
-    ]
+    ],
+    "resultsDid": "did:op:example"
   }
 ]
 ```
@@ -1032,9 +1030,11 @@ ocean.agreements.conditions.grantAccess(agreementId, assetId, grantee)
 ```
 
 ### grantCompute
-Authorize the consumer defined in the agreement to run a remote compute job this asset's dataset.
+
+Authorize the consumer defined in the agreement to run a remote compute job on the dataset.
 
 _Parameters_
+
 ```
 agreementId: hex str representation of `bytes32` id
     assetId: hex str representation of `bytes32` id
