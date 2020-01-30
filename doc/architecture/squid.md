@@ -476,6 +476,108 @@ const success = ocean.accounts.requestTokens(account, amount)
 
 ---
 
+## ocean.auth
+
+#### get
+Returns the signature of a shared constant that is used to authenticate a user.
+
+Parameters
+```
+account: Account that is going to sign the constant
+```
+
+Returns
+
+`string`
+
+Example
+```js
+const signer = ocean.accounts.list()[0]
+ocean.auth.get(signer)
+```
+
+---
+
+#### check
+Check the address that signed the constant and if it's expired.
+
+Parameters
+```
+signature: Signed constant
+```
+
+Returns
+
+`string`
+
+Example
+```js
+const signature = '0xABC...123-18928172718'
+ocean.auth.check(signature)
+```
+
+---
+
+#### store
+Generates and stores the signed constant that is gonna be used automatically on next .
+
+Parameters
+```
+account: Account that is going to sign the constant
+```
+
+Returns
+
+`bool to indicate success/failure of the operation`
+
+Example
+```js
+const signer = ocean.accounts.list()[0]
+ocean.auth.store(signer)
+```
+
+---
+
+#### restore
+Returns a stored signature.
+
+Parameters
+```
+account: Account that stored the data
+```
+
+Returns
+
+`string`
+
+Example
+```js
+const signer = ocean.accounts.list()[0]
+ocean.auth.restore(signer)
+```
+
+---
+
+#### isStored
+Checks if the signed constant is stored and is valid.
+
+Parameters
+```
+account: Account that stored the data
+```
+
+Returns
+
+`bool`
+
+Example
+```js
+const account = ocean.accounts.list()[0]
+ocean.auth.isStored(account)
+```
+
+---
+
 ## ocean.compute
 
 ### order
