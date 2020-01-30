@@ -71,6 +71,7 @@ Table of Contents
             * [grantServiceExecution](#grantserviceexecution)
             * [releaseReward](#releasereward)
             * [refundReward](#refundreward)
+      * [ocean.auth](#ocean.auth)
       * [Models](#models)
          * [Account](#account)
          * [Asset](#asset)
@@ -848,7 +849,6 @@ const agreementStatus = ocean.agreements.status(agreementId)
 ---
 
 
-
 ## ocean.agreements.conditions
 
 #### lockReward
@@ -957,11 +957,139 @@ Example
 const rewardRefund = ocean.agreements.conditions.refundReward(agreementId, amount)
 ```
 
+---
+
+## ocean.auth
+
+#### get
+Returns the signature of a shared constant that is used to authenticate a user.
+
+Parameters
+```
+account: Account that is going to sign the constant
+```
+
+Returns
+
+`string`
+
+Example
+```js
+const signer = ocean.accounts.list()[0]
+ocean.auth.get(signer)
+```
 
 ---
 
+#### check
+Check the address that signed the constant and if it's expired.
 
-## Models
+Parameters
+```
+signature: Signed constant
+```
+
+Returns
+
+`string`
+
+Example
+```js
+const signature = '0xABC...123-18928172718'
+ocean.auth.check(signature)
+```
+
+---
+
+#### store
+Generates and stores the signed constant that is gonna be used automatically on next .
+
+Parameters
+```
+account: Account that is going to sign the constant
+```
+
+Returns
+
+`bool to indicate success/failure of the operation`
+
+Example
+```js
+const signer = ocean.accounts.list()[0]
+ocean.auth.store(signer)
+```
+
+---
+
+#### restore
+Returns a stored signature.
+
+Parameters
+```
+account: Account that stored the data
+```
+
+Returns
+
+`string`
+
+Example
+```js
+const signer = ocean.accounts.list()[0]
+ocean.auth.restore(signer)
+```
+
+---
+
+#### isStored
+Checks if the signed constant is stored and is valid.
+
+Parameters
+```
+account: Account that stored the data
+```
+
+Returns
+
+`bool`
+
+Example
+```js
+const account = ocean.accounts.list()[0]
+ocean.auth.isStored(account)
+```
+
+---
+
+## ocean.services
+
+#### createAccessSecretStoreService
+Creates an `Access` type service to be included in asset DDO.
+
+Parameters
+```
+          price: int number of tokens
+serviceEndpoint: str url of service endpoint
+consumeEndpoint: str url of consume endpoint
+```
+
+Returns
+
+`Service instance`
+
+Example
+```js
+const service = ocean.services.createAccessSecretStoreService(
+    25, 
+    'http://brizo/services/access/initialize', 
+    'http://brizo/services/access/consume'
+    )
+```
+
+
+---
+
+Models
 
 ### Account
 | attribute   | type       |
@@ -1096,6 +1224,18 @@ ocean.agreements.conditions
 | grantAccess      | boolean        |        |      |      |
 | releaseReward    | boolean        |        |      |      |
 | refundReward     | boolean        |        |      |      |
+
+---
+
+ocean.auth
+
+| Method           | Return Value   | Python | JS   | Java |
+| :--------------- | :------------- | :----- | :--- |:---- |
+| get              | string         |        |      |      |
+| check            | public key     |        |      |      |
+| store            | boolean        |        |      |      |
+| restore          | string         |        |      |      |
+| isStored         | boolean        |        |      |      |
 
 ---
 
