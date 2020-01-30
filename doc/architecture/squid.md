@@ -514,6 +514,50 @@ _Parameters_
   consumerAccount: `Account` instance -- The account of the consumer ordering the service.
      algorithmDid: str -- The DID of the algorithm asset (of type `algorithm`) to run on the asset.
     algorithmMeta: `AlgorithmMetadata` instance -- Metadata about the algorithm being run if `algorithm` is being used. This is ignored when `algorithmDid` is specified.
+           output: Optional object for advanced customization of compute job output, e.g. if and where the results should be published.
+```
+
+The `output` object example with all possible entries:
+
+```js
+{
+  publishAlgorithmLog: true,
+  publishOutput: true,
+  brizoAddress: "0x4aaab179035dc57b35e2ce066919048686f82972",
+  brizoUri: "https://brizo.marketplace.dev-ocean.com",
+  aquariusUri: "https://aquarius.marketplace.dev-ocean.com",
+  nodeUri: "https://nile.dev-ocean.com",
+  secretStoreUri: "https://secret-store.nile.dev-ocean.com",
+  metadata: {
+    main: {
+      name: "Job output"
+    },
+    additionalInformation: {
+      description: "Job output from my algorithm."
+    }
+  },
+  owner: "0xC41808BBef371AD5CFc76466dDF9dEe228d2BdAA",
+  whitelist: [
+    "0x00Bd138aBD70e2F00903268F3Db08f2D25677C9e",
+    "0xACBd138aBD70e2F00903268F3Db08f2D25677C9e"
+  ]
+}
+```
+
+All entries are optional but when `publishOutput` or `publishAlgorithmLog` are `true`, then the required entries are:
+
+- `brizoAddress`
+- `brizoUri`
+- `aquariusUri`
+- `nodeUri`
+- `secretStoreUri`
+
+To prevent publishing of the result, this should be enough:
+
+```js
+{
+  publishOutput: false
+}
 ```
 
 _Returns_
@@ -523,7 +567,7 @@ _Returns_
 _Example_
 
 ```js
-const jobId = ocean.compute.start(agreementId, did, consumerAccount, algorithmDid)
+const jobId = ocean.compute.start(agreementId, did, consumerAccount, algorithmDid, output)
 ```
 
 ### status
