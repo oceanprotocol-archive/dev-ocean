@@ -14,8 +14,6 @@ A complete description of the Ocean boards can be found in the [Boards section](
 
 See the [Milestones page](https://github.com/oceanprotocol/ocean/milestones).
 
-The current milestone is [Trilobite - Tethys Beta (v0.9)](https://github.com/oceanprotocol/ocean/milestone/2).
-
 ## Main Ocean Development Repositories
 
 See [Docs: Software Components](https://docs.oceanprotocol.com/concepts/components/)
