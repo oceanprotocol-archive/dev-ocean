@@ -1,166 +1,76 @@
-# Squid API
+---
+title: Squid API Specification
+description: The Squid API is a Level-2 API built on top of core Ocean components. It's a facilitator or enabler, but it's not the only way to interact with Ocean.
+slug: /concepts/squid/
+section: concepts
+---
+
 ```
-name: Squid API Specification
 shortname: squid-spec
-version: 0.4
+version: 0.5
 status: Draft
-date: Sep.2019
+date: January 2020
 ```
 
-The Squid API is a Level-2 API built on top of core Ocean components. It's a facilitator or enabler, but it's not the only way to interact with Ocean.
+The goal of this doc is to help a developer build a version of the Squid API in any programming language. Currently, the Squid API is defined for Object-Oriented languages such as JavaScript, Java, and Python (which are the three initial implementation languages).
 
 - [squid-js](https://github.com/oceanprotocol/squid-js)
 - [squid-py](https://github.com/oceanprotocol/squid-py)
 - [squid-java](https://github.com/oceanprotocol/squid-java)
 
-The goal of this doc is to help a developer build a version of the Squid API in any programming language. Currently, the Squid API is defined for Object-Oriented languages such as JavaScript, Java, and Python (which are the three initial implementation languages).
-
----
-
-**🐲🦑 THERE BE DRAGONS AND SQUIDS. This is in alpha state and you can expect running into problems. If you run into them, please open up [a new issue](https://github.com/oceanprotocol/dev-ocean/issues). 🦑🐲**
-
----
-
-Table of Contents
-=================
-
-   * [Squid API](#squid-api)
-   * [Table of Contents](#table-of-contents)
-      * [Changelog](#changelog)
-         * [Squid Spec 0.4 (latest)](#squid-spec-04-latest)
-         * [Squid Spec 0.3](#squid-spec-03)
-         * [Squid Spec 0.2](#squid-spec-02)
-      * [Ocean](#ocean)
-      * [ocean.assets](#oceanassets)
-            * [create](#create)
-            * [resolve](#resolve)
-            * [transfer ownership](#transfer-ownership)
-            * [search](#search)
-            * [query](#query)
-            * [order](#order)
-            * [consume](#consume)
-            * [execute](#execute)
-            * [validate](#validate)
-            * [owner](#owner)
-            * [ownerAssets](#ownerassets)
-            * [consumerAssets](#consumerassets)
-      * [ocean.accounts](#oceanaccounts)
-            * [list](#list)
-            * [balance](#balance)
-            * [requestTokens](#requesttokens)
-      * [ocean.secret_store](#oceansecret_store)
-            * [encrypt](#encrypt)
-            * [decrypt](#decrypt)
-      * [ocean.tokens](#oceantokens)
-            * [request](#request)
-            * [transfer](#transfer)
-      * [ocean.templates](#oceantemplates)
-            * [propose](#propose)
-            * [approve](#approve)
-            * [revoke](#revoke)
-      * [ocean.agreements](#oceanagreements)
-            * [prepare](#prepare)
-            * [send](#send)
-            * [create](#create-1)
-            * [delegatePermissions](#delegatepermissions)
-            * [get permissions](#get-permissions)
-            * [status](#status)
-      * [ocean.agreements.conditions](#oceanagreementsconditions)
-            * [lockReward](#lockreward)
-            * [grantAccess](#grantaccess)
-            * [grantServiceExecution](#grantserviceexecution)
-            * [releaseReward](#releasereward)
-            * [refundReward](#refundreward)
-      * [ocean.auth](#ocean.auth)
-      * [Models](#models)
-         * [Account](#account)
-         * [Asset](#asset)
-         * [Service](#service)
-         * [Agreement](#agreement)
-         * [Endpoints](#endpoints)
-         * [Error handling](#error-handling)
-      * [Examples](#examples)
-      * [Implementation status](#implementation-status)
-
-
-## Changelog
-
-You can find older versions of the squid specifications in the [squid-specs folder](squid-specs).
-
-### Squid Spec 0.4 (latest)
-
-Modifications:
-
-* New `ocean.assets.execute` method
-* New `ocean.assets.delegatePermissions` method
-* New `ocean.assets.revokePermissions` method
-* New `ocean.assets.getPermissions` method
-* New `ocean.agreements.conditions.grantServiceExecution` method
-* `ocean.assets.create` allows to specify the address of the DID owner
-* New `ocean.assets.transferOwnership` method allowing to transfer the ownership of a DID
-
-
-This version of the squid specification is based in the OEP-7 v0.2.
-
-### Squid Spec 0.3
-
-New methods:
-
-  - Get list of the Assets Published by an user
-  - Get list of the Assets Received by an user
-  - Get the SEA status
-  - Get the Owner of an Asset
-  - Expose an additional consume interface allowing to use `index` parameter
-  - Consumer can initialize a SEA on-chain
-  - Validate an Asset Data integrity
-
-
-### Squid Spec 0.2
-
-* Service Execution Agreements
-* Assets Management
-* Tokens request and transfer
-* Secret Store API
-
 ## Ocean
 
 This is the main class to interact with the Ocean network. 
 
-All ocean protocol features are accessed through this module.
+All Ocean Protocol features are accessed through this module.
 
 ---
 
 ## ocean.assets
 
-#### create
+### create
 
-High-level method publishing the metadata off-chain and registering the Service Agreement on-chain. It creates a 
-DID Document (DDO) that represent the registered asset.
+High-level method publishing the metadata off-chain and registering the 
+Service Agreement on-chain. It creates a DID Document (DDO) that 
+represent the registered asset.
 
-Parameters
+_Parameters_
+
 ```
         metadata: JSON object describing various attributes of the asset data (see below for sample metadata attributes)
 publisherAccount: Account instance of who is publishing the asset
         services: list of Service instances (optional)
-        accountOwner: If is specified, the ownership of the DID will be assigned to this ethereum account (optional)
+    accountOwner: If is specified, the ownership of the DID will be assigned to this ethereum account (optional)
 ```
 
-Returns
+_Returns_
 
 `Asset object (encapsulates the DDO document)`
 
-Example
+_Example_
 ```js
 const metadata = {
-  "assetId": "0x123412341234",
-  "publisherId": "0x00000000000",
-  "base":{
+  "main":{
     "name": "name",
-    "size": "5gb",
+    "type": "dataset",
     "author": "someone",
+    "dateCreated": "2019-02-08T08:13:49Z",
     "license": "public domain",
-    "contentType": '',
-    "files": ["/url/dataset-name"],
+    "price": "30",
+    "files": [{
+        "url": "/url/dataset-name",
+        "index": 0,
+        "checksum": "efb2c764274b745f5fc37f97c6b0e761",
+        "contentLength": "4535431",
+        "contentType": "text/csv",
+        "encoding": "UTF-8",
+        "compression": "zip"
+        },{
+        "url": "/url/dataset-name",
+        "index": 0,
+        "contentType": "text/csv",
+        }
+    ]
   }
 }
 
@@ -171,80 +81,87 @@ The complete spec for assets metadata is here: [Asset Metadata Ontology](https:/
  
 ---
 
-#### resolve
+### resolve
 
 Given a DID, return the associated DID Document (DDO). The DDO is resolved by directly 
-interacting with the keeper node to retrieve the metadata store's (Aquarius) URL. This URL is 
-used to fetch the DDO from the off-chain ocean-db storage (mongodb, bigchain-db, or whatever)
+interacting with the keeper node to retrieve the metadata store's (Aquarius) URL. This URL is used to fetch the DDO from the off-chain ocean-db storage (MongoDB, BigchainDB, or whatever)
 
-Parameters
+_Parameters_
+
 ```
 did: str the asset did which consist of `did:op:` and the assetId hex str (without `0x` prefix)
 ```
 
-Returns
+_Returns_
 
 `Asset object`
 
-Example
+_Example_
+
 ```js
 const asset = ocean.assets.resolve(did)
 ```
 
 ---
 
-#### transfer ownership
+### transferOwnership
 
 Given a DID, transfer the ownership to a new owner. This function only will work if is called by the DID owner.
 
-Parameters
+_Parameters_
+
 ```
 did: str the asset did which consist of `did:op:` and the assetId hex str (without `0x` prefix)
 newOwner: the ethereum address of the new owner of the DID
 ```
 
-Returns
+_Returns_
 
 `boolean specifying if the operation was executed successfully`
 
-Example
+_Example_
+
 ```js
 const result= ocean.assets.transferOwnership(did, newOwner)
 ```
 
 ---
 
-#### search
+### search
 
 Given a search text query, returns a list of the Asset objects matching with that text query.
 
-Parameters
+_Parameters_
+
 ```
 text: str the text to search on
 ```
 
-Returns
+_Returns_
 
 `list of Asset instances that match the search text`
 
 
-Example
+_Example_
+
 ```js
 const assets = ocean.assets.search('office')
 ```
 
 ---
 
-#### query
+### query
 
 Search existing registered assets using more fine tuned method. Supports paging, 
 sorting and search on specific metadata attributes. 
 
-Parameters
+_Parameters_
+
 ```
 searchQuery: JSON object 
 ```
- ```json
+
+```json
 {
   "offset": 100,
   "page": 0,
@@ -255,13 +172,14 @@ searchQuery: JSON object
     "value": 1
   }
 }
- ```
+```
 
-Returns
+_Returns_
 
 `list of Asset instances that match the search query`
  
-Example
+_Example_
+
 ```js
 const searchQuery = {"query": {"value": 1}}
 const assets = ocean.assets.query(searchQuery)
@@ -269,34 +187,38 @@ const assets = ocean.assets.query(searchQuery)
 
 ---
 
-#### order
+### order
 
 Start the purchase/order of an asset's service. Starts by signing the service 
-agreement then sends the request to the publisher via the service endpoint (Brizo http service)
+agreement then sends the request to the publisher via the service endpoint (Brizo http service).
 
-Parameters
+_Parameters_
+
 ```
                 did: str the asset did which consist of `did:op:` and the assetId hex str (without `0x` prefix)
 serviceDefinitionId: str id of the service within the asset DDO
     consumerAccount: Account instance of the consumer ordering the service
 ```
 
-Returns
+_Returns_
 
 `agreementId (can be used to query the keeper regarding the order)`
 
-Example
+_Example_
+
 ```js
 const agreementId = ocean.assets.order(did, serviceDefinitionId, consumerAccount)
 ```
 
 ---
 
-#### consume
+### consume
+
 Downloads all files associated with the asset unless `index` is specified which will 
 download only that one data file.
 
-Parameters
+_Parameters_
+
 ```
         agreementId: hex str representation of `bytes32` id
                 did: str the asset did which consist of `did:op:` and the assetId hex str (without `0x` prefix)
@@ -307,58 +229,37 @@ serviceDefinitionId: str id of the service within the asset DDO
             corresponds to the index in the `files` list in the DDO document.
 ```
 
-Returns
+_Returns_
 
 `str local path on the file system where the asset data files are downloaded` 
 
-Example
+_Example_
+
 ```js
 const downloadsPath = ocean.assets.consume(agreementId, did, serviceDefinitionId, consumerAccount, resultPath)
 ```
 
 ---
 
-#### execute
+### validate
 
-Executes a remote service associated with an asset and serviceAgreementId
-
-Parameters
-```
-        agreementId: hex str representation of `bytes32` id
-                did: str the asset did which consist of `did:op:` and the assetId hex str (without `0x` prefix)
-serviceDefinitionId: str id of the service within the asset DDO
-    consumerAccount: Account instance of the consumer ordering the service
-        workflowDid: str the asset did (of `workflow` type) which consist of `did:op:` and the assetId hex str (without `0x` prefix)
-```
-
-Returns
-
-`str local path on the file system where the asset data files are downloaded` 
-
-Example
-```js
-const executionId = ocean.assets.execute(agreementId, did, serviceDefinitionId, consumerAccount, workflowDid)
-```
-
----
-
-#### validate
 Validate the integrity of an asset after consuming. This is achieved by regenerating 
 the checksum of the ddo document and comparing to the registered checksum that was 
 generated at time of publishing the asset. 
 
-Parameters
+_Parameters_
+
 ```
   did: str the asset did which consist of `did:op:` and the assetId hex str (without `0x` prefix)
 files: list of paths to downloaded files after completing asset purchase 
 ```
 
-Returns
+_Returns_
 
 `boolean`
 
+_Example_
 
-Example
 ```js
 const asset_did = "did:op:000000000000000000000000000"
 const isDataValid = ocean.assets.validate(asset_did, ["/path/to/file0", "/path/to/file1",])
@@ -366,18 +267,20 @@ const isDataValid = ocean.assets.validate(asset_did, ["/path/to/file0", "/path/t
 
 ---
 
-#### owner
+### owner
 
-Parameters
+_Parameters_
+
 ```
 did: str the asset did which consist of `did:op:` and the assetId hex str (without `0x` prefix)
 ```
 
-Returns
+_Returns_
 
 hex str -- the ethereum address of the owner/publisher of given asset did
 
-Example
+_Example_
+
 ```js
 const asset_did = "did:op:000000000000000000000000000"
 const ownerAddress = ocean.assets.owner(asset_did)
@@ -385,18 +288,19 @@ const ownerAddress = ocean.assets.owner(asset_did)
 
 ---
 
-#### ownerAssets
+### ownerAssets
 
-Parameters
+_Parameters_
+
 ```
 ownerAddress: hex str ethereum address of owner/publisher
 ```
 
-Returns
+_Returns_
 
 List of Asset objects published by `ownerAddress`
 
-Example
+_Example_
 ```js
 const myAddress = "0x00000000000000000000000000000000"
 const assets = ocean.assets.ownerAssets(myAddress)
@@ -404,18 +308,20 @@ const assets = ocean.assets.ownerAssets(myAddress)
 
 ---
 
-#### consumerAssets
+### consumerAssets
 
-Parameters
+_Parameters_
+
 ```
 consumerAddress: hex str ethereum address of consumer
 ```
 
-Returns
+_Returns_
 
 List of Asset objects purchased by `consumerAddress`
 
-Example
+_Example_
+
 ```js
 const myAddress = "0x00000000000000000000000000000000"
 const assets = ocean.assets.consumerAssets(myAddress)
@@ -423,75 +329,82 @@ const assets = ocean.assets.consumerAssets(myAddress)
 
 ---
 
-#### delegatePermissions
+### grantPermissions
 
 For a existing asset, the owner of the asset delegate to a subject read or access permissions.
-This method will use the `msg.sender` as issuer.
 
 
-Parameters
+_Parameters_
+
 ```
-did: DID of the asset
+           did: DID of the asset
 subjectAddress: hex str the ethereum account address of the subject who will receive the permissions
+ issuerAccount: Account instance of the asset owner (optional, depends on the Web3 implementation)
 ```
 
-**Return**
+_Returns_
 
 `boolean`
 
-Example
+_Example_
+
 ```js
 const issuerAccount = ocean.accounts.list()[0]
-const success = ocean.assets.delegatePermissions(
+const success = ocean.assets.grantPermissions(
     did,
-    subjectAddress, 
+    subjectAddress,
+    issuerAccount
     )
 ```
 
 ---
 
-#### revokePermissions
+### revokePermissions
 
 For a existing asset, the owner of the asset revoke the access grants of a subject.
-This method will use the `msg.sender` as issuer.
 
 
-Parameters
+_Parameters_
+
 ```
-did: DID of the asset
+           did: DID of the asset
 subjectAddress: hex str the ethereum account address of the subject who will receive the permissions
+ issuerAccount: Account instance of the asset owner (optional, depends on the Web3 implementation)
 ```
 
-**Return**
+_Returns_
 
 `boolean`
 
-Example
+_Example_
+
 ```js
 const issuerAccount = ocean.accounts.list()[0]
 const success = ocean.assets.revokePermissions(
     did,
     subjectAddress, 
+    issuerAccount
     )
 ```
 
 ---
 
-#### get permissions
+### getPermissions
 Check if an user has permissions in a specific DID
 
-Parameters:
+_Parameters_
+
 ```
-did: DID of the asset
+           did: DID of the asset
 subjectAddress: hex str the ethereum account address of the subject who will receive the permissions
 ```
 
-Returns: 
+_Returns_
+
 - permissions: boolean true if has access and false if not
 
+_Example_
 
-
-Example
 ```js
 const permissions = ocean.assets.getPermissions(did, subjectAddress)
 ```
@@ -501,460 +414,64 @@ const permissions = ocean.assets.getPermissions(did, subjectAddress)
 
 ## ocean.accounts
 
-#### list
+### list
 
 Returns all available accounts loaded via a wallet, or by Web3.
 
-Parameters
-
-Returns
+_Returns_
 
 `list of Account instances`
 
+_Example_
 
-Example
 ```js
 const accounts = ocean.accounts.list()
 ```
 
 ---
 
-#### balance
+### balance
+
 Return tuple of both the etherBalance and oceanBalance
 
-Parameters
+_Parameters_
+
 ```
 account: Account instance
 ```
 
-Returns
+_Returns_
 
 `(etherBalance: float, oceanBalance: int)`
 
-Example
+_Example_
+
 ```js
 const { etherBalance, oceanBalance } = ocean.accounts.balance(accounts[0])
 ```
 
 ---
 
-#### requestTokens
+### requestTokens
+
 This is an alternative to `ocean.tokens.request()`
 
-Parameters
+_Parameters_
 ```
 account: Account instance
  amount: int number of tokens to be requested
 ```
 
-Returns
+_Returns_
 
 `boolean`
 
-Example
+_Example_
+
 ```js
 const amount = 30
 const account = ocean.accounts.list()[0]
 const success = ocean.accounts.requestTokens(account, amount)
-```
-
----
-
-## ocean.secret_store
-This is a wrapper on top of the Secret Store defined in [Secret Store spec](https://github.com/oceanprotocol/dev-ocean/blob/master/doc/architecture/secret-store.md)
-
-#### encrypt
-Encrypt the given text and store the encryption keys using the `documentId`. The encrypted text can be decrypted 
-using the same keys identified by the `documentId`.
-
-Parameters
-```
-      documentId: hex str (bytes32 id in hex str format) 
-         content: str to be encrypted
-publisherAccount: Account instance of document owner
-```
-
-Returns
-
-`hex str (the encrypted text)`
-
-Example
-```js
-const publisherAccount = ocean.accounts.list()[0]
-const content = '/url/of/interesting-data.csv'
-const documentId = 'did:op:1234123412341234'
-const encryptedContent = ocean.secret_store.encrypt(documentId, content, publisherAccount)
-```
-
----
-
-#### decrypt
-Decrypt an encrypted text using the stored encryption keys associated with the documentId. Decryption requires that 
-the account owner has access permissions for this `documentID`
-
-Parameters
-```
-      documentId: hex str (bytes32 id in hex str format) 
-encryptedContent: hex str the encrypted document that results from the `encrypt` call
- consumerAccount: Account instance requesting the decryption. Requires on-chain access authorization
-```
-
-Returns
-
-`original decrypted text`
-
-Example
-```js
-const consumerAccount = ocean.accounts.list()[0]
-const documentId = 'did:op:1234123412341234'
-ocean.secret_store.decrypt(documentId, encryptedContent, consumerAccount)
-```
-
----
-
-## ocean.tokens
-
-#### request
-Request a number of Ocean Tokens.
-
-Parameters
-```
-account: Account instance 
- amount: int number of tokens requested
-```
-
-Returns
-
-`bool to indicate success/failure of the request`
-
-Example
-```js
-account = ocean.accounts.list()[0]
-const amount = ocean.tokens.request(account, 100)
-```
-
-#### transfer
-Transfer a number of tokens to the mentioned account.
-
-Parameters
-```
-account: Account instance to receive the tokens
- amount: int number of tokens to transfer
-```
-
-Returns
-
-`bool to indicate success/failure of the transfer`
-
-Example
-```js
-const fromAccount = ocean.accounts.list()[0]
-const receiverAddress = ocean.accounts.list()[1].address
-ocean.tokens.transfer(receiverAddress, 20, fromAccount)
-```
-
----
-
-## ocean.templates
-
-#### propose
-Suggest an agreement template smart contract to include in the white listed agreement templates.
-
-Parameters
-```
-templateAddress: hex str the ethereum address of the deployed template (smart contract address)
-        account: Account instance owner of the agreement template
-```
-
-Returns
-
-`bool to indicate success/failure of the operation`
-
-Example
-```js
-const templateAddress = '0x345645675678...'
-ocean.templates.propose(templateId, ocean.accounts.list()[0])
-```
-
----
-
-#### approve
-Approve (whitelist) an already proposed template. Once a template is approved 
-it can be used for creating agreements in Ocean Protocol keeper network.
-
-Parameters
-```
-templateAddress: hex str the ethereum address of the deployed template (smart contract address)
-        account: Account instance owner of the agreement template
-```
-
-Returns
-
-`bool to indicate success/failure of the operation`
-
-Example
-```js
-const templateAddress = '0x345645675678...'
-ocean.templates.approve(templateId, ocean.accounts.list()[0])
-```
-
----
-
-#### revoke
-Cancel the propsed/approved template or essentially de-whitelist the template. This 
-prevents the creation of any further agreements that are based on this template.
-
-Parameters
-```
-templateAddress: hex str the ethereum address of the deployed template (smart contract address)
-        account: Account instance owner of the agreement template
-```
-
-Returns
-
-`bool to indicate success/failure of the operation`
-
-Example
-```js
-const templateAddress = '0x345645675678...'
-ocean.templates.revoke(templateId, ocean.accounts.list()[0])
-```
-
----
-
-## ocean.agreements
-
-#### prepare
-Creates a consumer signature for the specified asset service.
-
-Parameters
-```
-                did: str the asset did which consist of `did:op:` and the assetId hex str (without `0x` prefix)
-serviceDefinitionId: str id of the service within the asset DDO 
-    consumerAccount: Account instance of the consumer to sign the agreement
-```
-
-Returns
-
-`(agreementId, signature)`
-
-Example
-```js
-const { agreementId, signature } = ocean.agreements.prepare(did, serviceDefinitionId, consumerAccount)
-```
-
----
-
-#### send 
-Submit a service agreement to the publisher to create the agreement on-chain.
-
-Parameters
-```
-                did: str the asset did which consist of `did:op:` and the assetId hex str (without `0x` prefix)
-        agreementId: hex str representation of `bytes32` id
-serviceDefinitionId: str id of the service within the asset DDO 
-          signature: hex str the signature of the agreement hash (What is `agreement hash`)
-    consumerAccount: Account instance of the consumer that signed the agreement
-```
-
-Returns
-
-`None`
-
-Example
-```js
-const did = 'did:op:123412341234'
-const agreementId = ''
-const serviceDefinitionId = ocean.assets.resolve(did).services[0].serviceDefinitionId
-const consumerAddress = ocean.accounts.list()[0].address
-const signature = '?'
-ocean.agreements.send(did, agreementId, serviceDefinitionId, signature, consumerAccount)
-```
-
----
-
-#### create
-Create a service agreement on-chain. This should be called by the publisher of the asset. Consumer 
-signature will be verified on-chain, but it is recommended to verify the signature in this method 
-before submitting on-chain.
-
-Parameters
-```
-                did: str the asset did which consist of `did:op:` and the assetId hex str (without `0x` prefix)
-        agreementId: hex str representation of `bytes32` id
-serviceDefinitionId: str id of the service within the asset DDO 
-          signature: hex str the signature of the agreement hash (What is `agreement hash`)
-    consumerAddress: hex str the ethereum account address of the consumer signing the agreement
-            account: Account instance of the creator of this agreement. Can be the consumer, publisher, 
-            provider, or any valid ethereum account.
-```
-
-**Return**
-
-`boolean`
-
-Example
-```js
-const payload = {} // coming from the HTTP request
-const { 
-    did,
-    serviceDefinitionId,
-    agreementId,
-    signature,
-    consumerAddress } = payload
-const myAccount = ocean.accounts.list()[0]
-const success = ocean.agreements.create(
-    did, 
-    agreementId, 
-    serviceDefinitionId, 
-    signature, 
-    consumerAddress, 
-    myAccount
-    )
-```
-
----
-
-
-
-#### status
-Get the status of a service agreement.
-
-Parameters
-```
-agreementId: hex str representation of `bytes32` id
-```
-
-Returns
-- json document with condition status of each of the agreement's conditions.
-
-```json
-{
-    "agreementId": "",
-    "conditions": {
-        "lockReward": 1,
-        "accessSecretStore": 1,
-        "escrowReward": 1,
-    }  
-}
-```
-- None/null if agreement is invalid
-
-Example
-```js
-const agreementId = ""
-const agreementStatus = ocean.agreements.status(agreementId)
-```
-
----
-
-
-## ocean.agreements.conditions
-
-#### lockReward
-Transfers tokens to the EscrowRewardCondition contract as an escrow payment. 
-This is required before access can be given to the asset data.
-
-Parameters
-```
-agreementId: hex str representation of `bytes32` id
-      amount: int the price set for this service agreement
-```
-
-Returns
-
-`bool success/failure`
-
-Example
-```js
-const rewardLocked = ocean.agreements.conditions.lockReward(agreementId, amount)
-```
-
----
-
-#### grantAccess
-Authorize the consumer defined in the agreement to access (consume) this asset.
-
-Parameters
-```
-agreementId: hex str representation of `bytes32` id
-    assetId: hex str representation of `bytes32` id
-    grantee: hexstr ethereum address of asset consumer
-```
-
-Returns
-
-`bool success/failure`
-
-Example
-```js
-ocean.agreements.conditions.grantAccess(agreementId, assetId, grantee)
-```
-
-#### grantServiceExecution
-Authorize the consumer defined in the agreement to execute a remote service associated with this asset.
-
-Parameters
-```
-agreementId: hex str representation of `bytes32` id
-    assetId: hex str representation of `bytes32` id
-    grantee: hexstr ethereum address of asset consumer
-```
-
-Returns
-
-`bool success/failure`
-
-Example
-```js
-ocean.agreements.conditions.grantServiceExecution(agreementId, assetId, grantee)
-```
-
----
-
-#### releaseReward
-Transfer the escrow or locked tokens from the LockRewardCondition contract to the 
-publisher's account. This should be allowed after access has been given to the consumer 
-and the asset data is downloaded.
-
-If the AccessSecretStoreCondition already timed out, this function will do a refund 
-by transferring the token amount to the original consumer.
-
-Parameters
-```
-agreementId: hex str representation of `bytes32` id
-     amount: int the price set for this service agreement
-```
-
-Returns
-
-`bool success/failure`
-
-Example
-```js
-const rewardReleased = ocean.agreements.conditions.releaseReward(agreementId, amount)
-```
-
----
-
-#### refundReward
-Refund the escrow or locked tokens back to the consumer account. This will only work 
-in the case where access was not granted within the specified timeout in the service 
-agreement.
-
-Parameters
-```
-agreementId: hex str representation of `bytes32` id
-     amount: int the price set for this service agreement
-```
-
-Returns
-
-`bool success/failure`
-
-Example
-```js
-const rewardRefund = ocean.agreements.conditions.refundReward(agreementId, amount)
 ```
 
 ---
@@ -1061,35 +578,689 @@ ocean.auth.isStored(account)
 
 ---
 
-## ocean.services
+## ocean.compute
 
-#### createAccessSecretStoreService
-Creates an `Access` type service to be included in asset DDO.
+### order
 
-Parameters
+Starts an order of a compute service that is defined in an asset's services.
+
+_Parameters_
+
 ```
-          price: int number of tokens
-serviceEndpoint: str url of service endpoint
-consumeEndpoint: str url of consume endpoint
+         datasetDid: str -- The DID of the asset (of type `dataset`) to run the algorithm on.
+    consumerAccount: `Account` instance -- The account of the consumer ordering the service (optional, depends on Web3 implementation)
 ```
 
-Returns
+_Returns_
 
-`Service instance`
+```
+agreementId: hex str -- The service agreement ID, representation of `bytes32` ID.
+``` 
 
-Example
+_Example_
+
 ```js
-const service = ocean.services.createAccessSecretStoreService(
-    25, 
-    'http://brizo/services/access/initialize', 
-    'http://brizo/services/access/consume'
+const agreementId = ocean.compute.order(did, consumerAccount)
+```
+
+---
+
+### start
+
+Executes a compute job in a remote compute service associated with an asset and a service agreement ID.
+
+_Parameters_
+
+```
+      agreementId: hex str -- The service agreement ID, representation of `bytes32` ID.
+  consumerAccount: `Account` instance -- The account of the consumer ordering the service.
+     algorithmDid: str -- The DID of the algorithm asset (of type `algorithm`) to run on the asset.
+    algorithmMeta: `AlgorithmMetadata` instance -- Metadata about the algorithm being run if `algorithm` is being used. This is ignored when `algorithmDid` is specified.
+           output: Optional object for advanced customization of compute job output, e.g. if and where the results should be published.
+```
+
+The `output` object example with all possible entries:
+
+```js
+{
+  publishAlgorithmLog: true,
+  publishOutput: true,
+  brizoAddress: "0x4aaab179035dc57b35e2ce066919048686f82972",
+  brizoUri: "https://brizo.marketplace.dev-ocean.com",
+  aquariusUri: "https://aquarius.marketplace.dev-ocean.com",
+  nodeUri: "https://nile.dev-ocean.com",
+  secretStoreUri: "https://secret-store.nile.dev-ocean.com",
+  metadata: {
+    main: {
+      name: "Job output"
+    },
+    additionalInformation: {
+      description: "Job output from my algorithm."
+    }
+  },
+  owner: "0xC41808BBef371AD5CFc76466dDF9dEe228d2BdAA",
+  whitelist: [
+    "0x00Bd138aBD70e2F00903268F3Db08f2D25677C9e",
+    "0xACBd138aBD70e2F00903268F3Db08f2D25677C9e"
+  ]
+}
+```
+
+All entries are optional but when `publishOutput` or `publishAlgorithmLog` are `true`, then the required entries are:
+
+- `brizoAddress`
+- `brizoUri`
+- `aquariusUri`
+- `nodeUri`
+- `secretStoreUri`
+
+To prevent publishing of the result, this should be enough:
+
+```js
+{
+  publishOutput: false
+}
+```
+
+_Returns_
+
+`jobId` of the new compute job
+
+_Example_
+
+```js
+const jobId = ocean.compute.start(agreementId, did, consumerAccount, algorithmDid, output)
+```
+
+### status
+
+Returns information about the status of a compute job
+
+_Parameters_
+
+```
+agreementId: str -- The ID of the service agreement.
+jobId: str -- The ID of the job.
+consumerAccount: `Account` instance -- The account of the consumer ordering the service.
+```
+
+_Returns_
+
+An Array of objects, each including status information for each compute job. Requesting 
+`agreementId` without a `jobId` will return status for all compute jobs for that agreementId. 
+
+```json
+[
+  {
+    "owner": "0x1111",
+    "agreementId": "0x2222",
+    "jobId": "3333",
+    "dateCreated": "2020-10-01T01:00:00Z",
+    "dateFinished": "2020-10-01T01:00:00Z",
+    "status": 5,
+    "statusText": "Job finished",
+    "algorithmLogUrl": "http://example.net/logs/algo.log",
+    "resultsUrl": [
+      "http://example.net/logs/output/0",
+      "http://example.net/logs/output/1"
+    ],
+    "resultsDid": "did:op:example"
+  }
+]
+```
+
+_Example_
+
+```js
+const jobStatus = ocean.compute.status(agreementId, jobId)
+```
+
+### result
+
+Returns the final result of a compute job as a json object containing `did` and list of urls to the result files.
+
+_Parameters_
+
+```
+agreementId: str -- The ID of the service agreement.
+jobId: str -- The ID of the compute job.
+consumerAccount: `Account` instance -- The account of the consumer ordering the service.
+```
+
+_Returns_
+
+Json object
+```
+{
+    "did": "0x231001233",
+    "urls": ["https://result-file-1"],
+    "logs": ["https://result-logs-1"]
+}
+```
+
+_Example_
+
+```js
+const jobResult = ocean.compute.result(agreementId, jobId)
+```
+
+---
+
+### stop
+
+Ends a running compute job.
+
+_Parameters_
+
+```
+agreementId: str -- The ID of the service agreement.
+jobId: str -- The ID of the compute job to be stopped.
+consumerAccount: `Account` instance -- The account of the consumer ordering the service.
+```
+
+_Returns_
+
+`status` of job (list of Json status objects as above)
+
+_Example_
+
+```js
+const jobStatus = ocean.compute.stop(agreementId, jobId)
+```
+
+---
+
+### restart
+
+Stop a running compute job and restart it again.
+
+_Parameters_
+
+```
+agreementId: str -- The ID of the service agreement.
+jobId: str -- The ID of the compute job.
+consumerAccount: `Account` instance -- The account of the consumer ordering the service.
+```
+
+_Returns_
+
+`status` of job (list of Json status objects as above)
+
+_Example_
+
+```js
+const jobStatus = ocean.compute.restart(agreementId, jobId)
+```
+
+---
+
+### delete
+
+Delete a compute job or stop then delete a running compute job.
+
+_Parameters_
+
+```
+agreementId: str -- The ID of the service agreement.
+jobId: str -- The ID of the compute job.
+consumerAccount: `Account` instance -- The account of the consumer ordering the service.
+```
+
+_Returns_
+
+`status` of job (list of Json status objects as above)
+
+_Example_
+
+```js
+const deleted = ocean.compute.delete(agreementId, jobId)
+```
+
+---
+
+## ocean.secret_store
+
+This is a wrapper on top of the Secret Store defined in [Secret Store spec](https://github.com/oceanprotocol/dev-ocean/blob/master/doc/architecture/secret-store.md)
+
+### encrypt
+
+Encrypt the given text and store the encryption keys using the `documentId`. The encrypted text can be decrypted 
+using the same keys identified by the `documentId`.
+
+_Parameters_
+
+```
+      documentId: hex str (bytes32 id in hex str format) 
+         content: str to be encrypted
+publisherAccount: Account instance of document owner
+```
+
+_Returns_
+
+`hex str (the encrypted text)`
+
+_Example_
+
+```js
+const publisherAccount = ocean.accounts.list()[0]
+const content = '/url/of/interesting-data.csv'
+const documentId = 'did:op:1234123412341234'
+const encryptedContent = ocean.secret_store.encrypt(documentId, content, publisherAccount)
+```
+
+---
+
+### decrypt
+
+Decrypt an encrypted text using the stored encryption keys associated with the documentId. Decryption requires that 
+the account owner has access permissions for this `documentID`
+
+_Parameters_
+
+```
+      documentId: hex str (bytes32 id in hex str format) 
+encryptedContent: hex str the encrypted document that results from the `encrypt` call
+ consumerAccount: Account instance requesting the decryption. Requires on-chain access authorization
+```
+
+_Returns_
+
+`original decrypted text`
+
+_Example_
+
+```js
+const consumerAccount = ocean.accounts.list()[0]
+const documentId = 'did:op:1234123412341234'
+ocean.secret_store.decrypt(documentId, encryptedContent, consumerAccount)
+```
+
+---
+
+## ocean.tokens
+
+### request
+Request a number of Ocean Tokens.
+
+_Parameters_
+
+```
+account: Account instance 
+ amount: int number of tokens requested
+```
+
+_Returns_
+
+`bool to indicate success/failure of the request`
+
+_Example_
+
+```js
+account = ocean.accounts.list()[0]
+const amount = ocean.tokens.request(account, 100)
+```
+
+### transfer
+
+Transfer a number of tokens to the mentioned account.
+
+_Parameters_
+
+```
+account: Account instance to receive the tokens
+ amount: int number of tokens to transfer
+```
+
+_Returns_
+
+`bool to indicate success/failure of the transfer`
+
+_Example_
+
+```js
+const fromAccount = ocean.accounts.list()[0]
+const receiverAddress = ocean.accounts.list()[1].address
+ocean.tokens.transfer(receiverAddress, 20, fromAccount)
+```
+
+---
+
+## ocean.templates
+
+### propose
+
+Suggest an agreement template smart contract to include in the white listed agreement templates.
+
+_Parameters_
+
+```
+templateAddress: hex str the ethereum address of the deployed template (smart contract address)
+        account: Account instance owner of the agreement template
+```
+
+_Returns_
+
+`bool to indicate success/failure of the operation`
+
+_Example_
+
+```js
+const templateAddress = '0x345645675678...'
+ocean.templates.propose(templateId, ocean.accounts.list()[0])
+```
+
+---
+
+### approve
+
+Approve (whitelist) an already proposed template. Once a template is approved 
+it can be used for creating agreements in Ocean Protocol keeper network.
+
+_Parameters_
+
+```
+templateAddress: hex str the ethereum address of the deployed template (smart contract address)
+        account: Account instance owner of the agreement template
+```
+
+_Returns_
+
+`bool to indicate success/failure of the operation`
+
+_Example_
+
+```js
+const templateAddress = '0x345645675678...'
+ocean.templates.approve(templateId, ocean.accounts.list()[0])
+```
+
+---
+
+### revoke
+
+Cancel the propsed/approved template or essentially de-whitelist the template. This 
+prevents the creation of any further agreements that are based on this template.
+
+_Parameters_
+
+```
+templateAddress: hex str the ethereum address of the deployed template (smart contract address)
+        account: Account instance owner of the agreement template
+```
+
+_Returns_
+
+`bool to indicate success/failure of the operation`
+
+_Example_
+
+```js
+const templateAddress = '0x345645675678...'
+ocean.templates.revoke(templateId, ocean.accounts.list()[0])
+```
+
+---
+
+## ocean.agreements
+
+### prepare
+Creates a consumer signature for the specified asset service.
+
+_Parameters_
+
+```
+                did: str the asset did which consist of `did:op:` and the assetId hex str (without `0x` prefix)
+serviceDefinitionId: str id of the service within the asset DDO 
+    consumerAccount: Account instance of the consumer to sign the agreement
+```
+
+_Returns_
+
+`(agreementId, signature)`
+
+_Example_
+
+```js
+const { agreementId, signature } = ocean.agreements.prepare(did, serviceDefinitionId, consumerAccount)
+```
+
+---
+
+### send 
+
+Submit a service agreement to the publisher to create the agreement on-chain.
+
+_Parameters_
+
+```
+                did: str the asset did which consist of `did:op:` and the assetId hex str (without `0x` prefix)
+        agreementId: hex str representation of `bytes32` id
+serviceDefinitionId: str id of the service within the asset DDO 
+          signature: hex str the signature of the agreement hash (What is `agreement hash`)
+    consumerAccount: Account instance of the consumer that signed the agreement
+```
+
+_Returns_
+
+`None`
+
+_Example_
+
+```js
+const did = 'did:op:123412341234'
+const agreementId = ''
+const serviceDefinitionId = ocean.assets.resolve(did).services[0].serviceDefinitionId
+const consumerAddress = ocean.accounts.list()[0].address
+const signature = '?'
+ocean.agreements.send(did, agreementId, serviceDefinitionId, signature, consumerAccount)
+```
+
+---
+
+### create
+
+Create a service agreement on-chain. This should be called by the publisher of the asset. Consumer 
+signature will be verified on-chain, but it is recommended to verify the signature in this method 
+before submitting on-chain.
+
+_Parameters_
+
+```
+                did: str the asset did which consist of `did:op:` and the assetId hex str (without `0x` prefix)
+        agreementId: hex str representation of `bytes32` id
+serviceDefinitionId: str id of the service within the asset DDO 
+          signature: hex str the signature of the agreement hash (What is `agreement hash`)
+    consumerAddress: hex str the ethereum account address of the consumer signing the agreement
+            account: Account instance of the creator of this agreement. Can be the consumer, publisher, 
+            provider, or any valid ethereum account.
+```
+
+_Returns_
+
+`boolean`
+
+_Example_
+
+```js
+const payload = {} // coming from the HTTP request
+const { 
+    did,
+    serviceDefinitionId,
+    agreementId,
+    signature,
+    consumerAddress } = payload
+const myAccount = ocean.accounts.list()[0]
+const success = ocean.agreements.create(
+    did, 
+    agreementId, 
+    serviceDefinitionId, 
+    signature, 
+    consumerAddress, 
+    myAccount
     )
+```
+
+---
+
+### status
+
+Get the status of a service agreement.
+
+_Parameters_
+
+```
+agreementId: hex str representation of `bytes32` id
+```
+
+_Returns_
+
+- json document with condition status of each of the agreement's conditions.
+
+```json
+{
+    "agreementId": "",
+    "conditions": {
+        "lockReward": 1,
+        "accessSecretStore": 1,
+        "escrowReward": 1,
+    }  
+}
+```
+- None/null if agreement is invalid
+
+_Example_
+
+```js
+const agreementId = ""
+const agreementStatus = ocean.agreements.status(agreementId)
+```
+
+---
+
+## ocean.agreements.conditions
+
+### lockReward
+
+Transfers tokens to the EscrowRewardCondition contract as an escrow payment. 
+This is required before access can be given to the asset data.
+
+_Parameters_
+```
+agreementId: hex str representation of `bytes32` id
+      amount: int the price set for this service agreement
+```
+
+_Returns_
+
+`bool success/failure`
+
+_Example_
+
+```js
+const rewardLocked = ocean.agreements.conditions.lockReward(agreementId, amount)
+```
+
+---
+
+### grantAccess
+
+Authorize the consumer defined in the agreement to access (consume) this asset.
+
+_Parameters_
+```
+agreementId: hex str representation of `bytes32` id
+    assetId: hex str representation of `bytes32` id
+    grantee: hexstr ethereum address of asset consumer
+```
+
+_Returns_
+
+`bool success/failure`
+
+_Example_
+
+```js
+ocean.agreements.conditions.grantAccess(agreementId, assetId, grantee)
+```
+
+### grantCompute
+
+Authorize the consumer defined in the agreement to run a remote compute job on the dataset.
+
+_Parameters_
+
+```
+agreementId: hex str representation of `bytes32` id
+    assetId: hex str representation of `bytes32` id
+    grantee: hexstr ethereum address of asset consumer
+```
+
+_Returns_
+
+`bool success/failure`
+
+_Example_
+
+```js
+ocean.agreements.conditions.grantCompute(agreementId, assetId, grantee)
+```
+
+---
+
+### releaseReward
+
+Transfer the escrow or locked tokens from the LockRewardCondition contract to the 
+publisher's account. This should be allowed after access has been given to the consumer 
+and the asset data is downloaded.
+
+If the AccessSecretStoreCondition already timed out, this function will do a refund 
+by transferring the token amount to the original consumer.
+
+_Parameters_
+```
+agreementId: hex str representation of `bytes32` id
+     amount: int the price set for this service agreement
+```
+
+_Returns_
+
+`bool success/failure`
+
+_Example_
+
+```js
+const rewardReleased = ocean.agreements.conditions.releaseReward(agreementId, amount)
+```
+
+---
+
+### refundReward
+
+Refund the escrow or locked tokens back to the consumer account. This will only work 
+in the case where access was not granted within the specified timeout in the service 
+agreement.
+
+_Parameters_
+```
+agreementId: hex str representation of `bytes32` id
+     amount: int the price set for this service agreement
+```
+
+_Returns_
+
+`bool success/failure`
+
+_Example_
+
+```js
+const rewardRefund = ocean.agreements.conditions.refundReward(agreementId, amount)
 ```
 
 
 ---
 
-Models
+
+## Models
 
 ### Account
 | attribute   | type       |
@@ -1133,115 +1304,57 @@ Models
 ---
 
 ### Error handling
+
 Common error messages and error codes
 
 TODO
 
-
 ## Examples
 
-See the [Example Code Using Squid](https://docs.oceanprotocol.com/tutorials/example-code/) (a page of links in the Ocean Protocol Docs).
+See the [_Example_ Code Using Squid](https://docs.oceanprotocol.com/tutorials/example-code/).
 
-## Implementation status
+## Changelog
 
-ocean
+You can find older versions of the squid specifications in the [squid-specs folder](squid-specs).
 
-| Method                             | Return Value            | Python | JS   | Java |
-| :--------------------------------- | :---------------------- | :----- | :--- | :--- |
-| Ocean.getInstance() / Ocean()      | Ocean instance          |        |      |      |
+### Squid Spec 0.5
 
----
+Modifications:
 
-ocean.assets
+* New `ocean.compute` methods: `order`, `start`, `status`, `result`, `stop`, `restart`, `delete`
+* Update `ocean.assets.delegatePermissions` method to `ocean.assets.grantPermissions`
+* Update `ocean.agreements.conditions.grantServiceExecution` method to `ocean.agreements.conditions.grantCompute`
 
-| Method              | Return Value              | Python | JS   | Java |
-| :------------------ | :------------------------ | :----- | :--- |:---- |
-| create              | Asset                     |        |      |      | 
-| resolve             | Asset                     |        |      |      |
-| search              | Asset[]                   |        |      |      |
-| query               | Asset[]                   |        |      |      |
-| consume             | str downloaded file path  |        |      |      |
-| order               | hex str agreement id      |        |      |      |
-| validate            | boolean                   |        |      |      |
-| owner               | hex str ethereum address  |        |      |      |
-| ownerList           | Asset[]                   |        |      |      |
-| consumerList        | Asset[]                   |        |      |      |
+### Squid Spec 0.4
 
----
+Modifications:
 
-ocean.accounts
+* New `ocean.assets.execute` method
+* New `ocean.assets.delegatePermissions` method
+* New `ocean.assets.revokePermissions` method
+* New `ocean.assets.getPermissions` method
+* New `ocean.agreements.conditions.grantServiceExecution` method
+* `ocean.assets.create` allows to specify the address of the DID owner
+* New `ocean.assets.transferOwnership` method allowing to transfer the ownership of a DID
 
-| Method              | Return Value                        | Python | JS   | Java |
-| :------------------ | :-----------------------------------| :----- | :--- |:---- |
-| list                | Account list                        |        |      |      |
-| balance             | tuple(etherBalance, oceanBalance) |        |      |      |
-| requestTokens       | boolean (success/failure)           |        |      |      |
+This version of the squid specification is based in the OEP-7 v0.2.
 
----
+### Squid Spec 0.3
 
-ocean.secret_store
+New methods:
 
-| Method         | Return Value              | Python | JS   | Java |
-| :------------- | :----------------------   | :----- | :--- |:---- |
-| encrypt        | string encrypted_content  |        |      |      |
-| decrypt        | string content            |        |      |      |
+  - Get list of the Assets Published by an user
+  - Get list of the Assets Received by an user
+  - Get the SEA status
+  - Get the Owner of an Asset
+  - Expose an additional consume interface allowing to use `index` parameter
+  - Consumer can initialize a SEA on-chain
+  - Validate an Asset Data integrity
 
----
 
-ocean.tokens
+### Squid Spec 0.2
 
-| Method      | Return Value      | Python | JS   | Java |
-| :---------- | :---------------- | :----- | :--- |:---- |
-| request     | bool True/False   |        |      |      |
-| transfer    | bool True/False   |        |      |      |
-
----
-
-ocean.templates
-
-| Method             | Return Value            | Python | JS   | Java |
-| :----------------- | :---------------------- | :----- | :--- |:---  |
-| create             | hex str template id     |        |      |      |
-
----
-
-ocean.agreements
-
-| Method              | Return Value              | Python | JS   | Java |
-| :------------------ | :------------------------ | :----- | :--- |:---- |
-| prepare             | (agreementId, signature)  |        |      |      |
-| send                | -                         |        |      |      |
-| create              | boolean                   |        |      |      |
-| status              | json                      |        |      |      |
-
----
-
-ocean.agreements.conditions
-
-| Method           | Return Value   | Python | JS   | Java |
-| :--------------- | :------------- | :----- | :--- |:---- |
-| lockReward       | boolean        |        |      |      |
-| grantAccess      | boolean        |        |      |      |
-| releaseReward    | boolean        |        |      |      |
-| refundReward     | boolean        |        |      |      |
-
----
-
-ocean.auth
-
-| Method           | Return Value   | Python | JS   | Java |
-| :--------------- | :------------- | :----- | :--- |:---- |
-| get              | string         |        |      |      |
-| check            | public key     |        |      |      |
-| store            | boolean        |        |      |      |
-| restore          | string         |        |      |      |
-| isStored         | boolean        |        |      |      |
-
----
-
-ocean.services
-
-| Method                             | Return Value            | Python | JS   | Java |
-| :--------------------------------- | :---------------------- | :----- | :--- |:---- |
-| createAccessSecretStoreService                | Service instance        |        |      |      |
-
+* Service Execution Agreements
+* Assets Management
+* Tokens request and transfer
+* Secret Store API
