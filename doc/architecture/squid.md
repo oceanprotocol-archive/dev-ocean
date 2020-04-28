@@ -664,7 +664,7 @@ To prevent publishing of the result, this should be enough:
 
 _Returns_
 
-`status` of job
+`jobId` of the new compute job
 
 _Example_
 
@@ -686,7 +686,8 @@ consumerAccount: `Account` instance -- The account of the consumer ordering the 
 
 _Returns_
 
-An Array of objects, each object describing a workflow. If the array is empty, then the search yields no results.
+An Array of objects, each including status information for each compute job. Requesting 
+`agreementId` without a `jobId` will return status for all compute jobs for that agreementId. 
 
 ```json
 [
@@ -698,8 +699,8 @@ An Array of objects, each object describing a workflow. If the array is empty, t
     "dateFinished": "2020-10-01T01:00:00Z",
     "status": 5,
     "statusText": "Job finished",
-    "algologUrl": "http://example.net/logs/algo.log",
-    "outputsUrl": [
+    "algorithmLogUrl": "http://example.net/logs/algo.log",
+    "resultsUrl": [
       "http://example.net/logs/output/0",
       "http://example.net/logs/output/1"
     ],
@@ -716,7 +717,7 @@ const jobStatus = ocean.compute.status(agreementId, jobId)
 
 ### result
 
-Returns the final result of a compute job published as an asset.
+Returns the final result of a compute job as a json object containing `did` and list of urls to the result files.
 
 _Parameters_
 
@@ -728,7 +729,14 @@ consumerAccount: `Account` instance -- The account of the consumer ordering the 
 
 _Returns_
 
-`DDO`
+Json object
+```
+{
+    "did": "0x231001233",
+    "urls": ["https://result-file-1"],
+    "logs": ["https://result-logs-1"]
+}
+```
 
 _Example_
 
@@ -752,7 +760,7 @@ consumerAccount: `Account` instance -- The account of the consumer ordering the 
 
 _Returns_
 
-`status` of job
+`status` of job (list of Json status objects as above)
 
 _Example_
 
@@ -776,7 +784,7 @@ consumerAccount: `Account` instance -- The account of the consumer ordering the 
 
 _Returns_
 
-`status` of job
+`status` of job (list of Json status objects as above)
 
 _Example_
 
@@ -800,7 +808,7 @@ consumerAccount: `Account` instance -- The account of the consumer ordering the 
 
 _Returns_
 
-bool `status` of deletion
+`status` of job (list of Json status objects as above)
 
 _Example_
 
