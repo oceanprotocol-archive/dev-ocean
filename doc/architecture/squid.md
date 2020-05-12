@@ -411,6 +411,43 @@ const permissions = ocean.assets.getPermissions(did, subjectAddress)
 
 ---
 
+### updateComputePrivacy
+Update compute privacy attributes
+
+_Parameters_
+
+```
+           did: DID of the asset
+  serviceIndex: Index of the compute service,
+computePrivacy: Compute Privacy structure,
+       account: Account
+```
+_Returns_
+
+- null if call failed
+
+_Example_
+
+```js
+
+
+const newComputePrivacy = {
+      allowRawAlgorithm: false,
+      allowNetworkAccess: false,
+      trustedAlgorithms: ['did:op:123', 'did:op:1234']
+}
+
+const result = await ocean.assets.updateComputePrivacy(
+      id,
+      serviceIndex,
+      newComputePrivacy as ServiceComputePrivacy,
+      account
+  )
+
+```
+
+---
+
 
 ## ocean.accounts
 
