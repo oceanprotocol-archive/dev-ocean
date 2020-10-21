@@ -10,15 +10,18 @@ If they are a _future or former employee_ of BigchainDB GmbH or DEX Pte Ltd, the
 
 If they are a _current employee_ of BigchainDB GmbH or DEX Pte Ltd, then they are not an external developer and you can ignore this process.
 
-If they did an Ocean Protocol bounty in the past, but this pull request isn't associated with any [Ocean Protocol bounty](https://docs.oceanprotocol.com/concepts/bounties/), then they are an external developer.
+If they did an Ocean Protocol bounty in the past, but this pull request isn't associated with any [Ocean Protocol bounty](https://gitcoin.co/explorer?network=mainnet&idx_status=open&keywords=oceanprotocol&order_by=-web3_created&org=oceanprotocol), then they are an external developer.
 
-If the pull request is from someone who is fulfilling the requirements of a specific _currently-open_ [Ocean Protocol bounty](https://docs.oceanprotocol.com/concepts/bounties/), then they are not an external developer and you can ignore this process.
+If the pull request is from someone who is fulfilling the requirements of a specific _currently-open_ Ocean Protocol bounty, then they are not an external developer and you can ignore this process.
 
 If you're not sure whether they're an external developer, then ask in the pull request comments. Copy and paster this text:
 
 ```text
 - Are you a past, present or future employee of BigchainDB GmbH or DEX Pty Ltd? If yes, which one?
-- Is this pull request to fulfill a currently-open official Ocean Protocol bounty? If yes, which one?
+- Is this pull request to fulfill a currently-open official Ocean Protocol 
+
+
+y? If yes, which one?
 ```
 
 ## If they are an external developer, then do this
