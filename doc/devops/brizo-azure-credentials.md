@@ -4,6 +4,7 @@ description: Tutorial about how to set up Azure Storage for use with Ocean Proto
 slug: /tutorials/azure-for-brizo/
 section: tutorials
 ---
+Note: This needs updating for Ocean V3. As a workaround: Brizo has been renamed to provider-py; it should work similarly.
 
 This tutorial is for publishers who want to get started using Azure to store some of their data assets. (Some data assets could also be stored in other places.)
 
